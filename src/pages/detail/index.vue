@@ -121,8 +121,8 @@ onShareAppMessage(() => shareData.value);
 
             <view class="tag-icon"
                   :class="{
-                      expenses: bill.billType === 'expenses',
-                      income: bill.billType === 'income'
+                      'expenses': bill.billType === 'expenses',
+                      'income': bill.billType === 'income'
                   }">
                 <image :src="bill.tagIcon" lazy-load />
             </view>

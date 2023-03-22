@@ -46,6 +46,8 @@ const calendarMaxDate = moment().valueOf();
 // 备注相关
 const showRemarkPopup = ref(false);
 const remarkInput = ref('');
+// 键盘
+const numbers = ref(["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "."]);
 // 为了防止提交的时候再次触发提交
 const isSubmitting = ref(false);
 
@@ -54,12 +56,11 @@ const formatDate = computed(() => moment(formData.billTime).format('MM月DD日')
 const onTabItemClick = ({ billType }) => {
 
     formData.billType = billType;
+    formData.tagId = billType === 'expense' ? expenseTags.value[0]._id : incomeTags.value[0]._id;
 
 };
 
-const onTagItemClick = ({ tagId }) => {
-
-};
+const onTagItemClick = ({ tagId }) => formData.tagId = tagId;
 
 const onCalendarOpen = () => showCalendar.value = true;
 
@@ -89,9 +90,49 @@ const onSaveRemarkButtonClick = () => {
 
 };
 
-const onNumberClick = ({ number }) => { };
+const onNumberClick = ({ number }) => {
 
-const onBackSpaceClick = () => { };
+    const dotIndex = formData.amount.indexOf('.');
+
+    if (number === '.') {
+
+        // 如果第一个是小数点
+        if (formData.amount === '') {
+            formData.amount = '0.';
+            return;
+        }
+
+        // 只能输入一个小数点
+        if (dotIndex > -1) {
+            return;
+        }
+
+    }
+
+    // 小数点后只能有两位数字
+    if (dotIndex > -1 && formData.amount.substring(dotIndex, formData.amount.length).length > 2) {
+        return;
+    }
+
+    // 金额不能大于1000000
+    if (formData.amount !== '' && Number(formData.amount + number) > 1000000) {
+        uni.showToast({ title: '输入金额不能大于1,000,000', icon: 'none' });
+        return;
+    }
+
+    formData.amount += number;
+
+};
+
+const onBackSpaceClick = () => {
+
+    if (formData.amount === '') {
+        return;
+    }
+
+    formData.amount = formData.amount.substring(0, formData.amount.length - 1);
+
+};
 
 const onConfirmButtonClick = () => {
 
@@ -160,7 +201,7 @@ onLoad(({ billId }) => {
                 formData.billTime = billTime;
                 formData.tagId = tagId[0]._id;
                 formData.amount = `${currency(billType === 'expenses' ? expensesAmount : incomeAmount).divide(100)}`;
-                formdata.remark = remark;
+                formData.remark = remark;
 
                 remarkInput.value = remark;
                 loading.value = false;
@@ -187,13 +228,13 @@ onShareAppMessage(() => shareData.value);
             <view class="tab">
 
                 <view class="tab-item"
-                      :class="{ expense: formData.billType === 'expense' }"
+                      :class="{ 'expense': formData.billType === 'expense' }"
                       @click="onTabItemClick({ billType: 'expense' })">
                     支出
                 </view>
 
                 <view class="tab-item"
-                      :class="{ income: formData.billType === 'income' }"
+                      :class="{ 'income': formData.billType === 'income' }"
                       @click="onTabItemClick({ billType: 'income' })">
                     收入
                 </view>
@@ -217,6 +258,154 @@ onShareAppMessage(() => shareData.value);
             <image src="../../static/svgs/yuan.svg" lazy-load />
             <text class="amount">{{ formData.amount }}</text>
             <span class="cursor"></span>
+
+        </view>
+
+        <view class="tag-content">
+
+            <view v-show="formData.billType === 'expense'">
+
+                <view class="tag-wrapper">
+
+                    <view v-for="item in expenseTags"
+                          :key="item._id"
+                          class="tag"
+                          :class="{ 'expense': formData.tagId === item._id }"
+                          @click="onTagItemClick({ tagId: item._id })">
+
+                        <view class="tag-icon">
+
+                            <image v-show="formData.tagId === item._id"
+                                   :src="item.selectTagIcon"
+                                   lazy-load />
+
+                            <image v-show="formData.tagId !== item._id"
+                                   :src="item.tagIcon"
+                                   lazy-load />
+
+                        </view>
+
+                        <view class="tag-name">
+                            {{ item.tagName }}
+                        </view>
+
+                    </view>
+
+                </view>
+
+            </view>
+
+            <view v-show="formData.billType === 'income'">
+
+                <view class="tag-wrapper">
+
+                    <view v-for="item in incomeTags"
+                          :key="item._id"
+                          class="tag"
+                          :class="{ 'income': formData.tagId === item._id }"
+                          @click="onTagItemClick({ tagId: item._id })">
+
+                        <view class="tag-icon">
+
+                            <image v-show="formData.tagId === item._id"
+                                   :src="item.selectTagIcon"
+                                   lazy-load />
+
+                            <image v-show="formData.tagId !== item._id"
+                                   :src="item.tagIcon"
+                                   lazy-load />
+
+                        </view>
+
+                        <view class="tag-name">
+                            {{ item.tagName }}
+                        </view>
+
+                    </view>
+
+                </view>
+
+            </view>
+
+        </view>
+
+        <view class="remark-content">
+
+            <view v-show="formData.remark.length === 0"
+                  class="remark-action"
+                  hover-class="action-hover"
+                  hover-stay-time="100"
+                  @click="onRemarkPopupOpen">
+                添加备注
+            </view>
+
+            <view class="remark">{{ formData.remark }}</view>
+
+            <view v-show="formData.remark.length !== 0"
+                  class="remark-action"
+                  hover-class="action-hover"
+                  hover-stay-time="100"
+                  @click="onRemarkPopupOpen">
+                修改
+            </view>
+
+        </view>
+
+        <view class="keyboard-content">
+
+            <view class="keyboard-wrapper" style="width:75%">
+
+                <view v-for="(item, index) in numbers"
+                      :key="index"
+                      class="keyboard"
+                      :class="{ 'keyboard-0': item === '0' }">
+
+                    <view class="keyboard-item"
+                          hover-class="gray-hover-class"
+                          hover-stay-time="100"
+                          @click="onNumberClick({ number: item })">
+
+                        {{ item }}
+
+                    </view>
+
+                </view>
+
+            </view>
+
+            <view class="keyboard-wrapper" style="width:25%">
+
+                <view class="keyboard-back">
+
+                    <view class="keyboard-item"
+                          hover-class="gray-hover-class"
+                          hover-stay-time="100"
+                          @click="onBackSpaceClick">
+
+                        <image src="../../static/svgs/backspace.svg" />
+
+                    </view>
+
+                </view>
+
+                <view class="keyboard-confirm">
+
+                    <view class="keyboard-item"
+                          :class="{
+                              'expense': formData.billType === 'expense',
+                              'income': formData.billType === 'income'
+                          }"
+                          hover-class="default-hover-class"
+                          hover-stay-time="100"
+                          @click="onConfirmButtonClick">
+
+                        <text class="confirm">确定</text>
+
+                    </view>
+
+                </view>
+
+            </view>
 
         </view>
 
@@ -321,22 +510,192 @@ page {
         }
     }
 
-}
+    .tag-content {
+        flex-grow: 1;
+        overflow: scroll;
+        padding: 40rpx 45rpx;
 
-@keyframes cursor-blinks {
-    0% {
-        opacity: 1;
-        display: block;
+        .tag-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+
+            .tag {
+                width: 110rpx;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 20rpx 15rpx 15rpx;
+                color: #7e7e7e;
+
+                &.expense {
+                    box-shadow: rgba(0, 0, 0, 0.08) 0px 4rpx 12rpx;
+                    color: $canbin-expenses-color;
+
+                    .tag-icon {
+                        background: $canbin-expenses-color;
+
+                        image {
+                            transform: scale(1.1);
+                        }
+
+                    }
+
+                }
+
+                &.income {
+                    box-shadow: rgba(0, 0, 0, 0.08) 0px 4rpx 12rpx;
+                    color: $canbin-income-color;
+
+                    .tag-icon {
+                        background: $canbin-income-color;
+
+                        image {
+                            transform: scale(1.1);
+                        }
+
+                    }
+
+                }
+
+                &-icon {
+                    width: 80rpx;
+                    height: 80rpx;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: #f7f7f7;
+
+                    image {
+                        width: 45rpx;
+                        height: 45rpx;
+                    }
+
+                }
+
+                &-name {
+                    margin-top: 15rpx;
+                    font-size: 24rpx;
+                }
+
+            }
+
+        }
+
     }
 
-    50% {
-        opacity: 0;
-        display: none;
+    .remark-content {
+        flex-shrink: 0;
+        padding: 30rpx 50rpx;
+        display: flex;
+        align-items: center;
+
+        .remark-action {
+            flex-shrink: 0;
+            font-size: 32rpx;
+            color: #59667f;
+        }
+
+        .remark {
+            flex-grow: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 30rpx;
+            color: #808080;
+        }
+
     }
 
-    100% {
-        opacity: 1;
-        display: block;
+    .keyboard-content {
+        flex-shrink: 0;
+        width: 100%;
+        background: #fafafa;
+        display: flex;
+        padding: 10rpx;
+        align-items: flex-start;
+        margin-bottom: 20rpx;
+
+        .keyboard-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .keyboard {
+            width: 33%;
+            padding: 10rpx;
+            height: 120rpx;
+
+            &-0 {
+                width: 66%;
+            }
+
+        }
+
+        .keyboard-back {
+            width: 100%;
+            padding: 10rpx;
+            height: 120rpx;
+
+            image {
+                width: 60rpx;
+                height: 60rpx;
+            }
+
+        }
+
+        .keyboard-confirm {
+            width: 100%;
+            padding: 10rpx;
+            height: 360rpx;
+
+            text {
+                color: #ffffff;
+                font-size: 35rpx;
+                font-weight: normal;
+            }
+
+        }
+
+        .keyboard-item {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 40rpx;
+
+            &.expense {
+                background: $canbin-expenses-color;
+            }
+
+            &.income {
+                background: $canbin-income-color;
+            }
+
+        }
+
+    }
+
+    @keyframes cursor-blinks {
+        0% {
+            opacity: 1;
+            display: block;
+        }
+
+        50% {
+            opacity: 0;
+            display: none;
+        }
+
+        100% {
+            opacity: 1;
+            display: block;
+        }
     }
 }
 </style>
