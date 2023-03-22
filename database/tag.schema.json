@@ -1,0 +1,51 @@
+{
+	"bsonType": "object",
+	"required": [],
+	"permission": {
+		"read": true,
+		"create": true,
+		"update": true,
+		"delete": true
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"index": {
+			"bsonType": "number",
+			"description": "序号"
+		},
+		"tagName": {
+			"bsonType": "string",
+			"description": "标签名",
+			"defaultValue": ""
+		},
+		"tagValue": {
+			"bsonType": "string",
+			"description": "标签值",
+			"defaultValue": ""
+		},
+		"tagIcon": {
+			"bsonType": "string",
+			"description": "标签图标",
+			"defaultValue": ""
+		},
+		"selectTagIcon": {
+			"bsonType": "string",
+			"description": "选中标签图标",
+			"defaultValue": ""
+		},
+		"tagType": {
+			"bsonType": "string",
+			"description": "标签类型",
+			"defaultValue": "expenses",
+			"enum": [{
+				"text": "支出",
+				"value": "expenses"
+			}, {
+				"text": "收入",
+				"value": "income"
+			}]
+		}
+	}
+}
