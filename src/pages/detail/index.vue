@@ -87,7 +87,7 @@ onLoad(({ billId }) => {
             billId
         }).then(({
             billType,
-            tagId: tag,
+            tagId,
             billTime,
             expensesAmount,
             incomeAmount,
@@ -100,8 +100,8 @@ onLoad(({ billId }) => {
 
             bill.billId = billId;
             bill.billType = billType;
-            bill.tagName = tag[0].tagName;
-            bill.tagIcon = tag[0].selectTagIcon;
+            bill.tagName = tagId[0].tagName;
+            bill.tagIcon = tagId[0].selectTagIcon;
             bill.billTime = `${moment(billTime).format('YYYY年MM月DD日')} ${getWeekday({ day: moment(billTime).day() })}`;
             bill.remark = remark;
             bill.amount = `${billType === 'expenses' ? '-' : '+'} ${currency(billType === 'expenses' ? expensesAmount : incomeAmount).divide(100)}`;

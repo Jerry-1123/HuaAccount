@@ -18,6 +18,7 @@ import {
 import { minDate } from '@/constant';
 import moment from 'moment';
 import _ from 'lodash-es';
+import currency from 'currency.js';
 
 const userStore = useUserStore();
 const appStore = useAppStore();
@@ -40,8 +41,7 @@ const formData = reactive({
     billType: '',
     billTime: '',
     tagId: '',
-    expensesAmount: '',
-    incomeAmount: '',
+    amount: '',
     remark: ''
 });
 
@@ -54,12 +54,18 @@ const calendarMaxDate = moment().valueOf();
 // 备注相关
 const showRemarkPopup = ref(false);
 const remarkInput = ref('');
+// 为了防止提交的时候再次触发提交
+const isSubmitting = ref(false);
 
 const formatDate = computed(() => moment(formData.billTime).format('MM月DD日'));
 
 const onTabItemClick = ({ billType }) => {
 
     formData.billType = billType;
+
+};
+
+const onTagItemClick = ({ tagId }) => {
 
 };
 
@@ -72,6 +78,48 @@ const onCalendarSelect = ({ detail }) => {
     formData.billTime = moment(detail.getTime()).format('YYYY-MM-DD');
 
     onCalendarClose();
+
+};
+
+const onRemarkPopupOpen = () => {
+
+    showRemarkPopup.value = true;
+    remarkInput.value = formData.remark;
+
+};
+
+const onRemarkPopupClose = () => showRemarkPopup.value = false;
+
+const onSaveRemarkButtonClick = () => {
+
+    showRemarkPopup.value = false;
+    formData.remark = remarkInput.value;
+
+};
+
+const onNumberClick = ({ number }) => { };
+
+const onBackSpaceClick = () => { };
+
+const onConfirmButtonClick = () => {
+
+    if (isSubmitting.value) {
+        return;
+    }
+
+    if (!formData.amount) {
+        uni.showToast({ title: '请输入具体金额', icon: 'none' });
+        return;
+    }
+
+    if (Number(formData.amount) < 0.01) {
+        uni.showToast({ title: '所输金额不得小于0.01', icon: 'none' });
+        return;
+    }
+
+    uni.showLoading({ title: '记录中' });
+
+    isSubmitting.value = true;
 
 };
 
@@ -92,8 +140,7 @@ onLoad(({ billId }) => {
             formData.billType = 'expense';
             formData.billTime = moment().format('YYYY-MM-DD');
             formData.tagId = expenseTags.value[0]._id;
-            formData.expensesAmount = '';
-            formData.incomeAmount = '';
+            formData.amount = '';
             formData.remark = '';
 
             remarkInput.value = '';
@@ -105,12 +152,28 @@ onLoad(({ billId }) => {
 
             getBillByBillId({
                 billId
-            }).then(({ bill }) => {
+            }).then(({
+                userId,
+                billType,
+                tagId,
+                billTime,
+                expensesAmount,
+                incomeAmount,
+                remark
+            }) => {
 
                 formData.billId = billId;
-                formData.userId = bill.userId;
+                formData.userId = userId;
+                formData.billType = billType;
+                formData.billTime = billTime;
+                formData.tagId = tagId[0]._id;
+                formData.amount = `${currency(billType === 'expenses' ? expensesAmount : incomeAmount).divide(100)}`;
+                formdata.remark = remark;
 
+                remarkInput.value = remark;
+                loading.value = false;
 
+                setTimeout(() => uni.hideLoading(), 200);
 
             });
 
