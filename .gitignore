@@ -3,6 +3,7 @@ node_modules/
 unpackage/
 dist/
 uniCloud-aliyun/
+*.lock
 
 # local env files
 .env.local
