@@ -7,17 +7,21 @@ import {
     onLoad,
     onShareAppMessage
 } from "@dcloudio/uni-app";
+import { checkForPageLoad } from '@/common';
 import {
     getBillByBillId,
     deleteBill
 } from '@/service/bill';
-import { checkForPageLoad } from '@/common';
 import moment from 'moment';
 import currency from 'currency.js';
 
 const appStore = useAppStore();
 
-const loading = ref(true);
+// 应用信息
+const {
+    shareData
+} = storeToRefs(appStore);
+
 // 账单信息
 const bill = reactive({
     billId: '',
@@ -28,11 +32,9 @@ const bill = reactive({
     remark: '',
     amount: 0
 });
-// 应用信息
-const {
-    shareInfo
-} = storeToRefs(appStore);
 
+// 加载
+const loading = ref(true);
 
 const onEditButtonClick = () => {
 
@@ -113,15 +115,7 @@ onLoad(({ billId }) => {
 
 });
 
-onShareAppMessage(() => {
-
-    return {
-        title: shareInfo.value.title,
-        path: shareInfo.value.path,
-        imageUrl: shareInfo.value.imageUrl,
-    };
-
-});
+onShareAppMessage(() => shareData);
 
 </script>
 

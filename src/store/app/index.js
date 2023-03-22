@@ -66,6 +66,27 @@ export const useAppStore = defineStore('app', {
 
             return _.filter(state.tags, item => item.tagType === 'income');
 
+        },
+        shareData(state) {
+
+            if (_.isEmpty(state.shareInfo)) {
+
+                return {
+                    title: '',
+                    path: '',
+                    imageUrl: ''
+                };
+
+            } else {
+
+                return {
+                    title: state.shareInfo.title,
+                    path: state.shareInfo.path,
+                    imageUrl: state.shareInfo.imageUrl
+                };
+
+            }
+
         }
     },
     actions: {}

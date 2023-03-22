@@ -9,6 +9,7 @@ import {
     onPullDownRefresh,
     onShareAppMessage
 } from "@dcloudio/uni-app";
+import { checkForPageLoad } from '@/common';
 import {
     getBillStatistics,
     getBillStatisticsGroupByTag,
@@ -16,7 +17,6 @@ import {
     getBillStatisticsGroupByMonth,
     getBillListOrderByAmount
 } from '@/service/bill';
-import { checkForPageLoad } from '@/common';
 import moment from 'moment';
 import _ from 'lodash-es';
 
@@ -25,29 +25,25 @@ import DatePicker from '@/components/date-picker';
 const userStore = useUserStore();
 const appStore = useAppStore();
 
-const loading = ref(true);
-// 日期选择器相关
-const showDatePicker = ref(false);
-const activeDateMode = ref(dateModeEnum.month);
-const activeDate = ref(moment().format('YYYY-MM'));
 // 用户信息
 const {
     userId
 } = storeToRefs(userStore);
 // 应用信息
 const {
-    shareInfo
+    shareData
 } = storeToRefs(appStore);
 
-onShareAppMessage(() => {
+// 加载
+const loading = ref(true);
+// 日期选择器相关
+const showDatePicker = ref(false);
+const activeDateMode = ref(dateModeEnum.month);
+const activeDate = ref(moment().format('YYYY-MM'));
 
-    return {
-        title: shareInfo.value.title,
-        path: shareInfo.value.path,
-        imageUrl: shareInfo.value.imageUrl,
-    };
+onLoad(() => { });
 
-});
+onShareAppMessage(() => shareData);
 
 </script>
 

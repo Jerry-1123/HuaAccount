@@ -8,13 +8,13 @@ import {
     onLoad,
     onShareAppMessage
 } from "@dcloudio/uni-app";
+import { checkForPageLoad } from '@/common';
 import {
     getBillByBillId,
     getDayBillCount,
     createBill,
     updateBill
 } from '@/service/bill';
-import { checkForPageLoad } from '@/common';
 import { minDate } from '@/constant';
 import moment from 'moment';
 import _ from 'lodash-es';
@@ -22,15 +22,17 @@ import _ from 'lodash-es';
 const userStore = useUserStore();
 const appStore = useAppStore();
 
-// 加载
-const loading = ref(true);
-// 日历选择相关
-const showCalendar = ref(false);
-const calendarMinDate = moment(minDate).valueOf();
-const calendarMaxDate = moment().valueOf();
-// 备注相关
-const showRemarkPopup = ref(false);
-const remarkInput = ref('');
+// 用户信息
+const {
+    userId
+} = storeToRefs(userStore);
+// 应用信息
+const {
+    expenseTags,
+    incomeTags,
+    shareData
+} = storeToRefs(appStore);
+
 // 表单信息
 const formData = reactive({
     billId: '',
@@ -42,16 +44,16 @@ const formData = reactive({
     incomeAmount: '',
     remark: ''
 });
-// 用户信息
-const {
-    userId
-} = storeToRefs(userStore);
-// 应用信息
-const {
-    expenseTags,
-    incomeTags,
-    shareInfo
-} = storeToRefs(appStore);
+
+// 加载
+const loading = ref(true);
+// 日历选择相关
+const showCalendar = ref(false);
+const calendarMinDate = moment(minDate).valueOf();
+const calendarMaxDate = moment().valueOf();
+// 备注相关
+const showRemarkPopup = ref(false);
+const remarkInput = ref('');
 
 const formatDate = computed(() => moment(formData.billTime).format('MM月DD日'));
 
@@ -118,15 +120,7 @@ onLoad(({ billId }) => {
 
 });
 
-onShareAppMessage(() => {
-
-    return {
-        title: shareInfo.value.title,
-        path: shareInfo.value.path,
-        imageUrl: shareInfo.value.imageUrl,
-    };
-
-});
+onShareAppMessage(() => shareData);
 
 </script>
 

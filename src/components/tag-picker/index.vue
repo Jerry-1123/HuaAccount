@@ -5,6 +5,10 @@ import { storeToRefs } from 'pinia';
 
 const appStore = useAppStore();
 
+const {
+    tagsGroup
+} = storeToRefs(appStore);
+
 defineProps({
     show: {
         type: Boolean,
@@ -16,15 +20,11 @@ defineProps({
     }
 });
 
-const {
-    tagsGroup
-} = storeToRefs(appStore);
-
 const emit = defineEmits(['select', 'close']);
 
 const onTagItemClick = ({ tagId }) => emit('select', { tagId });
 
-const onClosePopup = () => emit('close');
+const onPopupClose = () => emit('close');
 
 </script>
 
@@ -36,7 +36,7 @@ const onClosePopup = () => emit('close');
                round
                closeable
                duration="200"
-               @close="onClosePopup">
+               @close="onPopupClose">
 
         <view class="content">
 

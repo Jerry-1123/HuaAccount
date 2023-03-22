@@ -5,6 +5,8 @@ import { dateModeEnum } from '@/constant';
 import { getDateOptions } from '@/util';
 import moment from 'moment';
 
+const options = ref(getDateOptions());
+
 defineProps({
     show: {
         type: Boolean,
@@ -20,15 +22,13 @@ defineProps({
     }
 });
 
-const options = ref(getDateOptions());
-
 const emit = defineEmits(['change', 'select', 'close']);
 
 const onModeChange = ({ mode }) => emit('change', { mode });
 
 const onDateItemClick = ({ date }) => emit('select', { date });
 
-const onClosePopup = () => emit('close');
+const onPopupClose = () => emit('close');
 
 </script>
 
@@ -40,7 +40,7 @@ const onClosePopup = () => emit('close');
                round
                closeable
                duration="200"
-               @close="onClosePopup">
+               @close="onPopupClose">
 
         <view class="content">
 

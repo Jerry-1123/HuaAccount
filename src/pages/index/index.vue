@@ -11,12 +11,12 @@ import {
     onPageScroll,
     onShareAppMessage
 } from "@dcloudio/uni-app";
+import { checkForPageLoad } from '@/common';
 import {
     getBillList,
     getBillStatistics,
     deleteBill
 } from '@/service/bill';
-import { checkForPageLoad } from '@/common';
 import {
     rpx2px,
     getWeekday
@@ -35,6 +35,17 @@ import TagPicker from '@/components/tag-picker';
 
 const userStore = useUserStore();
 const appStore = useAppStore();
+
+// 用户信息
+const {
+    userId,
+    avatar
+} = storeToRefs(userStore);
+// 应用信息
+const {
+    tagsList,
+    shareData
+} = storeToRefs(appStore);
 
 // 首次加载
 const firstLoading = ref(true);
@@ -58,16 +69,6 @@ const list = ref([]);
 // 头部滑动高度
 const headerScrollHeight = ref(rpx2px({ rpx: 80 }));
 const showStickyInfo = ref(false);
-// 用户信息
-const {
-    userId,
-    avatar
-} = storeToRefs(userStore);
-// 应用信息
-const {
-    tagsList,
-    shareInfo
-} = storeToRefs(appStore);
 
 const formatDate = computed(() => isYearMode() ? `${activeDate.value}年` : moment(activeDate.value).format('YYYY年MM月'));
 
@@ -364,15 +365,7 @@ onPageScroll((e) => {
 
 });
 
-onShareAppMessage(() => {
-
-    return {
-        title: shareInfo.value.title,
-        path: shareInfo.value.path,
-        imageUrl: shareInfo.value.imageUrl,
-    };
-
-});
+onShareAppMessage(() => shareData);
 
 </script>
 

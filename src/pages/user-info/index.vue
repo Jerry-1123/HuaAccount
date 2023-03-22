@@ -8,29 +8,33 @@ import {
     onLoad,
     onShareAppMessage
 } from "@dcloudio/uni-app";
+import { checkForPageLoad } from '@/common';
 import {
     getUserByOpenId,
     updateUser
 } from '@/service/user';
-import { checkForPageLoad } from '@/common';
 import moment from 'moment';
 
 const userStore = useUserStore();
 const appStore = useAppStore();
 
-const loading = ref(true);
-const nickName = ref('');
-const avatar = ref('../../static/images/avatar.png');
-// 为了防止提交的时候再次触发提交
-const isSubmitting = ref(false);
 // 用户信息
 const {
     openId
 } = storeToRefs(userStore);
 // 应用信息
 const {
-    shareInfo
+    shareData
 } = storeToRefs(appStore);
+
+// 加载
+const loading = ref(true);
+// 昵称
+const nickName = ref('');
+// 头像
+const avatar = ref('../../static/images/avatar.png');
+// 为了防止提交的时候再次触发提交
+const isSubmitting = ref(false);
 
 const onAvatarClick = (e) => avatar.value = e.detail.avatarUrl;
 
@@ -120,15 +124,7 @@ onLoad(() => {
 
 });
 
-onShareAppMessage(() => {
-
-    return {
-        title: shareInfo.value.title,
-        path: shareInfo.value.path,
-        imageUrl: shareInfo.value.imageUrl,
-    };
-
-});
+onShareAppMessage(() => shareData);
 
 </script>
 
