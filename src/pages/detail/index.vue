@@ -3,16 +3,10 @@
 import { ref, reactive } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAppStore } from '@/store/app';
-import {
-    onLoad,
-    onShareAppMessage
-} from "@dcloudio/uni-app";
+import { onLoad, onShareAppMessage } from "@dcloudio/uni-app";
 import { checkForPageLoad } from '@/common';
-import {
-    getBillByBillId,
-    deleteBill
-} from '@/service/bill';
 import { getWeekday } from '@/util';
+import { getBillByBillId, deleteBill } from '@/service/bill';
 import moment from 'moment';
 import currency from 'currency.js';
 

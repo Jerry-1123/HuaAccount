@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import _ from 'lodash-es';
+import _ from 'lodash';
 
 export const useAppStore = defineStore('app', {
     state: () => ({

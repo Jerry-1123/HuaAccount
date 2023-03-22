@@ -4,11 +4,7 @@ import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/user';
 import { useAppStore } from '@/store/app';
-import {
-    onLoad,
-    onPullDownRefresh,
-    onShareAppMessage
-} from "@dcloudio/uni-app";
+import { onLoad, onPullDownRefresh, onShareAppMessage } from "@dcloudio/uni-app";
 import { checkForPageLoad } from '@/common';
 import {
     getBillStatistics,
@@ -18,7 +14,7 @@ import {
     getBillListOrderByAmount
 } from '@/service/bill';
 import moment from 'moment';
-import _ from 'lodash-es';
+import _ from 'lodash';
 
 import DatePicker from '@/components/date-picker';
 

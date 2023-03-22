@@ -50,7 +50,7 @@
     "@dcloudio/uni-quickapp-webview": "3.0.0-3070320230222002",
     "@vant/weapp": "1.10.14",
     "currency.js": "^2.0.4",
-    "lodash-es": "4.17.21",
+    "lodash": "4.17.21",
     "moment": "2.29.4",
     "pinia": "2.0.33",
     "vue": "3.2.47",

@@ -12,22 +12,11 @@ import {
     onShareAppMessage
 } from "@dcloudio/uni-app";
 import { checkForPageLoad } from '@/common';
-import {
-    getBillList,
-    getBillStatistics,
-    deleteBill
-} from '@/service/bill';
-import {
-    rpx2px,
-    getWeekday
-} from '@/util';
-import {
-    defaultTagId,
-    defaultPageSize,
-    dateModeEnum
-} from '@/constant';
+import { rpx2px, getWeekday } from '@/util';
+import { defaultTagId, defaultPageSize, dateModeEnum } from '@/constant';
+import { getBillList, getBillStatistics, deleteBill } from '@/service/bill';
 import moment from 'moment';
-import _ from 'lodash-es';
+import _ from 'lodash';
 import currency from 'currency.js';
 
 import DatePicker from '@/components/date-picker';

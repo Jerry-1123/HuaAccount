@@ -5,7 +5,7 @@ import { getOpenIdByCode } from '@/service-cloud/user';
 import { getUserByOpenId, createUser } from '@/service/user';
 import { getTags } from '@/service/tag';
 import { getShareInfo } from '@/service/share';
-import _ from 'lodash-es';
+import _ from 'lodash';
 
 // 检查更新
 export const checkForUpdateApp = () => {

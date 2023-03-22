@@ -4,15 +4,9 @@ import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/user';
 import { useAppStore } from '@/store/app';
-import {
-    onLoad,
-    onShareAppMessage
-} from "@dcloudio/uni-app";
+import { onLoad, onShareAppMessage } from "@dcloudio/uni-app";
 import { checkForPageLoad } from '@/common';
-import {
-    getUserByOpenId,
-    updateUser
-} from '@/service/user';
+import { getUserByOpenId, updateUser } from '@/service/user';
 import moment from 'moment';
 
 const userStore = useUserStore();

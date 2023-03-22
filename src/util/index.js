@@ -1,5 +1,5 @@
 import moment from 'moment';
-import _ from 'lodash-es';
+import _ from 'lodash';
 import { minDate } from '@/constant';
 
 // 云函数调用

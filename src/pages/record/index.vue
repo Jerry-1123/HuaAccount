@@ -4,20 +4,12 @@ import { ref, reactive, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/user';
 import { useAppStore } from '@/store/app';
-import {
-    onLoad,
-    onShareAppMessage
-} from "@dcloudio/uni-app";
+import { onLoad, onShareAppMessage } from "@dcloudio/uni-app";
 import { checkForPageLoad } from '@/common';
-import {
-    getBillByBillId,
-    getDayBillCount,
-    createBill,
-    updateBill
-} from '@/service/bill';
 import { minDate } from '@/constant';
+import { getBillByBillId, getDayBillCount, createBill, updateBill } from '@/service/bill';
 import moment from 'moment';
-import _ from 'lodash-es';
+import _ from 'lodash';
 import currency from 'currency.js';
 
 const userStore = useUserStore();
