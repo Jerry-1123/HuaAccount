@@ -1,0 +1,44 @@
+{
+	"bsonType": "object",
+	"required": [],
+	"permission": {
+		"read": true,
+		"create": true,
+		"update": true,
+		"delete": true
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"nickName": {
+			"bsonType": "string",
+			"description": "昵称",
+			"defaultValue": ""
+		},
+		"avatarUrl": {
+			"bsonType": "string",
+			"description": "头像",
+			"defaultValue": ""
+		},
+		"openId": {
+			"bsonType": "string",
+			"description": "微信小程序平台openId",
+			"defaultValue": ""
+		},
+		"createTime": {
+			"bsonType": "timestamp",
+			"description": "创建时间",
+			"defaultValue": {
+				"$env": "now"
+			}
+		},
+		"updateTime": {
+			"bsonType": "timestamp",
+			"description": "更新时间",
+			"defaultValue": {
+				"$env": "now"
+			}
+		}
+	}
+}

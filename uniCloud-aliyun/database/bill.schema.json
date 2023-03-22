@@ -1,0 +1,73 @@
+{
+	"bsonType": "object",
+	"required": [],
+	"permission": {
+		"read": true,
+		"create": true,
+		"update": true,
+		"delete": true
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"userId": {
+			"bsonType": "string",
+			"description": "用户Id",
+			"defaultValue": "",
+			"foreignKey": "user._id"
+		},
+		"tagId": {
+			"bsonType": "string",
+			"description": "标签",
+			"defaultValue": "",
+			"foreignKey": "tag._id"
+		},
+		"billType": {
+			"bsonType": "string",
+			"description": "账单类型",
+			"defaultValue": "expenses",
+			"enum": [{
+				"text": "支出",
+				"value": "expenses"
+			}, {
+				"text": "收入",
+				"value": "income"
+			}]
+		},
+		"expensesAmount": {
+			"bsonType": "int",
+			"description": "支出金额,单位(分)",
+			"defaultValue": 0
+		},
+		"incomeAmount": {
+			"bsonType": "int",
+			"description": "收入金额,单位(分)",
+			"defaultValue": 0
+		},
+		"remark": {
+			"bsonType": "string",
+			"description": "备注",
+			"defaultValue": ""
+		},
+		"billTime": {
+			"bsonType": "string",
+			"description": "记账时间",
+			"defaultValue": ""
+		},
+		"createTime": {
+			"bsonType": "timestamp",
+			"description": "创建时间",
+			"defaultValue": {
+				"$env": "now"
+			}
+		},
+		"updateTime": {
+			"bsonType": "timestamp",
+			"description": "更新时间",
+			"defaultValue": {
+				"$env": "now"
+			}
+		}
+	}
+}
