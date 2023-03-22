@@ -12,6 +12,7 @@ import {
     getBillByBillId,
     deleteBill
 } from '@/service/bill';
+import { getWeekday } from '@/util';
 import moment from 'moment';
 import currency from 'currency.js';
 
@@ -101,7 +102,7 @@ onLoad(({ billId }) => {
             bill.billType = billType;
             bill.tagName = tag[0].tagName;
             bill.tagIcon = tag[0].selectTagIcon;
-            bill.billTime = moment(billTime).format('YYYY年MM月DD日');
+            bill.billTime = `${moment(billTime).format('YYYY年MM月DD日')} ${getWeekday({ day: moment(billTime).day() })}`;
             bill.remark = remark;
             bill.amount = `${billType === 'expenses' ? '-' : '+'} ${currency(billType === 'expenses' ? expensesAmount : incomeAmount).divide(100)}`;
 
