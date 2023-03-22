@@ -84,15 +84,13 @@ const onSubmitButtonClick = () => {
             }).then(() => {
 
                 userStore.$patch((state) => {
-
                     state.nickName = nickName.value;
                     state.avatar = fileID;
-
                 });
 
                 uni.showToast({ title: '保存成功', icon: 'success', duration: 1000 });
 
-                setTimeout(() => uni.navigateBack(), 500);
+                setTimeout(() => uni.navigateBack(), 200);
 
             });
 
@@ -124,12 +122,12 @@ onLoad(() => {
 
 });
 
-onShareAppMessage(() => shareData);
+onShareAppMessage(() => shareData.value);
 
 </script>
 
 <template>
-    <view v-if="!loading" class="content">
+    <view v-show="!loading" class="content">
 
         <view class="cell-content">
 

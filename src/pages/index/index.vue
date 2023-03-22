@@ -345,11 +345,7 @@ onLoad(() => {
 
 });
 
-onPullDownRefresh(() => {
-
-    onClear();
-
-});
+onPullDownRefresh(() => onClear());
 
 onReachBottom(() => {
 
@@ -359,18 +355,14 @@ onReachBottom(() => {
 
 });
 
-onPageScroll((e) => {
+onPageScroll((e) => showStickyInfo.value = e.scrollTop >= headerScrollHeight.value);
 
-    showStickyInfo.value = e.scrollTop >= headerScrollHeight.value;
-
-});
-
-onShareAppMessage(() => shareData);
+onShareAppMessage(() => shareData.value);
 
 </script>
 
 <template>
-    <view v-if="!firstLoading" class="content">
+    <view v-show="!firstLoading" class="content">
 
         <view class="header">
 

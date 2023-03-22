@@ -107,7 +107,7 @@ onLoad(({ billId }) => {
 
             loading.value = false;
 
-            uni.hideLoading();
+            setTimeout(() => uni.hideLoading(), 200);
 
         });
 
@@ -115,12 +115,12 @@ onLoad(({ billId }) => {
 
 });
 
-onShareAppMessage(() => shareData);
+onShareAppMessage(() => shareData.value);
 
 </script>
 
 <template>
-    <view v-if="!loading" class="content">
+    <view v-show="!loading" class="content">
 
         <view class="tag">
 

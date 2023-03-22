@@ -99,7 +99,7 @@ onLoad(({ billId }) => {
             remarkInput.value = '';
             loading.value = false;
 
-            uni.hideLoading();
+            setTimeout(() => uni.hideLoading(), 200);
 
         } else {
 
@@ -120,12 +120,12 @@ onLoad(({ billId }) => {
 
 });
 
-onShareAppMessage(() => shareData);
+onShareAppMessage(() => shareData.value);
 
 </script>
 
 <template>
-    <view v-if="!loading" class="content">
+    <view v-show="!loading" class="content">
 
         <view class="action-content">
 

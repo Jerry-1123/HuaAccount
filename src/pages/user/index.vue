@@ -21,7 +21,7 @@ onLoad(() => {
 
 });
 
-onShareAppMessage(() => shareData);
+onShareAppMessage(() => shareData.value);
 
 </script>
 

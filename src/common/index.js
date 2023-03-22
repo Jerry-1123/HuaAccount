@@ -70,10 +70,8 @@ export const checkForPageLoad = () => {
     ]) => {
 
         appStore.$patch((state) => {
-
             state.tags = tags;
             state.shareInfo = shareInfo;
-
         });
 
         uni.setStorageSync('openId', openId);
@@ -87,12 +85,10 @@ export const checkForPageLoad = () => {
                     return createUser({ openId }).then(({ result: { id: userId } }) => {
 
                         userStore.$patch((state) => {
-
                             state.openId = openId;
                             state.userId = userId;
                             state.nickName = '';
                             state.avatar = '';
-
                         });
 
                         return Promise.resolve();
@@ -102,12 +98,10 @@ export const checkForPageLoad = () => {
                 } else {
 
                     userStore.$patch((state) => {
-
                         state.openId = openId;
                         state.userId = userInfo._id;
                         state.nickName = userInfo.nickName;
                         state.avatar = userInfo.avatarUrl;
-
                     });
 
                     return Promise.resolve();

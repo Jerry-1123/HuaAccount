@@ -43,12 +43,12 @@ const activeDate = ref(moment().format('YYYY-MM'));
 
 onLoad(() => { });
 
-onShareAppMessage(() => shareData);
+onShareAppMessage(() => shareData.value);
 
 </script>
 
 <template>
-    <view v-if="!loading" class="content">
+    <view v-show="!loading" class="content">
 
     </view>
 </template>
