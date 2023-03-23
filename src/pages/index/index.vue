@@ -422,7 +422,7 @@ onShareAppMessage(() => shareData.value);
                     <text class="yuan">¥</text>
                     <text v-show="formatTotalAmount < 0">-</text>
                     <text v-show="formatTotalAmount > 0">+</text>
-                    <text>{{ Math.abs(formatTotalAmount) }}</text>
+                    <text class="total-amount">{{ Math.abs(formatTotalAmount) }}</text>
 
                 </view>
 
@@ -637,24 +637,34 @@ page {
         width: 100%;
         height: 80rpx;
         line-height: 80rpx;
-        padding: 0 45rpx;
+        padding: 0 40rpx;
         background: #fff;
         border-bottom: 1px solid #eaeaea;
-        font-size: 32rpx;
+        font-size: 30rpx;
 
         .stick-info {
             display: flex;
             align-items: center;
             justify-content: space-between;
 
-            .label {
-                color: #8e8e8e;
-                margin-right: 20rpx;
-            }
+            .amount {
+                display: flex;
+                align-items: center;
 
-            .value {
-                font-weight: bold;
-                margin-right: 50rpx;
+                .label {
+                    color: #8e8e8e;
+                    margin-right: 20rpx;
+                }
+
+                .value {
+                    font-weight: bold;
+                    margin-right: 30rpx;
+                    max-width: 150rpx;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+
             }
 
             .avatar {
@@ -675,7 +685,7 @@ page {
         background: #ffffff;
         border: 1px solid #ececec;
         border-radius: 15rpx;
-        padding: 25rpx 35rpx;
+        padding: 20rpx 30rpx;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -686,9 +696,18 @@ page {
             .total {
                 font-size: 50rpx;
                 font-weight: bold;
+                display: flex;
+                align-items: center;
 
                 .yuan {
                     margin-right: 30rpx;
+                }
+
+                &-amount {
+                    max-width: 420rpx;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
                 }
 
                 &.expenses {
@@ -714,7 +733,11 @@ page {
 
                 .value {
                     font-weight: bold;
-                    margin-right: 24rpx;
+                    margin-right: 20rpx;
+                    max-width: 140rpx;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
                 }
 
             }
@@ -759,14 +782,20 @@ page {
                 .amount-content {
                     font-size: 28rpx;
                     font-weight: bold;
+                    display: flex;
+                    align-items: center;
 
                     .label {
-                        margin: 0 12rpx;
+                        margin: 0 5rpx 0 10rpx;
                         color: #8e8e8e;
                     }
 
                     .value {
                         font-weight: bold;
+                        max-width: 135rpx;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
                     }
 
                 }

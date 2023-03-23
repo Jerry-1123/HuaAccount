@@ -6,6 +6,7 @@ import { useUserStore } from '@/store/user';
 import { useAppStore } from '@/store/app';
 import { onLoad, onPullDownRefresh, onShareAppMessage } from "@dcloudio/uni-app";
 import { checkForPageLoad } from '@/common';
+import { dateModeEnum } from '@/constant';
 import {
     getBillStatistics,
     getBillStatisticsGroupByTag,
@@ -15,6 +16,7 @@ import {
 } from '@/service/bill';
 import moment from 'moment';
 import _ from 'lodash';
+import currency from 'currency.js';
 
 import DatePicker from '@/components/date-picker';
 import LineChart from './line-chart';
@@ -48,6 +50,16 @@ onLoad(() => {
 
     // 加入笔数
 
+    uni.showLoading({ title: '加载中' });
+
+    checkForPageLoad().then(() => {
+
+        loading.value = false;
+
+        setTimeout(() => uni.hideLoading(), 500);
+
+    });
+
 });
 
 onPullDownRefresh(() => {
@@ -62,7 +74,9 @@ onShareAppMessage(() => shareData.value);
 
 <template>
     <view v-show="!loading" class="content">
-
+        <view style="margin-top: 40rpx;text-align: center;">
+            正在开发中，敬请期待^-^
+        </view>
     </view>
 </template>
 

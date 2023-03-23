@@ -31,7 +31,7 @@ const onPopupClose = () => emit('close');
 <template>
     <van-popup :show="show"
                :safe-area-inset-bottom="false"
-               custom-style="height: 900rpx"
+               custom-style="height: 800rpx"
                position="bottom"
                round
                closeable
@@ -87,7 +87,7 @@ const onPopupClose = () => emit('close');
     }
 
     .tag-content {
-        height: 800rpx;
+        height: 700rpx;
         overflow: scroll;
         padding: 0 40rpx;
         font-size: 28rpx;

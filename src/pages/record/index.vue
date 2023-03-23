@@ -158,6 +158,90 @@ const onConfirmButtonClick = () => {
 
     isSubmitting.value = true;
 
+    // 限制同一天同一种类型最多提交10笔账单
+    getDayBillCount({
+        userId: formData.userId,
+        billTime: formData.billTime,
+        billType: formData.billType
+    }).then(({ total }) => {
+
+        if (total >= 10) {
+
+            uni.showToast({ title: `同一天只能最多记录10笔${formData.billType === 'expenses' ? '支出' : '收入'}`, icon: 'none' });
+
+            isSubmitting.value = false;
+
+            return;
+
+        }
+
+        if (!formData.billId) {
+
+            // 提交账单
+            createBill({
+                userId: formData.userId,
+                billType: formData.billType,
+                expensesAmount: formData.billType === 'expenses' ? currency(formData.amount).multiply(100).value : 0,
+                incomeAmount: formData.billType === 'income' ? currency(formData.amount).multiply(100).value : 0,
+                remark: formData.remark,
+                billTime: formData.billTime,
+                tagId: formData.tagId
+            }).then(() => {
+
+                uni.showToast({ title: '已记一笔', icon: 'success', duration: 1000 });
+
+                setTimeout(() => {
+
+                    uni.navigateBack();
+
+                    // 通知首页刷新
+                    uni.$emit('billCreated', {});
+
+                }, 500);
+
+            });
+
+        } else {
+
+            // 编辑账单
+            updateBill({
+                billId: formData.billId,
+                userId: formData.userId,
+                billType: formData.billType,
+                expensesAmount: formData.billType === 'expenses' ? currency(formData.amount).multiply(100).value : 0,
+                incomeAmount: formData.billType === 'income' ? currency(formData.amount).multiply(100).value : 0,
+                remark: formData.remark,
+                billTime: formData.billTime,
+                tagId: formData.tagId
+            }).then(() => {
+
+                uni.showToast({ title: '编辑成功', icon: 'success', duration: 1000 });
+
+                setTimeout(() => {
+
+                    if (getCurrentPages().length === 3) {
+
+                        uni.navigateBack({
+                            delta: 2
+                        });
+
+                    } else {
+
+                        uni.navigateBack();
+
+                    }
+
+                    // 通知首页刷新
+                    uni.$emit('billUpdated', {});
+
+                }, 500);
+
+            });
+
+        }
+
+    });
+
 };
 
 onLoad(({ billId }) => {
@@ -204,7 +288,7 @@ onLoad(({ billId }) => {
                 formData.billType = billType;
                 formData.billTime = billTime;
                 formData.tagId = tagId[0]._id;
-                formData.amount = `${currency(billType === 'expenses' ? expensesAmount : incomeAmount).divide(100)}`;
+                formData.amount = `${currency(billType === 'expenses' ? expensesAmount : incomeAmount).divide(100).value}`;
                 formData.remark = remark;
 
                 remarkInput.value = remark;
@@ -245,7 +329,8 @@ onShareAppMessage(() => shareData.value);
 
             </view>
 
-            <view class="date"
+            <view v-if="formData.billTime"
+                  class="date"
                   hover-class="default-hover-class"
                   hover-stay-time="100"
                   @click="onCalendarOpen">
@@ -337,7 +422,7 @@ onShareAppMessage(() => shareData.value);
 
             <view v-show="formData.remark.length === 0"
                   class="remark-action"
-                  hover-class="action-hover"
+                  hover-class="default-hover-class"
                   hover-stay-time="100"
                   @click="onRemarkPopupOpen">
                 添加备注
@@ -347,7 +432,7 @@ onShareAppMessage(() => shareData.value);
 
             <view v-show="formData.remark.length !== 0"
                   class="remark-action"
-                  hover-class="action-hover"
+                  hover-class="default-hover-class"
                   hover-stay-time="100"
                   @click="onRemarkPopupOpen">
                 修改
@@ -451,7 +536,7 @@ onShareAppMessage(() => shareData.value);
                       hover-stay-time="100"
                       @click="onSaveRemarkButtonClick">
 
-                    确定
+                    确 定
 
                 </view>
 
@@ -722,9 +807,10 @@ page {
         position: relative;
 
         &-title {
-            height: 50px;
-            line-height: 50px;
+            height: 100rpx;
+            line-height: 100rpx;
             text-align: center;
+            font-size: 32rpx;
         }
 
         &-input {
@@ -732,12 +818,13 @@ page {
             margin: 10px 40px;
             padding: 16px;
             border-radius: 4px;
+            font-size: 30rpx;
         }
 
         &-length {
             margin: 15px 44px;
-            font-size: 14px;
             color: #797979;
+            font-size: 28rpx;
         }
 
         &-button {
@@ -749,6 +836,7 @@ page {
             line-height: 40px;
             text-align: center;
             background: #F2F2F2;
+            font-size: 30rpx;
 
             &.expenses {
                 background: $canbin-expenses-color;

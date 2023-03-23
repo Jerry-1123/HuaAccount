@@ -204,7 +204,7 @@ page {
 
             .avatar-wrapper {
                 padding: 0;
-                width: 48px !important;
+                width: 80rpx !important;
                 padding: 0;
                 margin: 0;
                 border-radius: 100%;
@@ -216,8 +216,8 @@ page {
 
                 image {
                     display: block;
-                    width: 48px;
-                    height: 48px;
+                    width: 80rpx;
+                    height: 80rpx;
                 }
 
             }
