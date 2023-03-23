@@ -24,8 +24,8 @@ const bill = reactive({
     tagIcon: '',
     tagName: '',
     billTime: '',
-    remark: '',
-    amount: 0
+    amount: '',
+    remark: ''
 });
 
 // 加载
@@ -97,8 +97,8 @@ onLoad(({ billId }) => {
             bill.tagName = tagId[0].tagName;
             bill.tagIcon = tagId[0].selectTagIcon;
             bill.billTime = `${moment(billTime).format('YYYY年MM月DD日')} ${getWeekday({ day: moment(billTime).day() })}`;
-            bill.remark = remark;
             bill.amount = `${billType === 'expenses' ? '-' : '+'} ${currency(billType === 'expenses' ? expensesAmount : incomeAmount).divide(100)}`;
+            bill.remark = remark;
 
             loading.value = false;
 
