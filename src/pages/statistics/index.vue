@@ -17,6 +17,9 @@ import moment from 'moment';
 import _ from 'lodash';
 
 import DatePicker from '@/components/date-picker';
+import LineChart from './line-chart';
+import PieChart from './pie-chart';
+import Progress from './progress';
 
 const userStore = useUserStore();
 const appStore = useAppStore();
@@ -37,7 +40,21 @@ const showDatePicker = ref(false);
 const activeDateMode = ref(dateModeEnum.month);
 const activeDate = ref(moment().format('YYYY-MM'));
 
-onLoad(() => { });
+const onQuery = () => {
+
+};
+
+onLoad(() => {
+
+    // 加入笔数
+
+});
+
+onPullDownRefresh(() => {
+
+
+
+});
 
 onShareAppMessage(() => shareData.value);
 
@@ -56,9 +73,5 @@ page {
 </style>
   
 <style lang="scss" scoped>
-.chart {
-    padding: 20rpx 0;
-    width: 100%;
-    height: 450rpx;
-}
+.content {}
 </style>
