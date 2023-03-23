@@ -56,7 +56,7 @@ const formatDate = computed(() => moment(formData.billTime).format('MM月DD日')
 const onTabItemClick = ({ billType }) => {
 
     formData.billType = billType;
-    formData.tagId = billType === 'expense' ? expenseTags.value[0]._id : incomeTags.value[0]._id;
+    formData.tagId = billType === 'expenses' ? expenseTags.value[0]._id : incomeTags.value[0]._id;
 
 };
 
@@ -84,6 +84,10 @@ const onRemarkPopupOpen = () => {
 const onRemarkPopupClose = () => showRemarkPopup.value = false;
 
 const onSaveRemarkButtonClick = () => {
+
+    if (remarkInput.value.length === 0) {
+        return;
+    }
 
     showRemarkPopup.value = false;
     formData.remark = remarkInput.value;
@@ -170,7 +174,7 @@ onLoad(({ billId }) => {
 
             formData.billId = '';
             formData.userId = userId;
-            formData.billType = 'expense';
+            formData.billType = 'expenses';
             formData.billTime = moment().format('YYYY-MM-DD');
             formData.tagId = expenseTags.value[0]._id;
             formData.amount = '';
@@ -228,8 +232,8 @@ onShareAppMessage(() => shareData.value);
             <view class="tab">
 
                 <view class="tab-item"
-                      :class="{ 'expense': formData.billType === 'expense' }"
-                      @click="onTabItemClick({ billType: 'expense' })">
+                      :class="{ 'expenses': formData.billType === 'expenses' }"
+                      @click="onTabItemClick({ billType: 'expenses' })">
                     支出
                 </view>
 
@@ -263,14 +267,14 @@ onShareAppMessage(() => shareData.value);
 
         <view class="tag-content">
 
-            <view v-show="formData.billType === 'expense'">
+            <view v-show="formData.billType === 'expenses'">
 
                 <view class="tag-wrapper">
 
                     <view v-for="item in expenseTags"
                           :key="item._id"
                           class="tag"
-                          :class="{ 'expense': formData.tagId === item._id }"
+                          :class="{ 'expenses': formData.tagId === item._id }"
                           @click="onTagItemClick({ tagId: item._id })">
 
                         <view class="tag-icon">
@@ -392,14 +396,14 @@ onShareAppMessage(() => shareData.value);
 
                     <view class="keyboard-item"
                           :class="{
-                              'expense': formData.billType === 'expense',
+                              'expenses': formData.billType === 'expenses',
                               'income': formData.billType === 'income'
                           }"
                           hover-class="default-hover-class"
                           hover-stay-time="100"
                           @click="onConfirmButtonClick">
 
-                        <text class="confirm">确定</text>
+                        确定
 
                     </view>
 
@@ -414,9 +418,46 @@ onShareAppMessage(() => shareData.value);
                       :showConfirm="false"
                       :min-date="calendarMinDate"
                       :max-date="calendarMaxDate"
-                      :color="formData.billType === 'expense' ? '#3eb575' : '#f0b73a'"
+                      :color="formData.billType === 'expenses' ? '#3eb575' : '#f0b73a'"
                       @close="onCalendarClose"
                       @select="onCalendarSelect" />
+
+        <van-popup :show="showRemarkPopup"
+                   round
+                   position="bottom"
+                   custom-style="height: 600rpx"
+                   closeable
+                   @close="onRemarkPopupClose">
+
+            <view class="popup">
+
+                <view class="popup-title">添加备注</view>
+
+                <input class="popup-input"
+                       v-model="remarkInput"
+                       cursor-spacing="200"
+                       maxlength="30"
+                       placeholder="请输入备注内容"
+                       :adjust-position="true" />
+
+                <view class="popup-length">{{ remarkInput.length }}/30</view>
+
+                <view class="popup-button"
+                      :class="{
+                          'expenses': formData.billType === 'expenses' && remarkInput.length > 0,
+                          'income': formData.billType === 'income' && remarkInput.length > 0
+                      }"
+                      :hover-class="remarkInput.length > 0 ? 'default-hover-class' : ''"
+                      hover-stay-time="100"
+                      @click="onSaveRemarkButtonClick">
+
+                    确定
+
+                </view>
+
+            </view>
+
+        </van-popup>
 
     </view>
 </template>
@@ -450,7 +491,7 @@ page {
                 background: #f7f7f7;
                 border-radius: 4px;
 
-                &.expense {
+                &.expenses {
                     background: #eef8f3;
                     color: $canbin-expenses-color;
                 }
@@ -528,7 +569,7 @@ page {
                 padding: 20rpx 15rpx 15rpx;
                 color: #7e7e7e;
 
-                &.expense {
+                &.expenses {
                     box-shadow: rgba(0, 0, 0, 0.08) 0px 4rpx 12rpx;
                     color: $canbin-expenses-color;
 
@@ -649,13 +690,9 @@ page {
             width: 100%;
             padding: 10rpx;
             height: 360rpx;
-
-            text {
-                color: #ffffff;
-                font-size: 35rpx;
-                font-weight: normal;
-            }
-
+            color: #ffffff;
+            font-size: 35rpx;
+            font-weight: normal;
         }
 
         .keyboard-item {
@@ -669,12 +706,58 @@ page {
             font-weight: bold;
             font-size: 40rpx;
 
-            &.expense {
+            &.expenses {
                 background: $canbin-expenses-color;
             }
 
             &.income {
                 background: $canbin-income-color;
+            }
+
+        }
+
+    }
+
+    .popup {
+        position: relative;
+
+        &-title {
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+        }
+
+        &-input {
+            background: #f7f7f7;
+            margin: 10px 40px;
+            padding: 16px;
+            border-radius: 4px;
+        }
+
+        &-length {
+            margin: 15px 44px;
+            font-size: 14px;
+            color: #797979;
+        }
+
+        &-button {
+            color: #797979;
+            border-radius: 4px;
+            margin: 25px auto;
+            width: 180px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            background: #F2F2F2;
+
+            &.expenses {
+                background: $canbin-expenses-color;
+                color: #ffffff;
+            }
+
+            &.income {
+                background: $canbin-income-color;
+                color: #ffffff;
             }
 
         }
