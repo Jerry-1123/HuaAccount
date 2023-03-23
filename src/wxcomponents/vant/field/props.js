@@ -1,7 +1,10 @@
-export const commonProps = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.textareaProps = exports.inputProps = exports.commonProps = void 0;
+exports.commonProps = {
     value: {
         type: String,
-        observer(value) {
+        observer: function (value) {
             if (value !== this.value) {
                 this.setData({ innerValue: value });
                 this.value = value;
@@ -40,7 +43,7 @@ export const commonProps = {
     },
     holdKeyboard: Boolean,
 };
-export const inputProps = {
+exports.inputProps = {
     type: {
         type: String,
         value: 'text',
@@ -50,7 +53,7 @@ export const inputProps = {
     confirmHold: Boolean,
     alwaysEmbed: Boolean,
 };
-export const textareaProps = {
+exports.textareaProps = {
     autoHeight: Boolean,
     fixed: Boolean,
     showConfirmBar: {

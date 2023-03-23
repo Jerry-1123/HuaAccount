@@ -1,56 +1,65 @@
-export function useParent(name, onEffect) {
-    const path = `../${name}/index`;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.useChildren = exports.useParent = void 0;
+function useParent(name, onEffect) {
+    var _a;
+    var path = "../".concat(name, "/index");
     return {
-        relations: {
-            [path]: {
+        relations: (_a = {},
+            _a[path] = {
                 type: 'ancestor',
-                linked() {
+                linked: function () {
                     onEffect && onEffect.call(this);
                 },
-                linkChanged() {
+                linkChanged: function () {
                     onEffect && onEffect.call(this);
                 },
-                unlinked() {
+                unlinked: function () {
                     onEffect && onEffect.call(this);
                 },
             },
-        },
+            _a),
         mixin: Behavior({
-            created() {
+            created: function () {
+                var _this = this;
                 Object.defineProperty(this, 'parent', {
-                    get: () => this.getRelationNodes(path)[0],
+                    get: function () { return _this.getRelationNodes(path)[0]; },
                 });
                 Object.defineProperty(this, 'index', {
                     // @ts-ignore
-                    get: () => { var _a, _b; return (_b = (_a = this.parent) === null || _a === void 0 ? void 0 : _a.children) === null || _b === void 0 ? void 0 : _b.indexOf(this); },
+                    get: function () { var _a, _b; return (_b = (_a = _this.parent) === null || _a === void 0 ? void 0 : _a.children) === null || _b === void 0 ? void 0 : _b.indexOf(_this); },
                 });
             },
         }),
     };
 }
-export function useChildren(name, onEffect) {
-    const path = `../${name}/index`;
+exports.useParent = useParent;
+function useChildren(name, onEffect) {
+    var _a;
+    var path = "../".concat(name, "/index");
     return {
-        relations: {
-            [path]: {
+        relations: (_a = {},
+            _a[path] = {
                 type: 'descendant',
-                linked(target) {
+                linked: function (target) {
                     onEffect && onEffect.call(this, target);
                 },
-                linkChanged(target) {
+                linkChanged: function (target) {
                     onEffect && onEffect.call(this, target);
                 },
-                unlinked(target) {
+                unlinked: function (target) {
                     onEffect && onEffect.call(this, target);
                 },
             },
-        },
+            _a),
         mixin: Behavior({
-            created() {
+            created: function () {
+                var _this = this;
                 Object.defineProperty(this, 'children', {
-                    get: () => this.getRelationNodes(path) || [],
+                    get: function () { return _this.getRelationNodes(path) || []; },
                 });
             },
         }),
     };
 }
+exports.useChildren = useChildren;

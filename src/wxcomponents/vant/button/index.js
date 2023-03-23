@@ -1,12 +1,14 @@
-import { VantComponent } from '../common/component';
-import { button } from '../mixins/button';
-import { canIUseFormFieldButton } from '../common/version';
-const mixins = [button];
-if (canIUseFormFieldButton()) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var component_1 = require("../common/component");
+var button_1 = require("../mixins/button");
+var version_1 = require("../common/version");
+var mixins = [button_1.button];
+if ((0, version_1.canIUseFormFieldButton)()) {
     mixins.push('wx://form-field-button');
 }
-VantComponent({
-    mixins,
+(0, component_1.VantComponent)({
+    mixins: mixins,
     classes: ['hover-class', 'loading-class'],
     data: {
         baseStyle: '',
@@ -47,15 +49,16 @@ VantComponent({
         color: String,
     },
     methods: {
-        onClick(event) {
+        onClick: function (event) {
+            var _this = this;
             this.$emit('click', event);
-            const { canIUseGetUserProfile, openType, getUserProfileDesc, lang, } = this.data;
+            var _a = this.data, canIUseGetUserProfile = _a.canIUseGetUserProfile, openType = _a.openType, getUserProfileDesc = _a.getUserProfileDesc, lang = _a.lang;
             if (openType === 'getUserInfo' && canIUseGetUserProfile) {
                 wx.getUserProfile({
                     desc: getUserProfileDesc || '  ',
                     lang: lang || 'en',
-                    complete: (userProfile) => {
-                        this.$emit('getuserinfo', userProfile);
+                    complete: function (userProfile) {
+                        _this.$emit('getuserinfo', userProfile);
                     },
                 });
             }

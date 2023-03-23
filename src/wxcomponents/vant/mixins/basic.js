@@ -1,11 +1,14 @@
-export const basic = Behavior({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.basic = void 0;
+exports.basic = Behavior({
     methods: {
-        $emit(name, detail, options) {
+        $emit: function (name, detail, options) {
             this.triggerEvent(name, detail, options);
         },
-        set(data) {
+        set: function (data) {
             this.setData(data);
-            return new Promise((resolve) => wx.nextTick(resolve));
+            return new Promise(function (resolve) { return wx.nextTick(resolve); });
         },
     },
 });

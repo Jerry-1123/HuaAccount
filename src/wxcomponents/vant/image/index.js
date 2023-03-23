@@ -1,12 +1,14 @@
-import { VantComponent } from '../common/component';
-import { button } from '../mixins/button';
-VantComponent({
-    mixins: [button],
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var component_1 = require("../common/component");
+var button_1 = require("../mixins/button");
+(0, component_1.VantComponent)({
+    mixins: [button_1.button],
     classes: ['custom-class', 'loading-class', 'error-class', 'image-class'],
     props: {
         src: {
             type: String,
-            observer() {
+            observer: function () {
                 this.setData({
                     error: false,
                     loading: true,
@@ -25,6 +27,10 @@ VantComponent({
             type: String,
             value: 'fill',
         },
+        webp: {
+            type: Boolean,
+            value: false,
+        },
         showError: {
             type: Boolean,
             value: true,
@@ -40,20 +46,20 @@ VantComponent({
         viewStyle: '',
     },
     methods: {
-        onLoad(event) {
+        onLoad: function (event) {
             this.setData({
                 loading: false,
             });
             this.$emit('load', event.detail);
         },
-        onError(event) {
+        onError: function (event) {
             this.setData({
                 loading: false,
                 error: true,
             });
             this.$emit('error', event.detail);
         },
-        onClick(event) {
+        onClick: function (event) {
             this.$emit('click', event.detail);
         },
     },

@@ -1,13 +1,15 @@
-import { VantComponent } from '../common/component';
-import { button } from '../mixins/button';
-import { GRAY, RED } from '../common/color';
-import { toPromise } from '../common/utils';
-VantComponent({
-    mixins: [button],
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var component_1 = require("../common/component");
+var button_1 = require("../mixins/button");
+var color_1 = require("../common/color");
+var utils_1 = require("../common/utils");
+(0, component_1.VantComponent)({
+    mixins: [button_1.button],
     props: {
         show: {
             type: Boolean,
-            observer(show) {
+            observer: function (show) {
                 !show && this.stopLoading();
             },
         },
@@ -43,11 +45,11 @@ VantComponent({
         },
         confirmButtonColor: {
             type: String,
-            value: RED,
+            value: color_1.RED,
         },
         cancelButtonColor: {
             type: String,
-            value: GRAY,
+            value: color_1.GRAY,
         },
         showConfirmButton: {
             type: Boolean,
@@ -67,29 +69,30 @@ VantComponent({
             confirm: false,
             cancel: false,
         },
-        callback: (() => { }),
+        callback: (function () { }),
     },
     methods: {
-        onConfirm() {
+        onConfirm: function () {
             this.handleAction('confirm');
         },
-        onCancel() {
+        onCancel: function () {
             this.handleAction('cancel');
         },
-        onClickOverlay() {
+        onClickOverlay: function () {
             this.close('overlay');
         },
-        close(action) {
+        close: function (action) {
+            var _this = this;
             this.setData({ show: false });
-            wx.nextTick(() => {
-                this.$emit('close', action);
-                const { callback } = this.data;
+            wx.nextTick(function () {
+                _this.$emit('close', action);
+                var callback = _this.data.callback;
                 if (callback) {
-                    callback(action, this);
+                    callback(action, _this);
                 }
             });
         },
-        stopLoading() {
+        stopLoading: function () {
             this.setData({
                 loading: {
                     confirm: false,
@@ -97,23 +100,25 @@ VantComponent({
                 },
             });
         },
-        handleAction(action) {
+        handleAction: function (action) {
+            var _a;
+            var _this = this;
             this.$emit(action, { dialog: this });
-            const { asyncClose, beforeClose } = this.data;
+            var _b = this.data, asyncClose = _b.asyncClose, beforeClose = _b.beforeClose;
             if (!asyncClose && !beforeClose) {
                 this.close(action);
                 return;
             }
-            this.setData({
-                [`loading.${action}`]: true,
-            });
+            this.setData((_a = {},
+                _a["loading.".concat(action)] = true,
+                _a));
             if (beforeClose) {
-                toPromise(beforeClose(action)).then((value) => {
+                (0, utils_1.toPromise)(beforeClose(action)).then(function (value) {
                     if (value) {
-                        this.close(action);
+                        _this.close(action);
                     }
                     else {
-                        this.stopLoading();
+                        _this.stopLoading();
                     }
                 });
             }

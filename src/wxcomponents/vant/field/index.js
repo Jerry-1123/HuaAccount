@@ -1,10 +1,23 @@
-import { nextTick } from '../common/utils';
-import { VantComponent } from '../common/component';
-import { commonProps, inputProps, textareaProps } from './props';
-VantComponent({
+"use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var utils_1 = require("../common/utils");
+var component_1 = require("../common/component");
+var props_1 = require("./props");
+(0, component_1.VantComponent)({
     field: true,
     classes: ['input-class', 'right-icon-class', 'label-class'],
-    props: Object.assign(Object.assign(Object.assign(Object.assign({}, commonProps), inputProps), textareaProps), { size: String, icon: String, label: String, error: Boolean, center: Boolean, isLink: Boolean, leftIcon: String, rightIcon: String, autosize: null, required: Boolean, iconClass: String, clickable: Boolean, inputAlign: String, customStyle: String, errorMessage: String, arrowDirection: String, showWordLimit: Boolean, errorMessageAlign: String, readonly: {
+    props: __assign(__assign(__assign(__assign({}, props_1.commonProps), props_1.inputProps), props_1.textareaProps), { size: String, icon: String, label: String, error: Boolean, center: Boolean, isLink: Boolean, leftIcon: String, rightIcon: String, autosize: null, required: Boolean, iconClass: String, clickable: Boolean, inputAlign: String, customStyle: String, errorMessage: String, arrowDirection: String, showWordLimit: Boolean, errorMessageAlign: String, readonly: {
             type: Boolean,
             observer: 'setShowClear',
         }, clearable: {
@@ -22,86 +35,93 @@ VantComponent({
         }, clearIcon: {
             type: String,
             value: 'clear',
+        }, extraEventParams: {
+            type: Boolean,
+            value: false,
         } }),
     data: {
         focused: false,
         innerValue: '',
         showClear: false,
     },
-    created() {
+    created: function () {
         this.value = this.data.value;
         this.setData({ innerValue: this.value });
     },
     methods: {
-        onInput(event) {
-            const { value = '' } = event.detail || {};
+        onInput: function (event) {
+            var _a = (event.detail || {}).value, value = _a === void 0 ? '' : _a;
             this.value = value;
             this.setShowClear();
-            this.emitChange();
+            this.emitChange(event.detail);
         },
-        onFocus(event) {
+        onFocus: function (event) {
             this.focused = true;
             this.setShowClear();
             this.$emit('focus', event.detail);
         },
-        onBlur(event) {
+        onBlur: function (event) {
             this.focused = false;
             this.setShowClear();
             this.$emit('blur', event.detail);
         },
-        onClickIcon() {
+        onClickIcon: function () {
             this.$emit('click-icon');
         },
-        onClickInput(event) {
+        onClickInput: function (event) {
             this.$emit('click-input', event.detail);
         },
-        onClear() {
+        onClear: function () {
+            var _this = this;
             this.setData({ innerValue: '' });
             this.value = '';
             this.setShowClear();
-            nextTick(() => {
-                this.emitChange();
-                this.$emit('clear', '');
+            (0, utils_1.nextTick)(function () {
+                _this.emitChange({ value: '' });
+                _this.$emit('clear', '');
             });
         },
-        onConfirm(event) {
-            const { value = '' } = event.detail || {};
+        onConfirm: function (event) {
+            var _a = (event.detail || {}).value, value = _a === void 0 ? '' : _a;
             this.value = value;
             this.setShowClear();
             this.$emit('confirm', value);
         },
-        setValue(value) {
+        setValue: function (value) {
             this.value = value;
             this.setShowClear();
             if (value === '') {
                 this.setData({ innerValue: '' });
             }
-            this.emitChange();
+            this.emitChange({ value: value });
         },
-        onLineChange(event) {
+        onLineChange: function (event) {
             this.$emit('linechange', event.detail);
         },
-        onKeyboardHeightChange(event) {
+        onKeyboardHeightChange: function (event) {
             this.$emit('keyboardheightchange', event.detail);
         },
-        emitChange() {
-            this.setData({ value: this.value });
-            nextTick(() => {
-                this.$emit('input', this.value);
-                this.$emit('change', this.value);
+        emitChange: function (detail) {
+            var _this = this;
+            var extraEventParams = this.data.extraEventParams;
+            this.setData({ value: detail.value });
+            (0, utils_1.nextTick)(function () {
+                var data = extraEventParams ? detail : detail.value;
+                _this.$emit('input', data);
+                _this.$emit('change', data);
             });
         },
-        setShowClear() {
-            const { clearable, readonly, clearTrigger } = this.data;
-            const { focused, value } = this;
-            let showClear = false;
+        setShowClear: function () {
+            var _a = this.data, clearable = _a.clearable, readonly = _a.readonly, clearTrigger = _a.clearTrigger;
+            var _b = this, focused = _b.focused, value = _b.value;
+            var showClear = false;
             if (clearable && !readonly) {
-                const hasValue = !!value;
-                const trigger = clearTrigger === 'always' || (clearTrigger === 'focus' && focused);
+                var hasValue = !!value;
+                var trigger = clearTrigger === 'always' || (clearTrigger === 'focus' && focused);
                 showClear = hasValue && trigger;
             }
-            this.setData({ showClear });
+            this.setData({ showClear: showClear });
         },
-        noop() { },
+        noop: function () { },
     },
 });

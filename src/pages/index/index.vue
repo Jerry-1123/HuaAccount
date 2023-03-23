@@ -537,8 +537,8 @@ onShareAppMessage(() => shareData.value);
 
             <view v-if="list.length !== 0" class="loading-content">
 
-                <van-loading v-show="pageStatus === 'loading'" size="20px" type="spinner">正在加载...</van-loading>
-                <van-loading v-show="pageStatus === 'noMore'" size="20px" type="">没有更多数据了，快去记一笔吧^-^</van-loading>
+                <van-loading v-show="pageStatus === 'loading'" size="30rpx" type="spinner">正在加载...</van-loading>
+                <van-loading v-show="pageStatus === 'noMore'" size="30px" type="">没有更多数据了，快去记一笔吧^-^</van-loading>
 
             </view>
 

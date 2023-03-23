@@ -1,16 +1,20 @@
-import { basic } from '../mixins/basic';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.VantComponent = void 0;
+var basic_1 = require("../mixins/basic");
 function mapKeys(source, target, map) {
-    Object.keys(map).forEach((key) => {
+    Object.keys(map).forEach(function (key) {
         if (source[key]) {
             target[map[key]] = source[key];
         }
     });
 }
 function VantComponent(vantOptions) {
-    const options = {};
+    var options = {};
     mapKeys(vantOptions, options, {
         data: 'data',
         props: 'properties',
+        watch: 'observers',
         mixins: 'behaviors',
         methods: 'methods',
         beforeCreate: 'created',
@@ -24,9 +28,9 @@ function VantComponent(vantOptions) {
     options.externalClasses.push('custom-class');
     // add default behaviors
     options.behaviors = options.behaviors || [];
-    options.behaviors.push(basic);
+    options.behaviors.push(basic_1.basic);
     // add relations
-    const { relation } = vantOptions;
+    var relation = vantOptions.relation;
     if (relation) {
         options.relations = relation.relations;
         options.behaviors.push(relation.mixin);
@@ -42,4 +46,4 @@ function VantComponent(vantOptions) {
     };
     Component(options);
 }
-export { VantComponent };
+exports.VantComponent = VantComponent;

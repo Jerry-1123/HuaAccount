@@ -1,31 +1,43 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.isVideoUrl = exports.isImageUrl = exports.isBoolean = exports.isNumber = exports.isObj = exports.isDef = exports.isPromise = exports.isPlainObject = exports.isFunction = void 0;
 // eslint-disable-next-line @typescript-eslint/ban-types
-export function isFunction(val) {
+function isFunction(val) {
     return typeof val === 'function';
 }
-export function isPlainObject(val) {
+exports.isFunction = isFunction;
+function isPlainObject(val) {
     return val !== null && typeof val === 'object' && !Array.isArray(val);
 }
-export function isPromise(val) {
+exports.isPlainObject = isPlainObject;
+function isPromise(val) {
     return isPlainObject(val) && isFunction(val.then) && isFunction(val.catch);
 }
-export function isDef(value) {
+exports.isPromise = isPromise;
+function isDef(value) {
     return value !== undefined && value !== null;
 }
-export function isObj(x) {
-    const type = typeof x;
+exports.isDef = isDef;
+function isObj(x) {
+    var type = typeof x;
     return x !== null && (type === 'object' || type === 'function');
 }
-export function isNumber(value) {
+exports.isObj = isObj;
+function isNumber(value) {
     return /^\d+(\.\d+)?$/.test(value);
 }
-export function isBoolean(value) {
+exports.isNumber = isNumber;
+function isBoolean(value) {
     return typeof value === 'boolean';
 }
-const IMAGE_REGEXP = /\.(jpeg|jpg|gif|png|svg|webp|jfif|bmp|dpg)/i;
-const VIDEO_REGEXP = /\.(mp4|mpg|mpeg|dat|asf|avi|rm|rmvb|mov|wmv|flv|mkv)/i;
-export function isImageUrl(url) {
+exports.isBoolean = isBoolean;
+var IMAGE_REGEXP = /\.(jpeg|jpg|gif|png|svg|webp|jfif|bmp|dpg)/i;
+var VIDEO_REGEXP = /\.(mp4|mpg|mpeg|dat|asf|avi|rm|rmvb|mov|wmv|flv|mkv)/i;
+function isImageUrl(url) {
     return IMAGE_REGEXP.test(url);
 }
-export function isVideoUrl(url) {
+exports.isImageUrl = isImageUrl;
+function isVideoUrl(url) {
     return VIDEO_REGEXP.test(url);
 }
+exports.isVideoUrl = isVideoUrl;

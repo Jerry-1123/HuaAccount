@@ -1,7 +1,9 @@
-import { VantComponent } from '../common/component';
-import { BLUE } from '../common/color';
-import { getRect } from '../common/utils';
-VantComponent({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var component_1 = require("../common/component");
+var color_1 = require("../common/color");
+var utils_1 = require("../common/utils");
+(0, component_1.VantComponent)({
     props: {
         inactive: Boolean,
         percentage: {
@@ -17,7 +19,7 @@ VantComponent({
         },
         color: {
             type: String,
-            value: BLUE,
+            value: color_1.BLUE,
         },
         textColor: {
             type: String,
@@ -31,18 +33,20 @@ VantComponent({
     data: {
         right: 0,
     },
-    mounted() {
+    mounted: function () {
         this.setLeft();
     },
     methods: {
-        setLeft() {
+        setLeft: function () {
+            var _this = this;
             Promise.all([
-                getRect(this, '.van-progress'),
-                getRect(this, '.van-progress__pivot'),
-            ]).then(([portion, pivot]) => {
+                (0, utils_1.getRect)(this, '.van-progress'),
+                (0, utils_1.getRect)(this, '.van-progress__pivot'),
+            ]).then(function (_a) {
+                var portion = _a[0], pivot = _a[1];
                 if (portion && pivot) {
-                    this.setData({
-                        right: (pivot.width * (this.data.percentage - 100)) / 100,
+                    _this.setData({
+                        right: (pivot.width * (_this.data.percentage - 100)) / 100,
                     });
                 }
             });

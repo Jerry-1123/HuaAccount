@@ -35,7 +35,7 @@ const onPopupClose = () => emit('close');
 <template>
     <van-popup :show="show"
                :safe-area-inset-bottom="false"
-               custom-style="height: 450px"
+               custom-style="height: 800rpx"
                position="bottom"
                round
                closeable
@@ -125,15 +125,17 @@ const onPopupClose = () => emit('close');
     background: #fafafa;
 
     .title {
-        height: 50px;
-        line-height: 50px;
+        height: 100rpx;
+        line-height: 100rpx;
         text-align: center;
+        font-size: 32rpx;
     }
 
     .tab {
-        height: 50px;
+        height: 100rpx;
         display: flex;
         align-items: center;
+        font-size: 30rpx;
 
         &-item {
             flex-grow: 1;
@@ -148,15 +150,15 @@ const onPopupClose = () => emit('close');
     }
 
     .container {
-        height: 350px;
+        height: 600rpx;
         overflow-y: scroll;
         padding: 0 40rpx;
+        font-size: 28rpx;
 
         .year {
             text-align: center;
             margin: 15rpx 0;
             color: #acabab;
-            font-size: 28rpx;
         }
 
         .grid {
@@ -172,7 +174,6 @@ const onPopupClose = () => emit('close');
                 align-items: center;
                 justify-content: center;
                 background: #ffffff;
-                font-size: 28rpx;
                 cursor: pointer;
 
                 &.active {
