@@ -73,7 +73,5 @@ page {
 </style>
   
 <style lang="scss" scoped>
-.content {
-        
-}
+.content {}
 </style>
