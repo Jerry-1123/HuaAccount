@@ -63,7 +63,7 @@ var ARRAY = [];
         swipeMove: function (offset) {
             if (offset === void 0) { offset = 0; }
             this.offset = (0, utils_1.range)(offset, -this.data.rightWidth, this.data.leftWidth);
-            var transform = "translate3d(".concat(this.offset, "px, 0, 0)");
+            var transform = "translate3d(".concat(this.offset, "rpx, 0, 0)");
             var transition = this.dragging
                 ? 'none'
                 : 'transform .6s cubic-bezier(0.18, 0.89, 0.32, 1)';

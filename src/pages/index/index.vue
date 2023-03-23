@@ -474,7 +474,7 @@ onShareAppMessage(() => shareData.value);
                       v-for="bill in item.billList"
                       :key="bill._id">
 
-                    <van-swipe-cell right-width="140">
+                    <van-swipe-cell right-width="300">
 
                         <view class="list-item"
                               hover-class="gray-hover-class"
@@ -847,7 +847,7 @@ page {
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    width: 140px;
+                    width: 300rpx;
                     height: 100%;
                     font-size: 30rpx;
 
@@ -857,7 +857,7 @@ page {
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        width: 70px;
+                        width: 150rpx;
                     }
 
                     .swipe-edit {
