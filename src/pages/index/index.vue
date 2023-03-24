@@ -1,11 +1,7 @@
 <script setup name="index">
 
 import { ref, computed } from 'vue';
-import {
-    onPullDownRefresh,
-    onReachBottom,
-    onPageScroll
-} from "@dcloudio/uni-app";
+import { onPullDownRefresh, onReachBottom, onPageScroll } from "@dcloudio/uni-app";
 import { onMounted } from '@/hooks/onMounted';
 import { useShare } from '@/hooks/useShare';
 import { useState } from '@/hooks/useState';
