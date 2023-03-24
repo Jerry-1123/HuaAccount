@@ -1,30 +1,21 @@
 <script setup name="record">
 
 import { ref, reactive, computed } from 'vue';
-import { storeToRefs } from 'pinia';
-import { useUserStore } from '@/store/user';
-import { useAppStore } from '@/store/app';
-import { onLoad, onShareAppMessage } from "@dcloudio/uni-app";
-import { checkForPageLoad } from '@/common';
+import { onMounted } from '@/hooks/onMounted';
+import { useShare } from '@/hooks/useShare';
+import { useState } from '@/hooks/useState';
 import { minDate } from '@/constant';
 import { getBillByBillId, getDayBillCount, createBill, updateBill } from '@/service/bill';
 import moment from 'moment';
 import _ from 'lodash';
 import currency from 'currency.js';
 
-const userStore = useUserStore();
-const appStore = useAppStore();
-
-// 用户信息
+// 全局数据
 const {
-    userId
-} = storeToRefs(userStore);
-// 应用信息
-const {
+    userId,
     expenseTags,
     incomeTags,
-    shareData
-} = storeToRefs(appStore);
+} = useState();
 
 // 表单信息
 const formData = reactive({
@@ -244,67 +235,61 @@ const onConfirmButtonClick = () => {
 
 };
 
-onLoad(({ billId }) => {
-
-    uni.showLoading({ title: '加载中' });
+onMounted(({ billId }) => {
 
     uni.setNavigationBarTitle({
         title: !billId ? '记一笔' : '编辑'
     });
 
-    checkForPageLoad().then(() => {
+    if (!billId) {
 
-        if (!billId) {
+        formData.billId = '';
+        formData.userId = userId;
+        formData.billType = 'expenses';
+        formData.billTime = moment().format('YYYY-MM-DD');
+        formData.tagId = expenseTags.value[0]._id;
+        formData.amount = '';
+        formData.remark = '';
 
-            formData.billId = '';
+        remarkInput.value = '';
+        loading.value = false;
+
+        setTimeout(() => uni.hideLoading(), 200);
+
+    } else {
+
+        getBillByBillId({
+            billId
+        }).then(({
+            userId,
+            billType,
+            tagId,
+            billTime,
+            expensesAmount,
+            incomeAmount,
+            remark
+        }) => {
+
+            formData.billId = billId;
             formData.userId = userId;
-            formData.billType = 'expenses';
-            formData.billTime = moment().format('YYYY-MM-DD');
-            formData.tagId = expenseTags.value[0]._id;
-            formData.amount = '';
-            formData.remark = '';
+            formData.billType = billType;
+            formData.billTime = billTime;
+            formData.tagId = tagId[0]._id;
+            formData.amount = `${currency(billType === 'expenses' ? expensesAmount : incomeAmount).divide(100).value}`;
+            formData.remark = remark;
 
-            remarkInput.value = '';
+            remarkInput.value = remark;
             loading.value = false;
 
             setTimeout(() => uni.hideLoading(), 200);
 
-        } else {
+        });
 
-            getBillByBillId({
-                billId
-            }).then(({
-                userId,
-                billType,
-                tagId,
-                billTime,
-                expensesAmount,
-                incomeAmount,
-                remark
-            }) => {
-
-                formData.billId = billId;
-                formData.userId = userId;
-                formData.billType = billType;
-                formData.billTime = billTime;
-                formData.tagId = tagId[0]._id;
-                formData.amount = `${currency(billType === 'expenses' ? expensesAmount : incomeAmount).divide(100).value}`;
-                formData.remark = remark;
-
-                remarkInput.value = remark;
-                loading.value = false;
-
-                setTimeout(() => uni.hideLoading(), 200);
-
-            });
-
-        }
-
-    });
+    }
 
 });
 
-onShareAppMessage(() => shareData.value);
+useShare().onShareAppMessage();
 
 </script>
 

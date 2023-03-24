@@ -1,21 +1,12 @@
 <script setup name="detail">
 
 import { ref, reactive } from 'vue';
-import { storeToRefs } from 'pinia';
-import { useAppStore } from '@/store/app';
-import { onLoad, onShareAppMessage } from "@dcloudio/uni-app";
-import { checkForPageLoad } from '@/common';
+import { onMounted } from '@/hooks/onMounted';
+import { useShare } from '@/hooks/useShare';
 import { getWeekday } from '@/util';
 import { getBillByBillId, deleteBill } from '@/service/bill';
 import moment from 'moment';
 import currency from 'currency.js';
-
-const appStore = useAppStore();
-
-// 应用信息
-const {
-    shareData
-} = storeToRefs(appStore);
 
 // 账单信息
 const bill = reactive({
@@ -71,46 +62,40 @@ const onDeleteButtonClick = () => {
 
 };
 
-onLoad(({ billId }) => {
+onMounted(({ billId }) => {
 
-    uni.showLoading({ title: '加载中' });
+    getBillByBillId({
+        billId
+    }).then(({
+        billType,
+        tagId,
+        billTime,
+        expensesAmount,
+        incomeAmount,
+        remark
+    }) => {
 
-    checkForPageLoad().then(() => {
-
-        getBillByBillId({
-            billId
-        }).then(({
-            billType,
-            tagId,
-            billTime,
-            expensesAmount,
-            incomeAmount,
-            remark
-        }) => {
-
-            uni.setNavigationBarTitle({
-                title: billType === 'expenses' ? '支出' : '收入'
-            });
-
-            bill.billId = billId;
-            bill.billType = billType;
-            bill.tagName = tagId[0].tagName;
-            bill.tagIcon = tagId[0].selectTagIcon;
-            bill.billTime = `${moment(billTime).format('YYYY年MM月DD日')} ${getWeekday({ day: moment(billTime).day() })}`;
-            bill.amount = `${billType === 'expenses' ? '-' : '+'} ${currency(billType === 'expenses' ? expensesAmount : incomeAmount).divide(100)}`;
-            bill.remark = remark;
-
-            loading.value = false;
-
-            setTimeout(() => uni.hideLoading(), 200);
-
+        uni.setNavigationBarTitle({
+            title: billType === 'expenses' ? '支出' : '收入'
         });
+
+        bill.billId = billId;
+        bill.billType = billType;
+        bill.tagName = tagId[0].tagName;
+        bill.tagIcon = tagId[0].selectTagIcon;
+        bill.billTime = `${moment(billTime).format('YYYY年MM月DD日')} ${getWeekday({ day: moment(billTime).day() })}`;
+        bill.amount = `${billType === 'expenses' ? '-' : '+'} ${currency(billType === 'expenses' ? expensesAmount : incomeAmount).divide(100)}`;
+        bill.remark = remark;
+
+        loading.value = false;
+
+        setTimeout(() => uni.hideLoading(), 200);
 
     });
 
 });
 
-onShareAppMessage(() => shareData.value);
+useShare().onShareAppMessage();
 
 </script>
 

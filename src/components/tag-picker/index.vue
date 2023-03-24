@@ -1,13 +1,10 @@
 <script setup name="tag-picker">
 
-import { useAppStore } from '@/store/app';
-import { storeToRefs } from 'pinia';
-
-const appStore = useAppStore();
+import { useState } from '@/hooks/useState';
 
 const {
     tagsGroup
-} = storeToRefs(appStore);
+} = useState();
 
 defineProps({
     show: {
@@ -89,7 +86,7 @@ const onPopupClose = () => emit('close');
     .tag-content {
         height: 700rpx;
         overflow: scroll;
-        padding: 0 40rpx;
+        padding: 0 40rpx 40rpx;
         font-size: 28rpx;
 
         .tag-type {

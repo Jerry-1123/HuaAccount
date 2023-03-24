@@ -1,25 +1,19 @@
 <script setup name="user-info">
 
 import { ref } from 'vue';
-import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/user';
-import { useAppStore } from '@/store/app';
-import { onLoad, onShareAppMessage } from "@dcloudio/uni-app";
-import { checkForPageLoad } from '@/common';
+import { onMounted } from '@/hooks/onMounted';
+import { useShare } from '@/hooks/useShare';
+import { useState } from '@/hooks/useState';
 import { getUserByOpenId, updateUser } from '@/service/user';
 import moment from 'moment';
 
 const userStore = useUserStore();
-const appStore = useAppStore();
 
-// 用户信息
+// 全局信息
 const {
     openId
-} = storeToRefs(userStore);
-// 应用信息
-const {
-    shareData
-} = storeToRefs(appStore);
+} = useState();
 
 // 加载
 const loading = ref(true);
@@ -94,29 +88,23 @@ const onSubmitButtonClick = () => {
 
 };
 
-onLoad(() => {
+onMounted(() => {
 
-    uni.showLoading({ title: '加载中' });
+    getUserByOpenId({
+        openId: openId.value
+    }).then(({ userInfo }) => {
 
-    checkForPageLoad().then(() => {
+        loading.value = false;
+        nickName.value = userInfo.nickName;
+        avatar.value = userInfo.avatarUrl;
 
-        getUserByOpenId({
-            openId: openId.value
-        }).then(({ userInfo }) => {
-
-            loading.value = false;
-            nickName.value = userInfo.nickName;
-            avatar.value = userInfo.avatarUrl;
-
-            setTimeout(() => uni.hideLoading(), 200);
-
-        });
+        setTimeout(() => uni.hideLoading(), 200);
 
     });
 
 });
 
-onShareAppMessage(() => shareData.value);
+useShare().onShareAppMessage();
 
 </script>
 

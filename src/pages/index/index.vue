@@ -1,17 +1,14 @@
 <script setup name="index">
 
 import { ref, computed } from 'vue';
-import { storeToRefs } from 'pinia';
-import { useUserStore } from '@/store/user';
-import { useAppStore } from '@/store/app';
 import {
-    onLoad,
     onPullDownRefresh,
     onReachBottom,
-    onPageScroll,
-    onShareAppMessage
+    onPageScroll
 } from "@dcloudio/uni-app";
-import { checkForPageLoad } from '@/common';
+import { onMounted } from '@/hooks/onMounted';
+import { useShare } from '@/hooks/useShare';
+import { useState } from '@/hooks/useState';
 import { rpx2px, getWeekday } from '@/util';
 import { defaultTagId, defaultPageSize, dateModeEnum } from '@/constant';
 import { getBillList, getBillStatistics, deleteBill } from '@/service/bill';
@@ -22,19 +19,12 @@ import currency from 'currency.js';
 import DatePicker from '@/components/date-picker';
 import TagPicker from '@/components/tag-picker';
 
-const userStore = useUserStore();
-const appStore = useAppStore();
-
-// 用户信息
+// 全局数据
 const {
     userId,
-    avatar
-} = storeToRefs(userStore);
-// 应用信息
-const {
-    tagsList,
-    shareData
-} = storeToRefs(appStore);
+    avatar,
+    tagsList
+} = useState();
 
 // 首次加载
 const firstLoading = ref(true);
@@ -307,23 +297,17 @@ const afterOperation = () => {
 
 };
 
-onLoad(() => {
+onMounted(() => {
 
-    uni.showLoading({ title: '加载中' });
+    onQuery().then(() => {
 
-    checkForPageLoad().then(() => {
+        firstLoading.value = false;
 
-        onQuery().then(() => {
-
-            firstLoading.value = false;
-
-            uni.hideLoading();
-
-        });
-
-        onQueryStatistics();
+        uni.hideLoading();
 
     });
+
+    onQueryStatistics();
 
     // 监听: 新建账单后
     uni.$on('billCreated', () => afterOperation());
@@ -346,7 +330,7 @@ onReachBottom(() => {
 
 onPageScroll((e) => showStickyInfo.value = e.scrollTop >= headerScrollHeight.value);
 
-onShareAppMessage(() => shareData.value);
+useShare().onShareAppMessage();
 
 </script>
 

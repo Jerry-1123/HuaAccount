@@ -1,11 +1,10 @@
 <script setup name="statistics">
 
 import { ref, computed } from 'vue';
-import { storeToRefs } from 'pinia';
-import { useUserStore } from '@/store/user';
-import { useAppStore } from '@/store/app';
-import { onLoad, onPullDownRefresh, onShareAppMessage } from "@dcloudio/uni-app";
-import { checkForPageLoad } from '@/common';
+import { onPullDownRefresh } from "@dcloudio/uni-app";
+import { onMounted } from '@/hooks/onMounted';
+import { useShare } from '@/hooks/useShare';
+import { useState } from '@/hooks/useState';
 import { dateModeEnum } from '@/constant';
 import {
     getBillStatistics,
@@ -23,17 +22,10 @@ import LineChart from './line-chart';
 import PieChart from './pie-chart';
 import Progress from './progress';
 
-const userStore = useUserStore();
-const appStore = useAppStore();
-
-// 用户信息
+// 全局数据
 const {
     userId
-} = storeToRefs(userStore);
-// 应用信息
-const {
-    shareData
-} = storeToRefs(appStore);
+} = useState();
 
 // 加载
 const loading = ref(true);
@@ -46,19 +38,13 @@ const onQuery = () => {
 
 };
 
-onLoad(() => {
+onMounted(() => {
 
     // 加入笔数
 
-    uni.showLoading({ title: '加载中' });
+    loading.value = false;
 
-    checkForPageLoad().then(() => {
-
-        loading.value = false;
-
-        setTimeout(() => uni.hideLoading(), 500);
-
-    });
+    setTimeout(() => uni.hideLoading(), 500);
 
 });
 
@@ -68,7 +54,7 @@ onPullDownRefresh(() => {
 
 });
 
-onShareAppMessage(() => shareData.value);
+useShare().onShareAppMessage();
 
 </script>
 

@@ -152,7 +152,7 @@ const onPopupClose = () => emit('close');
     .container {
         height: 600rpx;
         overflow-y: scroll;
-        padding: 0 40rpx;
+        padding: 0 40rpx 40rpx;
         font-size: 28rpx;
 
         .year {

@@ -1,27 +1,22 @@
 <script setup name="user">
 
 import { ref, computed } from 'vue';
-import { storeToRefs } from 'pinia';
-import { useUserStore } from '@/store/user';
-import { useAppStore } from '@/store/app';
-import { onLoad, onShareAppMessage } from "@dcloudio/uni-app";
-import { checkForPageLoad } from '@/common';
+import { onMounted } from '@/hooks/onMounted';
+import { useShare } from '@/hooks/useShare';
+import { useState } from '@/hooks/useState';
 
-const userStore = useUserStore();
-const appStore = useAppStore();
+// 全局数据
+const {
+    userId
+} = useState();
 
-onLoad(() => {
-
-    uni.showLoading({ title: '加载中' });
-
-    checkForPageLoad().then(() => {
+onMounted(() => {
 
 
-    });
 
 });
 
-onShareAppMessage(() => shareData.value);
+useShare().onShareAppMessage();
 
 </script>
 
