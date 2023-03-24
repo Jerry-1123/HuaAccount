@@ -190,6 +190,10 @@ const onConfirmButtonClick = () => {
 
                 }, 500);
 
+            }).finally(() => {
+
+                isSubmitting.value = false;
+
             });
 
         } else {
@@ -226,6 +230,10 @@ const onConfirmButtonClick = () => {
                     uni.$emit('billUpdated', {});
 
                 }, 500);
+
+            }).finally(() => {
+
+                isSubmitting.value = false;
 
             });
 
@@ -302,14 +310,12 @@ useShare().onShareAppMessage();
 
                 <view class="tab-item"
                       :class="{ 'expenses': formData.billType === 'expenses' }"
-                      @click="onTabItemClick({ billType: 'expenses' })">
-                    支出
+                      @click="onTabItemClick({ billType: 'expenses' })">支出
                 </view>
 
                 <view class="tab-item"
                       :class="{ 'income': formData.billType === 'income' }"
-                      @click="onTabItemClick({ billType: 'income' })">
-                    收入
+                      @click="onTabItemClick({ billType: 'income' })">收入
                 </view>
 
             </view>
@@ -352,16 +358,13 @@ useShare().onShareAppMessage();
                             <image v-show="formData.tagId === item._id"
                                    :src="item.selectTagIcon"
                                    lazy-load />
-
                             <image v-show="formData.tagId !== item._id"
                                    :src="item.tagIcon"
                                    lazy-load />
 
                         </view>
 
-                        <view class="tag-name">
-                            {{ item.tagName }}
-                        </view>
+                        <view class="tag-name">{{ item.tagName }}</view>
 
                     </view>
 
@@ -384,16 +387,13 @@ useShare().onShareAppMessage();
                             <image v-show="formData.tagId === item._id"
                                    :src="item.selectTagIcon"
                                    lazy-load />
-
                             <image v-show="formData.tagId !== item._id"
                                    :src="item.tagIcon"
                                    lazy-load />
 
                         </view>
 
-                        <view class="tag-name">
-                            {{ item.tagName }}
-                        </view>
+                        <view class="tag-name">{{ item.tagName }}</view>
 
                     </view>
 
@@ -409,8 +409,7 @@ useShare().onShareAppMessage();
                   class="remark-action"
                   hover-class="default-hover-class"
                   hover-stay-time="100"
-                  @click="onRemarkPopupOpen">
-                添加备注
+                  @click="onRemarkPopupOpen">添加备注
             </view>
 
             <view class="remark">{{ formData.remark }}</view>
@@ -419,8 +418,7 @@ useShare().onShareAppMessage();
                   class="remark-action"
                   hover-class="default-hover-class"
                   hover-stay-time="100"
-                  @click="onRemarkPopupOpen">
-                修改
+                  @click="onRemarkPopupOpen">修改
             </view>
 
         </view>
@@ -471,10 +469,7 @@ useShare().onShareAppMessage();
                           }"
                           hover-class="default-hover-class"
                           hover-stay-time="100"
-                          @click="onConfirmButtonClick">
-
-                        确定
-
+                          @click="onConfirmButtonClick">确定
                     </view>
 
                 </view>
@@ -519,10 +514,7 @@ useShare().onShareAppMessage();
                       }"
                       :hover-class="remarkInput.length > 0 ? 'default-hover-class' : ''"
                       hover-stay-time="100"
-                      @click="onSaveRemarkButtonClick">
-
-                    确 定
-
+                      @click="onSaveRemarkButtonClick">确 定
                 </view>
 
             </view>

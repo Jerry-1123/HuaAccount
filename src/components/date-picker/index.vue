@@ -56,14 +56,20 @@ const onPopupClose = () => emit('close');
                       :class="{ active: activeMode === dateModeEnum.month }"
                       hover-class="default-hover-class"
                       hover-stay-time="100"
-                      @click="onModeChange({ mode: dateModeEnum.month })"> 月账单
+                      @click="onModeChange({ mode: dateModeEnum.month })">
+
+                    月账单
+
                 </view>
 
                 <view class="tab-item"
                       :class="{ active: activeMode === dateModeEnum.year }"
                       hover-class="default-hover-class"
                       hover-stay-time="100"
-                      @click="onModeChange({ mode: dateModeEnum.year })">年账单
+                      @click="onModeChange({ mode: dateModeEnum.year })">
+
+                    年账单
+
                 </view>
 
             </view>

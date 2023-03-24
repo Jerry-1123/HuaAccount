@@ -109,7 +109,9 @@ useShare().onShareAppMessage();
                       'expenses': bill.billType === 'expenses',
                       'income': bill.billType === 'income'
                   }">
+
                 <image :src="bill.tagIcon" lazy-load />
+
             </view>
 
             <text class="tag-name">{{ bill.tagName }}</text>
@@ -119,13 +121,17 @@ useShare().onShareAppMessage();
         <view class="amount">{{ bill.amount }}</view>
 
         <view class="cell">
+
             <view class="label">记账日期</view>
             <view class="value">{{ bill.billTime }}</view>
+
         </view>
 
         <view class="cell">
+
             <view class="label">备注</view>
             <view class="value">{{ bill.remark || '-' }}</view>
+
         </view>
 
         <view class="button-content">

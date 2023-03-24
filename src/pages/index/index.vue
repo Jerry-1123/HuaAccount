@@ -365,18 +365,10 @@ useShare().onShareAppMessage();
 
                 <view class="amount">
 
-                    <text class="label">
-                        {{ isYearMode() ? '年支出' : '月支出' }}
-                    </text>
-                    <text class="value">
-                        {{ formatAmount(totalExpenses) }}
-                    </text>
-                    <text class="label">
-                        {{ isYearMode() ? '年收入' : '月收入' }}
-                    </text>
-                    <text class="value">
-                        {{ formatAmount(totalIncome) }}
-                    </text>
+                    <text class="label"> {{ isYearMode() ? '年支出' : '月支出' }}</text>
+                    <text class="value">{{ formatAmount(totalExpenses) }}</text>
+                    <text class="label">{{ isYearMode() ? '年收入' : '月收入' }}</text>
+                    <text class="value">{{ formatAmount(totalIncome) }}</text>
 
                 </view>
 
@@ -466,7 +458,9 @@ useShare().onShareAppMessage();
                                       expenses: bill.billType === 'expenses',
                                       income: bill.billType === 'income'
                                   }">
+
                                 <image :src="bill.tagIcon" lazy-load />
+                                
                             </view>
 
                             <view class="info">
@@ -492,12 +486,11 @@ useShare().onShareAppMessage();
                         <view class="swipe-content" slot="right">
 
                             <view class="swipe-item swipe-edit"
-                                  @click="onEditButtonClick({ billId: bill._id })">
-                                编辑
+                                  @click="onEditButtonClick({ billId: bill._id })">编辑
                             </view>
+
                             <view class="swipe-item swipe-delete"
-                                  @click="onDeleteButtonClick({ billId: bill._id })">
-                                删除
+                                  @click="onDeleteButtonClick({ billId: bill._id })">删除
                             </view>
 
                         </view>
