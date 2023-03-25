@@ -387,13 +387,13 @@ useShare().onShareAppMessage();
 
                 <view class="total"
                       :class="{
-                          expenses: formatTotalAmount < 0,
-                          income: formatTotalAmount > 0
+                          expenses: formatTotalAmount > 0,
+                          income: formatTotalAmount < 0
                       }">
 
                     <text class="yuan">¥</text>
-                    <text v-show="formatTotalAmount < 0">-</text>
-                    <text v-show="formatTotalAmount > 0">+</text>
+                    <text v-show="formatTotalAmount > 0">-</text>
+                    <text v-show="formatTotalAmount < 0">+</text>
                     <text class="total-amount">{{ Math.abs(formatTotalAmount) }}</text>
 
                 </view>
