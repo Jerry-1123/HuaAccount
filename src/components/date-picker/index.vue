@@ -7,7 +7,7 @@ import moment from 'moment';
 
 const options = ref(getDateOptions());
 
-defineProps({
+const props = defineProps({
     show: {
         type: Boolean,
         default: false
@@ -26,7 +26,15 @@ const emit = defineEmits(['change', 'select', 'close']);
 
 const onModeChange = ({ mode }) => emit('change', { mode });
 
-const onDateItemClick = ({ date }) => emit('select', { date });
+const onDateItemClick = ({ date }) => {
+
+    if (date !== props.activeDate) {
+
+        emit('select', { date });
+
+    }
+
+};
 
 const onPopupClose = () => emit('close');
 
@@ -53,7 +61,7 @@ const onPopupClose = () => emit('close');
             <view class="tab">
 
                 <view class="tab-item"
-                      :class="{ active: activeMode === dateModeEnum.month }"
+                      :class="{ 'active': activeMode === dateModeEnum.month }"
                       hover-class="default-hover-class"
                       hover-stay-time="100"
                       @click="onModeChange({ mode: dateModeEnum.month })">
@@ -63,7 +71,7 @@ const onPopupClose = () => emit('close');
                 </view>
 
                 <view class="tab-item"
-                      :class="{ active: activeMode === dateModeEnum.year }"
+                      :class="{ 'active': activeMode === dateModeEnum.year }"
                       hover-class="default-hover-class"
                       hover-stay-time="100"
                       @click="onModeChange({ mode: dateModeEnum.year })">
@@ -86,8 +94,8 @@ const onPopupClose = () => emit('close');
                         <view v-for="(month) in item"
                               :key="month"
                               class="grid-item"
-                              :class="{ active: activeDate === month }"
-                              hover-class="default-hover-class"
+                              :class="{ 'active': activeDate === month }"
+                              :hover-class="activeDate === month ? 'default-hover-class' : 'gray-hover-class'"
                               hover-stay-time="100"
                               @click="onDateItemClick({ date: month })">
 
@@ -108,8 +116,8 @@ const onPopupClose = () => emit('close');
                     <view v-for="(item, year) in options"
                           :key="year"
                           class="grid-item"
-                          :class="{ active: activeDate === year }"
-                          hover-class="default-hover-class"
+                          :class="{ 'active': activeDate === year }"
+                          :hover-class="activeDate === year ? 'default-hover-class' : 'gray-hover-class'"
                           hover-stay-time="100"
                           @click="onDateItemClick({ date: year })">
 
@@ -181,11 +189,11 @@ const onPopupClose = () => emit('close');
                 justify-content: center;
                 background: #ffffff;
                 cursor: pointer;
+                border-radius: 4px;
 
                 &.active {
                     color: #fff;
                     background: $canbin-expenses-color;
-                    border-radius: 3px;
                 }
 
             }

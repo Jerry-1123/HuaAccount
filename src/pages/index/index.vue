@@ -387,8 +387,8 @@ onShareAppMessage();
 
                 <view class="total"
                       :class="{
-                          expenses: formatTotalAmount > 0,
-                          income: formatTotalAmount < 0
+                          'expenses': formatTotalAmount > 0,
+                          'income': formatTotalAmount < 0
                       }">
 
                     <text class="yuan">¥</text>
@@ -442,11 +442,11 @@ onShareAppMessage();
 
                 </view>
 
-                <view class="list">
+                <view class="list-item-wrapper"
+                      v-for="bill in item.billList"
+                      :key="bill._id">
 
-                    <van-swipe-cell v-for="bill in item.billList"
-                                    :key="bill._id"
-                                    right-width="300">
+                    <van-swipe-cell right-width="300">
 
                         <view class="list-item"
                               hover-class="gray-hover-class"
@@ -455,8 +455,8 @@ onShareAppMessage();
 
                             <view class="icon"
                                   :class="{
-                                      expenses: bill.billType === 'expenses',
-                                      income: bill.billType === 'income'
+                                      'expenses': bill.billType === 'expenses',
+                                      'income': bill.billType === 'income'
                                   }">
 
                                 <image :src="bill.tagIcon" lazy-load />
@@ -775,10 +775,10 @@ page {
 
             }
 
-            .list {
+            .list-item-wrapper {
+                margin: 0 30rpx;
 
                 .list-item {
-                    margin: 0 30rpx;
                     display: flex;
                     align-items: center;
                     padding: 25rpx;
@@ -873,6 +873,7 @@ page {
                 }
 
             }
+
 
         }
 

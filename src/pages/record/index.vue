@@ -310,11 +310,15 @@ onShareAppMessage();
 
                 <view class="tab-item"
                       :class="{ 'expenses': formData.billType === 'expenses' }"
+                      :hover-class="formData.billType === 'expenses' ? '' : 'gray-hover-class'"
+                      hover-stay-time="100"
                       @click="onTabItemClick({ billType: 'expenses' })">支出
                 </view>
 
                 <view class="tab-item"
                       :class="{ 'income': formData.billType === 'income' }"
+                      :hover-class="formData.billType === 'income' ? '' : 'gray-hover-class'"
+                      hover-stay-time="100"
                       @click="onTabItemClick({ billType: 'income' })">收入
                 </view>
 
@@ -322,7 +326,7 @@ onShareAppMessage();
 
             <view v-if="formData.billTime"
                   class="date"
-                  hover-class="default-hover-class"
+                  hover-class="gray-hover-class"
                   hover-stay-time="100"
                   @click="onCalendarOpen">
 

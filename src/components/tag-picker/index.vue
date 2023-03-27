@@ -6,7 +6,7 @@ const {
     tagsGroup
 } = useState();
 
-defineProps({
+const props = defineProps({
     show: {
         type: Boolean,
         default: false
@@ -19,7 +19,15 @@ defineProps({
 
 const emit = defineEmits(['select', 'close']);
 
-const onTagItemClick = ({ tagId }) => emit('select', { tagId });
+const onTagItemClick = ({ tagId }) => {
+
+    if (tagId !== props.activeTagId) {
+
+        emit('select', { tagId });
+
+    }
+
+};
 
 const onPopupClose = () => emit('close');
 
@@ -52,8 +60,8 @@ const onPopupClose = () => emit('close');
                         <view v-for="tag in tags"
                               :key="tag._id"
                               class="tag-item"
-                              :class="{ active: activeTagId === tag._id }"
-                              hover-class="default-hover-class"
+                              :class="{ 'active': activeTagId === tag._id }"
+                              :hover-class="activeTagId === tag._id ? 'default-hover-class' : 'gray-hover-class'"
                               hover-stay-time="100"
                               @click="onTagItemClick({ tagId: tag._id })">
 
@@ -107,19 +115,13 @@ const onPopupClose = () => emit('close');
                 justify-content: center;
                 background: #ffffff;
                 cursor: pointer;
+                border-radius: 4px;
 
                 &.active {
                     color: #ffffff;
                     background: $canbin-expenses-color;
-                    border-radius: 3px;
                 }
 
-            }
-
-            .tag-item-selected {
-                color: #ffffff;
-                background: $canbin-expenses-color;
-                border-radius: 3px;
             }
 
         }

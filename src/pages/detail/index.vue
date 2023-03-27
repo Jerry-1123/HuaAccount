@@ -170,7 +170,7 @@ page {
 <style lang="scss" scoped>
 .content {
     background: #ffffff;
-    margin: 30rpx;
+    margin: 20rpx;
     padding: 50rpx 30rpx;
     border-radius: 20rpx;
     display: flex;
