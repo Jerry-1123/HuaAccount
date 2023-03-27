@@ -442,11 +442,11 @@ onShareAppMessage();
 
                 </view>
 
-                <view class="list"
-                      v-for="bill in item.billList"
-                      :key="bill._id">
+                <view class="list">
 
-                    <van-swipe-cell right-width="300">
+                    <van-swipe-cell v-for="bill in item.billList"
+                                    :key="bill._id"
+                                    right-width="300">
 
                         <view class="list-item"
                               hover-class="gray-hover-class"
@@ -776,9 +776,9 @@ page {
             }
 
             .list {
-                margin: 0 30rpx;
 
                 .list-item {
+                    margin: 0 30rpx;
                     display: flex;
                     align-items: center;
                     padding: 25rpx;
