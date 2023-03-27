@@ -15,6 +15,9 @@ export const useState = () => {
     } = storeToRefs(userStore);
 
     const {
+        tags,
+        shareInfo,
+
         tagsList,
         tagsGroup,
         expenseTags,
@@ -27,6 +30,8 @@ export const useState = () => {
         userId,
         nickName,
         avatar,
+        tags,
+        shareInfo,
         tagsList,
         tagsGroup,
         expenseTags,

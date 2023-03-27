@@ -10,6 +10,9 @@ import moment from 'moment';
 import _ from 'lodash';
 import currency from 'currency.js';
 
+// 页面分享
+const { onShareAppMessage } = useShare();
+
 // 全局数据
 const {
     userId,
@@ -297,7 +300,7 @@ onMounted(({ billId }) => {
 
 });
 
-useShare().onShareAppMessage();
+onShareAppMessage();
 
 </script>
 

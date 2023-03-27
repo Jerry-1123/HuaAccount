@@ -5,6 +5,9 @@ import { onMounted } from '@/hooks/onMounted';
 import { useShare } from '@/hooks/useShare';
 import { useState } from '@/hooks/useState';
 
+// 页面分享
+const { onShareAppMessage } = useShare();
+
 // 全局数据
 const {
     userId
@@ -16,7 +19,7 @@ onMounted(() => {
 
 });
 
-useShare().onShareAppMessage();
+onShareAppMessage();
 
 </script>
 

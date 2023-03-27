@@ -22,6 +22,9 @@ import LineChart from './line-chart';
 import PieChart from './pie-chart';
 import Progress from './progress';
 
+// 页面分享
+const { onShareAppMessage } = useShare();
+
 // 全局数据
 const {
     userId
@@ -54,7 +57,7 @@ onPullDownRefresh(() => {
 
 });
 
-useShare().onShareAppMessage();
+onShareAppMessage();
 
 </script>
 

@@ -10,6 +10,9 @@ import moment from 'moment';
 
 const userStore = useUserStore();
 
+// 页面分享
+const { onShareAppMessage } = useShare();
+
 // 全局信息
 const {
     openId
@@ -104,7 +107,7 @@ onMounted(() => {
 
 });
 
-useShare().onShareAppMessage();
+onShareAppMessage();
 
 </script>
 

@@ -8,6 +8,9 @@ import { getBillByBillId, deleteBill } from '@/service/bill';
 import moment from 'moment';
 import currency from 'currency.js';
 
+// 页面分享
+const { onShareAppMessage } = useShare();
+
 // 账单信息
 const bill = reactive({
     billId: '',
@@ -95,7 +98,7 @@ onMounted(({ billId }) => {
 
 });
 
-useShare().onShareAppMessage();
+onShareAppMessage();
 
 </script>
 

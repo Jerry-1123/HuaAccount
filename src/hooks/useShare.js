@@ -3,17 +3,13 @@ import { useState } from "./useState";
 
 export const useShare = () => {
 
-    const { shareData } = useState();
+    const shareApp = () => onShareAppMessage(() => {
 
-    const shareApp = () => {
+        const { shareData } = useState();
 
-        onShareAppMessage(() => {
+        return shareData.value;
 
-            return shareData.value;
-
-        });
-
-    };
+    });
 
     return {
         onShareAppMessage: shareApp

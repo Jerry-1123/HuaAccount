@@ -15,6 +15,9 @@ import currency from 'currency.js';
 import DatePicker from '@/components/date-picker';
 import TagPicker from '@/components/tag-picker';
 
+// 页面分享
+const { onShareAppMessage } = useShare();
+
 // 全局数据
 const {
     userId,
@@ -326,7 +329,7 @@ onReachBottom(() => {
 
 onPageScroll((e) => showStickyInfo.value = e.scrollTop >= headerScrollHeight.value);
 
-useShare().onShareAppMessage();
+onShareAppMessage();
 
 </script>
 
@@ -460,7 +463,7 @@ useShare().onShareAppMessage();
                                   }">
 
                                 <image :src="bill.tagIcon" lazy-load />
-                                
+
                             </view>
 
                             <view class="info">
