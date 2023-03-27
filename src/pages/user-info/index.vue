@@ -3,15 +3,12 @@
 import { ref } from 'vue';
 import { useUserStore } from '@/store/user';
 import { onMounted } from '@/hooks/onMounted';
-import { useShare } from '@/hooks/useShare';
+import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
 import { getUserByOpenId, updateUser } from '@/service/user';
 import moment from 'moment';
 
 const userStore = useUserStore();
-
-// 页面分享
-const { onShareAppMessage } = useShare();
 
 // 全局信息
 const {

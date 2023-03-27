@@ -3,7 +3,7 @@
 import { ref, computed } from 'vue';
 import { onPullDownRefresh, onReachBottom, onPageScroll } from "@dcloudio/uni-app";
 import { onMounted } from '@/hooks/onMounted';
-import { useShare } from '@/hooks/useShare';
+import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
 import { rpx2px, getWeekday } from '@/util';
 import { defaultTagId, defaultPageSize, dateModeEnum } from '@/constant';
@@ -14,9 +14,6 @@ import currency from 'currency.js';
 
 import DatePicker from '@/components/date-picker';
 import TagPicker from '@/components/tag-picker';
-
-// 页面分享
-const { onShareAppMessage } = useShare();
 
 // 全局数据
 const {

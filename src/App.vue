@@ -1,9 +1,15 @@
 <script setup name="app">
 
-import { checkForUpdateApp } from '@/common';
 import { onLaunch } from "@dcloudio/uni-app";
+import { useCommon } from "@/hooks/useCommon";
 
-onLaunch(() => checkForUpdateApp());
+onLaunch(() => {
+
+    const { checkForUpdateApp } = useCommon();
+
+    checkForUpdateApp();
+
+});
 
 </script>
 

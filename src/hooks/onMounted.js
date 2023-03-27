@@ -1,7 +1,9 @@
 import { onLoad } from "@dcloudio/uni-app";
-import { checkForPageLoad } from '@/common';
+import { useCommon } from "./useCommon";
 
-export const onMounted = (hook) => {
+export const onMounted = (fucntion) => {
+
+    let { checkForPageLoad } = useCommon();
 
     onLoad((options) => {
 
@@ -9,11 +11,10 @@ export const onMounted = (hook) => {
 
         checkForPageLoad().then(() => {
 
-            hook(options);
+            fucntion(options);
 
         });
 
     });
 
 };
-

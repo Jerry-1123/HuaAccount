@@ -2,14 +2,11 @@
 
 import { ref, reactive } from 'vue';
 import { onMounted } from '@/hooks/onMounted';
-import { useShare } from '@/hooks/useShare';
+import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { getWeekday } from '@/util';
 import { getBillByBillId, deleteBill } from '@/service/bill';
 import moment from 'moment';
 import currency from 'currency.js';
-
-// 页面分享
-const { onShareAppMessage } = useShare();
 
 // 账单信息
 const bill = reactive({

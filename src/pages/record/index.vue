@@ -2,16 +2,13 @@
 
 import { ref, reactive, computed } from 'vue';
 import { onMounted } from '@/hooks/onMounted';
-import { useShare } from '@/hooks/useShare';
+import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
 import { minDate } from '@/constant';
 import { getBillByBillId, getDayBillCount, createBill, updateBill } from '@/service/bill';
 import moment from 'moment';
 import _ from 'lodash';
 import currency from 'currency.js';
-
-// 页面分享
-const { onShareAppMessage } = useShare();
 
 // 全局数据
 const {

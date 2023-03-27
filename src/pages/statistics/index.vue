@@ -3,7 +3,7 @@
 import { ref, computed } from 'vue';
 import { onPullDownRefresh } from "@dcloudio/uni-app";
 import { onMounted } from '@/hooks/onMounted';
-import { useShare } from '@/hooks/useShare';
+import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
 import { dateModeEnum } from '@/constant';
 import {
@@ -21,9 +21,6 @@ import DatePicker from '@/components/date-picker';
 import LineChart from './line-chart';
 import PieChart from './pie-chart';
 import Progress from './progress';
-
-// 页面分享
-const { onShareAppMessage } = useShare();
 
 // 全局数据
 const {
