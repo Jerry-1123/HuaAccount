@@ -180,10 +180,10 @@ const onQuery = () => {
         pageSize: pageSize.value,
         startTime,
         endTime
-    }).then((result) => {
+    }).then((data) => {
 
         // 如果没有数据了
-        if (result.length === 0) {
+        if (data.length === 0) {
 
             if (pageNumber.value === 0) {
 
@@ -199,7 +199,7 @@ const onQuery = () => {
             // 相当于重新请求
             if (pageNumber.value === 0) {
 
-                list.value = result;
+                list.value = data;
 
             } else {
 
@@ -207,7 +207,7 @@ const onQuery = () => {
                 let _listEndIndex = _list.length - 1;
 
                 // 判断每一个请求回来的数据
-                _.each(result, (item, index) => {
+                _.each(data, (item, index) => {
 
                     if (index === 0 && item.billTime === _list[_listEndIndex].billTime) {
 
@@ -225,7 +225,7 @@ const onQuery = () => {
 
             }
 
-            pageStatus.value = _.reduce(result, (meme, item) => meme + item.billList.length, 0) < pageSize.value
+            pageStatus.value = _.reduce(data, (meme, item) => meme + item.billList.length, 0) < pageSize.value
                 ? 'noMore' : 'loading';
 
         }
@@ -248,8 +248,8 @@ const onQueryStatistics = () => {
         endTime
     }).then((data) => {
 
-        totalExpenses.value = !data ? 0 : data.totalExpenses;
-        totalIncome.value = !data ? 0 : data.totalIncome;
+        totalExpenses.value = data.totalExpenses;
+        totalIncome.value = data.totalIncome;
 
     });
 

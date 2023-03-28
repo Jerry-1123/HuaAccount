@@ -13,9 +13,9 @@ export const getBillByBillId = ({
 
     return db.collection(bill, 'tag')
         .get()
-        .then(({ result }) => {
+        .then(({ result: { data } }) => {
 
-            return result.data && result.data.length === 1 ? result.data[0] : null;
+            return data && data.length === 1 ? data[0] : null;
 
         });
 
@@ -32,9 +32,9 @@ export const getDayBillCount = ({
     return db.collection('bill')
         .where(`userId == "${userId}" && billTime == "${billTime}" && billType == "${billType}"`)
         .count()
-        .then(({ result }) => {
+        .then(({ result: { total } }) => {
 
-            return result;
+            return total;
 
         });
 
@@ -243,15 +243,76 @@ export const getBillStatistics = ({
         .get()
         .then(({ result: { data } }) => {
 
-            return data[0];
+            if (data.length > 0) {
+
+                return data[0];
+
+            }
+            else {
+
+                return {
+                    totalExpenses: 0,
+                    totalIncome: 0
+                };
+
+            }
 
         });
 
 };
 
-export const getBillStatisticsGroupByTag = ({
-    billType,
+export const getBillStatisticsAndTotal = ({
     userId,
+    billType,
+    startTime,
+    endTime
+}) => {
+
+    const db = uniCloud.database();
+
+    let query = null;
+
+    if (billType === 'expenses') {
+
+        query = db.collection('bill')
+            .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`)
+            .groupBy('null')
+            .groupField('sum(expensesAmount) as totalAmount, count(*) as totalCount')
+            .get();
+
+    } else {
+
+        query = db.collection('bill')
+            .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`)
+            .groupBy('null')
+            .groupField('sum(incomeAmount) as totalAmount, count(*) as totalCount')
+            .get();
+
+    }
+
+    return query.then(({ result: { data } }) => {
+
+        if (data.length > 0) {
+
+            return data[0];
+
+        }
+        else {
+
+            return {
+                totalAmount: 0,
+                totalCount: 0
+            };
+
+        }
+
+    });
+
+};
+
+export const getBillStatisticsGroupByTag = ({
+    userId,
+    billType,
     startTime,
     endTime
 }) => {
@@ -263,7 +324,7 @@ export const getBillStatisticsGroupByTag = ({
     if (billType === 'expenses') {
 
         const bill = db.collection('bill')
-            .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && expensesAmount > 0`)
+            .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`)
             .getTemp();
 
         query = db.collection(bill, 'tag')
@@ -275,7 +336,7 @@ export const getBillStatisticsGroupByTag = ({
     } else {
 
         const bill = db.collection('bill')
-            .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && incomeAmount > 0`)
+            .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`)
             .getTemp();
 
         query = db.collection(bill, 'tag')
@@ -286,17 +347,17 @@ export const getBillStatisticsGroupByTag = ({
 
     }
 
-    return query.then(({ result }) => {
+    return query.then(({ result: { data } }) => {
 
-        return result;
+        return data;
 
     });
 
 };
 
 export const getBillStatisticsGroupByDay = ({
-    billType,
     userId,
+    billType,
     startTime,
     endTime
 }) => {
@@ -308,7 +369,7 @@ export const getBillStatisticsGroupByDay = ({
     if (billType === 'expenses') {
 
         const bill = db.collection('bill')
-            .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && expensesAmount > 0`)
+            .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`)
             .getTemp();
 
         query = db.collection(bill, 'tag')
@@ -321,7 +382,7 @@ export const getBillStatisticsGroupByDay = ({
     } else {
 
         const bill = db.collection('bill')
-            .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && incomeAmount > 0`)
+            .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`)
             .getTemp();
 
         query = db.collection(bill, 'tag')
@@ -345,50 +406,32 @@ export const getBillStatisticsGroupByDay = ({
 
         let selectMonth = moment(startTime).month() + 1;
 
-        let nowMonth = moment().month() + 1;
-
-        let date = 0;
-
-        if (selectMonth === nowMonth) {
-
-            date = moment().date();
-
-        } else {
-
-            date = moment(startTime).endOf('month').date();
-
-        }
+        let endDay = moment(startTime).endOf('month').date();
 
         let data = [];
 
-        for (let i = 1; i <= date; i++) {
+        for (let i = 1; i <= endDay; i++) {
+
+            let theDay = _.find(_data, item => item.day === i);
 
             let dataItem = {
                 time: selectMonth + '.' + i,
-                amount: 0
+                amount: !theDay ? 0 : theDay.amount
             };
-
-            if (_.filter(_data, { 'day': i }).length > 0) {
-
-                dataItem.amount = _.filter(_data, { 'day': i })[0].amount;
-
-            }
 
             data.push(dataItem);
 
         }
 
-        return {
-            data
-        };
+        return data;
 
     });
 
 };
 
 export const getBillStatisticsGroupByMonth = ({
-    billType,
     userId,
+    billType,
     startTime,
     endTime
 }) => {
@@ -400,7 +443,7 @@ export const getBillStatisticsGroupByMonth = ({
     if (billType === 'expenses') {
 
         const bill = db.collection('bill')
-            .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && expensesAmount > 0`)
+            .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`)
             .getTemp();
 
         query = db.collection(bill, 'tag')
@@ -413,7 +456,7 @@ export const getBillStatisticsGroupByMonth = ({
     } else {
 
         const bill = db.collection('bill')
-            .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && incomeAmount > 0`)
+            .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`)
             .getTemp();
 
         query = db.collection(bill, 'tag')
@@ -435,38 +478,32 @@ export const getBillStatisticsGroupByMonth = ({
 
         });
 
-        let month = moment().month() + 1;
+        let endMonth = moment(startTime).endOf('year').month() + 1;
 
         let data = [];
 
-        for (let i = 6; i <= month; i++) {
+        for (let i = 1; i <= endMonth; i++) {
+
+            let theMonth = _.find(_data, item => item.month === i);
 
             let dataItem = {
                 time: i + '月',
-                amount: 0
+                amount: !theMonth ? 0 : theMonth.amount
             };
-
-            if (_.filter(_data, { 'month': i }).length > 0) {
-
-                dataItem.amount = _.filter(_data, { 'month': i })[0].amount;
-
-            }
 
             data.push(dataItem);
 
         }
 
-        return {
-            data
-        };
+        return data;
 
     });
 
 };
 
 export const getBillListOrderByAmount = ({
-    billType,
     userId,
+    billType,
     pageNumber,
     pageSize,
     startTime,
@@ -480,7 +517,7 @@ export const getBillListOrderByAmount = ({
     if (billType === 'expenses') {
 
         const bill = db.collection('bill')
-            .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && expensesAmount > 0`)
+            .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`)
             .skip(pageNumber * pageSize)
             .limit(pageSize)
             .getTemp();
@@ -492,7 +529,7 @@ export const getBillListOrderByAmount = ({
     } else {
 
         const bill = db.collection('bill')
-            .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && incomeAmount > 0`)
+            .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`)
             .skip(pageNumber * pageSize)
             .limit(pageSize)
             .getTemp();
@@ -503,9 +540,9 @@ export const getBillListOrderByAmount = ({
 
     }
 
-    return query.then(({ result }) => {
+    return query.then(({ result: { data } }) => {
 
-        return result;
+        return data;
 
     });
 

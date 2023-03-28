@@ -154,7 +154,7 @@ const onConfirmButtonClick = () => {
         userId: formData.userId,
         billTime: formData.billTime,
         billType: formData.billType
-    }).then(({ total }) => {
+    }).then((total) => {
 
         if (total >= 10) {
 

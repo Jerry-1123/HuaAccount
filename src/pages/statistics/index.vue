@@ -8,7 +8,7 @@ import { useState } from '@/hooks/useState';
 import { useStatisticsSetting } from '@/hooks/useStatisticsSetting';
 import { dateModeEnum } from '@/constant';
 import {
-    getBillStatistics,
+    getBillStatisticsAndTotal,
     getBillStatisticsGroupByTag,
     getBillStatisticsGroupByDay,
     getBillStatisticsGroupByMonth,
@@ -38,11 +38,9 @@ const billType = ref('expenses');
 const showDatePicker = ref(false);
 const activeDateMode = ref(dateModeEnum.month);
 const activeDate = ref(moment().format('YYYY-MM'));
-// 金额相关
-const totalExpenses = ref(0);
-const totalExpensesCount = ref(0);
-const totalIncome = ref(0);
-const totalIncomeCount = ref(0);
+// 顶部统计
+const totalAmount = ref(0);
+const totalCount = ref(0);
 // 圆环图
 const ringChartData = ref({});
 const ringChartOpts = ref({});
@@ -98,6 +96,8 @@ const onTabItemClick = ({ type }) => {
 
     initSetting();
 
+    onQuery();
+
 };
 
 const initSetting = () => {
@@ -112,7 +112,48 @@ const initSetting = () => {
 
 const onQuery = () => {
 
-    initSetting();
+    uni.showLoading({ title: '加载中' });
+
+    const {
+        startTime,
+        endTime
+    } = getTimeRange();
+
+    const params = {
+        userId: userId.value,
+        billType: billType.value,
+        startTime,
+        endTime
+    };
+
+    Promise.all([
+        getBillStatisticsAndTotal(params),
+        getBillStatisticsGroupByTag(params),
+        !isYearMode() ? getBillStatisticsGroupByDay(params) : getBillStatisticsGroupByMonth(params),
+        getBillListOrderByAmount(_.assign(params, {
+            pageNumber: pageNumber.value,
+            pageSize: pageSize.value
+        }))
+    ]).then(([
+        totalData,
+        groupByTagData,
+        groupByTimeData,
+        listData
+    ]) => {
+
+        // 顶部总计
+        totalAmount.value = totalData.totalAmount;
+        totalCount.value = totalData.totalCount;
+
+        console.log(groupByTagData);
+        console.log(groupByTimeData);
+        console.log(listData);
+
+        loading.value = false;
+
+        uni.hideLoading();
+
+    });
 
 };
 
@@ -120,9 +161,9 @@ onMounted(() => {
 
     // 加入笔数
 
-    loading.value = false;
+    initSetting();
 
-    setTimeout(() => uni.hideLoading(), 500);
+    onQuery();
 
 });
 
@@ -177,19 +218,17 @@ onShareAppMessage();
 
                 <block v-if="billType === 'expenses'">
                     <text class="label"> {{ isYearMode() ? '年支出' : '月支出' }}</text>
-                    <text class="value">{{ formatAmount(totalExpenses) }}</text>
+                    <text class="value">{{ formatAmount(totalAmount) }}</text>
                 </block>
 
                 <block v-if="billType === 'income'">
                     <text class="label">{{ isYearMode() ? '年收入' : '月收入' }}</text>
-                    <text class="value">{{ formatAmount(totalIncome) }}</text>
+                    <text class="value">{{ formatAmount(totalAmount) }}</text>
                 </block>
 
             </view>
 
-            <view class="total-count">
-                {{ billType === 'expenses' ? totalExpensesCount : totalIncomeCount }}笔
-            </view>
+            <view class="total-count">{{ totalCount }}笔</view>
 
         </view>
 
@@ -268,11 +307,10 @@ page {
     }
 
     .total {
-        margin-top: 80rpx;
-        height: 80rpx;
+        height: 160rpx;
         display: flex;
         align-items: center;
-        padding: 0 40rpx;
+        padding: 80rpx 40rpx 0;
         color: #fff;
 
         &.expenses {
@@ -292,16 +330,16 @@ page {
             }
 
             .value {
-                font-size: 40rpx;
-                margin-left: 10rpx;
+                font-size: 50rpx;
+                margin-left: 20rpx;
             }
 
         }
 
         &-count {
-            font-size: 28rpx;
+            font-size: 30rpx;
             margin-left: 20rpx;
-            opacity: 0.8;
+            opacity: 0.7;
         }
 
     }
