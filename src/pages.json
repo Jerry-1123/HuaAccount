@@ -65,8 +65,7 @@
 			"van-swipe-cell": "/wxcomponents/vant/swipe-cell/index",
 			"van-calendar": "/wxcomponents/vant/calendar/index",
 			"van-progress": "/wxcomponents/vant/progress/index",
-			"van-loading": "/wxcomponents/vant/loading/index",
-			"van-image": "/wxcomponents/vant/image/index"
+			"van-loading": "/wxcomponents/vant/loading/index"
 		}
 	},
 	"tabBar": {
