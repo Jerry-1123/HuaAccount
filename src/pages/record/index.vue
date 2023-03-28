@@ -262,7 +262,7 @@ onMounted(({ billId }) => {
         remarkInput.value = '';
         loading.value = false;
 
-        setTimeout(() => uni.hideLoading(), 200);
+        uni.hideLoading();
 
     } else {
 
@@ -289,7 +289,7 @@ onMounted(({ billId }) => {
             remarkInput.value = remark;
             loading.value = false;
 
-            setTimeout(() => uni.hideLoading(), 200);
+            uni.hideLoading();
 
         });
 

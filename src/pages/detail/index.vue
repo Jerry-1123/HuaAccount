@@ -89,7 +89,7 @@ onMounted(({ billId }) => {
 
         loading.value = false;
 
-        setTimeout(() => uni.hideLoading(), 200);
+        uni.hideLoading();
 
     });
 

@@ -93,6 +93,7 @@ const onDateSelect = ({ date }) => {
     activeDate.value = date;
 
     onDatePickerClose();
+
     onClear();
 
 };
@@ -106,6 +107,7 @@ const onTagSelect = ({ tagId }) => {
     activeTagId.value = tagId;
 
     onTagPickerClose();
+    
     onClear();
 
 };

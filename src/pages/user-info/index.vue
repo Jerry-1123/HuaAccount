@@ -78,7 +78,7 @@ const onSubmitButtonClick = () => {
 
                 uni.showToast({ title: '保存成功', icon: 'success', duration: 1000 });
 
-                setTimeout(() => uni.navigateBack(), 200);
+                setTimeout(() => uni.navigateBack(), 500);
 
             });
 
@@ -94,11 +94,12 @@ onMounted(() => {
         openId: openId.value
     }).then(({ userInfo }) => {
 
-        loading.value = false;
         nickName.value = userInfo.nickName;
         avatar.value = userInfo.avatarUrl;
 
-        setTimeout(() => uni.hideLoading(), 200);
+        loading.value = false;
+
+        uni.hideLoading();
 
     });
 

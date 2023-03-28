@@ -86,6 +86,7 @@ const onDateSelect = ({ date }) => {
     activeDate.value = date;
 
     onDatePickerClose();
+    
     onQuery();
 
 };
