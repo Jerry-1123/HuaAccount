@@ -124,7 +124,7 @@ onShareAppMessage();
                             open-type="chooseAvatar"
                             @chooseavatar="onAvatarClick">
 
-                        <image :src="avatar" lazy-load />
+                        <image :src="avatar" />
 
                     </button>
 

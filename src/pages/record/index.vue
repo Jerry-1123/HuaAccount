@@ -331,7 +331,7 @@ onShareAppMessage();
                   @click="onCalendarOpen">
 
                 <text>{{ formatDate }}</text>
-                <image src="../../static/svgs/down.svg" lazy-load />
+                <image src="../../static/svgs/down.svg" />
 
             </view>
 
@@ -339,7 +339,7 @@ onShareAppMessage();
 
         <view class="amount-content">
 
-            <image src="../../static/svgs/yuan.svg" lazy-load />
+            <image src="../../static/svgs/yuan.svg" />
             <text class="amount">{{ formData.amount }}</text>
             <span class="cursor"></span>
 
@@ -360,11 +360,9 @@ onShareAppMessage();
                         <view class="tag-icon">
 
                             <image v-show="formData.tagId === item._id"
-                                   :src="item.selectTagIcon"
-                                   lazy-load />
+                                   :src="item.selectTagIcon" />
                             <image v-show="formData.tagId !== item._id"
-                                   :src="item.tagIcon"
-                                   lazy-load />
+                                   :src="item.tagIcon" />
 
                         </view>
 
@@ -389,11 +387,9 @@ onShareAppMessage();
                         <view class="tag-icon">
 
                             <image v-show="formData.tagId === item._id"
-                                   :src="item.selectTagIcon"
-                                   lazy-load />
+                                   :src="item.selectTagIcon" />
                             <image v-show="formData.tagId !== item._id"
-                                   :src="item.tagIcon"
-                                   lazy-load />
+                                   :src="item.tagIcon" />
 
                         </view>
 

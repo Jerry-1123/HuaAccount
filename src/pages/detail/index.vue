@@ -110,7 +110,7 @@ onShareAppMessage();
                       'income': bill.billType === 'income'
                   }">
 
-                <image :src="bill.tagIcon" lazy-load />
+                <image :src="bill.tagIcon" />
 
             </view>
 
@@ -141,7 +141,7 @@ onShareAppMessage();
                   hover-stay-time="100"
                   @click="onDeleteButtonClick">
 
-                <image src="../../static/svgs/delete.svg" lazy-load />
+                <image src="../../static/svgs/delete.svg" />
                 <text class="delete">删除</text>
 
             </view>
@@ -151,7 +151,7 @@ onShareAppMessage();
                   hover-stay-time="100"
                   @click="onEditButtonClick">
 
-                <image src="../../static/svgs/edit.svg" lazy-load />
+                <image src="../../static/svgs/edit.svg" />
                 <text class="edit">编辑</text>
 
             </view>

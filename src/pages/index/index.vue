@@ -343,7 +343,7 @@ onShareAppMessage();
                   @click="onDatePickerOpen">
 
                 <view class="header-item-text1">{{ formatDate }}</view>
-                <image class="header-item-img" src='../../static/svgs/down_white.svg' lazy-load />
+                <image class="header-item-img" src='../../static/svgs/down_white.svg'  />
 
             </view>
 
@@ -352,7 +352,7 @@ onShareAppMessage();
                   hover-stay-time="100"
                   @click="onTagPickerOpen">
 
-                <image class="header-item-img" src='../../static/svgs/more.svg' lazy-load />
+                <image class="header-item-img" src='../../static/svgs/more.svg'  />
                 <view class="header-item-text2">{{ formatTagName }}</view>
 
             </view>
@@ -376,7 +376,7 @@ onShareAppMessage();
 
                 <image class="avatar"
                        :src="avatar || defaultAvatar"
-                       lazy-load
+                       
                        @click="onAvatarClick" />
 
             </view>
@@ -413,7 +413,7 @@ onShareAppMessage();
 
             <image class="avatar"
                    :src="avatar || defaultAvatar"
-                   lazy-load
+                   
                    @click="onAvatarClick" />
 
         </view>
@@ -461,7 +461,7 @@ onShareAppMessage();
                                       'income': bill.billType === 'income'
                                   }">
 
-                                <image :src="bill.tagIcon" lazy-load />
+                                <image :src="bill.tagIcon"  />
 
                             </view>
 
@@ -505,7 +505,7 @@ onShareAppMessage();
 
             <view v-if="pageStatus === 'noMore' && list.length === 0" class="no-data">
 
-                <image src="../../static/svgs/no_more.svg" lazy-load />
+                <image src="../../static/svgs/no_more.svg"  />
                 <text>暂无账单，快去记一笔吧^-^</text>
 
             </view>
@@ -524,7 +524,7 @@ onShareAppMessage();
               hover-stay-time="100"
               @click="onRecordButtonClick">
 
-            <image src="../../static/svgs/record.svg" lazy-load />
+            <image src="../../static/svgs/record.svg"  />
             <text>记一笔</text>
 
         </view>

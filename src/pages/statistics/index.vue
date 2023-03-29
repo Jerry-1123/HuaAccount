@@ -86,7 +86,7 @@ const onDateSelect = ({ date }) => {
     activeDate.value = date;
 
     onDatePickerClose();
-    
+
     onQuery();
 
 };
@@ -189,7 +189,7 @@ onShareAppMessage();
                   @click="onDatePickerOpen">
 
                 <text>{{ formatDate }}</text>
-                <image src='../../static/svgs/down_white.svg' lazy-load />
+                <image src='../../static/svgs/down_white.svg' />
 
             </view>
 
