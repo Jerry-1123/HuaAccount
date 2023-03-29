@@ -146,9 +146,35 @@ const onQuery = () => {
         totalAmount.value = totalData.totalAmount;
         totalCount.value = totalData.totalCount;
 
-        console.log(groupByTagData);
-        console.log(groupByTimeData);
-        console.log(listData);
+        // 圆环图
+        ringChartData.value = {
+            series: [
+                {
+                    data: _.map((groupByTagData), item => {
+
+                        return {
+                            name: item.tagId[0].tagName,
+                            value: currency(item.amount).divide(100).value
+                        };
+
+                    }),
+                    format: "customPieData"
+                }
+            ]
+        };
+
+        // 柱状图
+        columnChartData.value = {
+            categories: _.map((groupByTimeData), item => item.time),
+            series: [
+                {
+                    data: _.map((groupByTimeData), item => item.amount)
+                }
+            ]
+        };
+
+        // 列表数据
+        billList.value = listData;
 
         loading.value = false;
 
@@ -229,7 +255,40 @@ onShareAppMessage();
 
             </view>
 
-            <view class="total-count">{{ totalCount }}笔</view>
+            <view class="total-count">共{{ totalCount }}笔</view>
+
+        </view>
+
+        <view v-if="billList.length > 0">
+
+            <view class="structure">
+
+                <view class="title">{{ billType === 'expenses' ? '支出' : '收入' }}构成</view>
+
+                <view class="chart">
+
+                    <qiun-data-charts type="ring"
+                                      :loading-type="0"
+                                      :canvas2d="true"
+                                      :tooltip-show="false"
+                                      :opts="ringChartOpts"
+                                      :chart-ata="ringChartData" />
+
+                </view>
+
+                <view class="list"></view>
+
+            </view>
+
+        </view>
+
+        <view class="no-data" v-if="billList.length === 0">
+
+            <image v-show="billType === 'expenses'" src="../../static/svgs/no_more.svg" />
+
+            <image v-show="billType === 'income'" src="../../static/svgs/no_more_income.svg" />
+
+            <text>暂无账单，快去记一笔吧^-^</text>
 
         </view>
 
@@ -251,6 +310,7 @@ page {
   
 <style lang="scss" scoped>
 .content {
+    padding-top: 160rpx;
 
     .header {
         position: fixed;
@@ -308,10 +368,15 @@ page {
     }
 
     .total {
-        height: 160rpx;
+        position: fixed;
+        z-index: 30;
+        width: 100%;
+        top: 80rpx;
+        left: 0;
+        height: 80rpx;
         display: flex;
         align-items: center;
-        padding: 80rpx 40rpx 0;
+        padding: 0 40rpx;
         color: #fff;
 
         &.expenses {
@@ -338,11 +403,48 @@ page {
         }
 
         &-count {
-            font-size: 30rpx;
+            font-size: 28rpx;
             margin-left: 20rpx;
             opacity: 0.7;
         }
 
+    }
+
+    .structure {
+        padding: 40rpx;
+
+        .title {
+            font-size: 32rpx;
+        }
+
+        .chart {
+            padding: 20rpx 0;
+            height: 450rpx;
+        }
+
+    }
+
+    .divider {
+        height: 1px;
+        background: #eaeaea;
+        margin: 0 50rpx 50rpx;
+    }
+
+    .no-data {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        image {
+            width: 200rpx;
+            height: 200rpx;
+        }
+
+        text {
+            font-size: 30rpx;
+            margin-top: 10rpx;
+        }
     }
 
 }
