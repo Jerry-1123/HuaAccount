@@ -3,6 +3,15 @@ view {
 	box-sizing: border-box;
 }
 
+image {
+	width: 100%;
+	display: block;
+}
+
+button::after {
+	display: none;
+}
+
 .default-hover-class {
 	opacity: 0.8 !important;
 }
