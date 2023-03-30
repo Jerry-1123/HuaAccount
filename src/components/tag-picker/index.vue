@@ -1,4 +1,4 @@
-<script setup name="tag_picker">
+<script setup name="tag-picker">
 
 import { useState } from '@/hooks/useState';
 

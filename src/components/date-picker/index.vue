@@ -1,4 +1,4 @@
-<script setup name="date_picker">
+<script setup name="date-picker">
 
 import { ref } from 'vue';
 import { dateModeEnum } from '@/constant';

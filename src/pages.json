@@ -42,7 +42,7 @@
 			}
 		},
 		{
-			"path": "pages/user_info/index",
+			"path": "pages/user-info/index",
 			"style": {
 				"disableScroll": true,
 				"navigationBarTitleText": "个人信息"
