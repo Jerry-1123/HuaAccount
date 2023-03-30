@@ -12,8 +12,8 @@ import moment from 'moment';
 import _ from 'lodash';
 import currency from 'currency.js';
 
-import DatePicker from '@/components/date-picker';
-import TagPicker from '@/components/tag-picker';
+import DatePicker from '@/components/date_picker';
+import TagPicker from '@/components/tag_picker';
 
 // 全局数据
 const {
@@ -115,7 +115,7 @@ const onTagSelect = ({ tagId }) => {
 const onAvatarClick = () => {
 
     uni.navigateTo({
-        url: '/pages/user-info/index'
+        url: '/pages/user_info/index'
     });
 
 };

@@ -1,7 +1,7 @@
 
 import { useUserStore } from '@/store/user';
 import { useAppStore } from '@/store/app';
-import { getOpenIdByCode } from '@/service-cloud/user';
+import { getOpenIdByCode } from '@/service_cloud/user';
 import { getUserByOpenId, createUser } from '@/service/user';
 import { getTags } from '@/service/tag';
 import { getShareInfo } from '@/service/share';

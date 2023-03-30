@@ -18,7 +18,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import currency from 'currency.js';
 
-import DatePicker from '@/components/date-picker';
+import DatePicker from '@/components/date_picker';
 
 const {
     getRingChartOpts,
