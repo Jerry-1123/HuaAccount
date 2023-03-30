@@ -107,7 +107,7 @@ const onTagSelect = ({ tagId }) => {
     activeTagId.value = tagId;
 
     onTagPickerClose();
-    
+
     onClear();
 
 };
@@ -343,7 +343,7 @@ onShareAppMessage();
                   @click="onDatePickerOpen">
 
                 <view class="header-item-text1">{{ formatDate }}</view>
-                <image class="header-item-img" src='../../static/svgs/down_white.svg'  />
+                <image class="header-item-img" src='../../static/svgs/icon_down_white.svg'  />
 
             </view>
 
@@ -352,7 +352,7 @@ onShareAppMessage();
                   hover-stay-time="100"
                   @click="onTagPickerOpen">
 
-                <image class="header-item-img" src='../../static/svgs/more.svg'  />
+                <image class="header-item-img" src='../../static/svgs/icon_more.svg'  />
                 <view class="header-item-text2">{{ formatTagName }}</view>
 
             </view>
@@ -376,7 +376,7 @@ onShareAppMessage();
 
                 <image class="avatar"
                        :src="avatar || defaultAvatar"
-                       
+
                        @click="onAvatarClick" />
 
             </view>
@@ -413,7 +413,7 @@ onShareAppMessage();
 
             <image class="avatar"
                    :src="avatar || defaultAvatar"
-                   
+
                    @click="onAvatarClick" />
 
         </view>
@@ -505,7 +505,7 @@ onShareAppMessage();
 
             <view v-if="pageStatus === 'noMore' && list.length === 0" class="no-data">
 
-                <image src="../../static/svgs/no_more.svg"  />
+                <image src="../../static/svgs/pic_no_more.svg"  />
                 <text>暂无账单，快去记一笔吧^-^</text>
 
             </view>
@@ -524,7 +524,7 @@ onShareAppMessage();
               hover-stay-time="100"
               @click="onRecordButtonClick">
 
-            <image src="../../static/svgs/record.svg"  />
+            <image src="../../static/svgs/icon_record.svg"  />
             <text>记一笔</text>
 
         </view>

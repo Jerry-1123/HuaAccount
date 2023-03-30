@@ -20,7 +20,7 @@ const loading = ref(true);
 // 昵称
 const nickName = ref('');
 // 头像
-const avatar = ref('../../static/images/avatar.png');
+const avatar = ref('../../static/images/icon_avatar.png');
 // 为了防止提交的时候再次触发提交
 const isSubmitting = ref(false);
 

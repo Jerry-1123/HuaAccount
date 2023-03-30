@@ -1,4 +1,4 @@
-<script setup name="tag-picker">
+<script setup name="tag_picker">
 
 import { useState } from '@/hooks/useState';
 
@@ -79,7 +79,7 @@ const onPopupClose = () => emit('close');
 
     </van-popup>
 </template>
-  
+
 <style lang="scss" scoped>
 .content {
     background: #fafafa;
@@ -130,4 +130,3 @@ const onPopupClose = () => emit('close');
 
 }
 </style>
-  

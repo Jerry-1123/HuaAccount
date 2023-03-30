@@ -215,7 +215,7 @@ onShareAppMessage();
                   @click="onDatePickerOpen">
 
                 <text>{{ formatDate }}</text>
-                <image src='../../static/svgs/down_white.svg' />
+                <image src='../../static/svgs/icon_down_white.svg' />
 
             </view>
 
@@ -284,9 +284,9 @@ onShareAppMessage();
 
         <view class="no-data" v-if="billList.length === 0">
 
-            <image v-show="billType === 'expenses'" src="../../static/svgs/no_more.svg" />
+            <image v-show="billType === 'expenses'" src="../../static/svgs/pic_no_more.svg" />
 
-            <image v-show="billType === 'income'" src="../../static/svgs/no_more_income.svg" />
+            <image v-show="billType === 'income'" src="../../static/svgs/pic_no_more_income.svg" />
 
             <text>暂无账单，快去记一笔吧^-^</text>
 
@@ -307,7 +307,7 @@ page {
     background-color: #ffffff;
 }
 </style>
-  
+
 <style lang="scss" scoped>
 .content {
     padding-top: 160rpx;

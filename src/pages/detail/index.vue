@@ -141,7 +141,7 @@ onShareAppMessage();
                   hover-stay-time="100"
                   @click="onDeleteButtonClick">
 
-                <image src="../../static/svgs/delete.svg" />
+                <image src="../../static/svgs/icon_delete.svg" />
                 <text class="delete">删除</text>
 
             </view>
@@ -151,7 +151,7 @@ onShareAppMessage();
                   hover-stay-time="100"
                   @click="onEditButtonClick">
 
-                <image src="../../static/svgs/edit.svg" />
+                <image src="../../static/svgs/icon_edit.svg" />
                 <text class="edit">编辑</text>
 
             </view>
@@ -166,7 +166,7 @@ page {
     background-color: #ededed;
 }
 </style>
-  
+
 <style lang="scss" scoped>
 .content {
     background: #ffffff;

@@ -1,4 +1,4 @@
-<script setup name="date-picker">
+<script setup name="date_picker">
 
 import { ref } from 'vue';
 import { dateModeEnum } from '@/constant';
@@ -132,7 +132,7 @@ const onPopupClose = () => emit('close');
         </view>
 
     </van-popup>
-</template>   
+</template>
 
 <style lang="scss" scoped>
 .content {

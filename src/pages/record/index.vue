@@ -331,7 +331,7 @@ onShareAppMessage();
                   @click="onCalendarOpen">
 
                 <text>{{ formatDate }}</text>
-                <image src="../../static/svgs/down.svg" />
+                <image src="../../static/svgs/icon_down.svg" />
 
             </view>
 
@@ -339,7 +339,7 @@ onShareAppMessage();
 
         <view class="amount-content">
 
-            <image src="../../static/svgs/yuan.svg" />
+            <image src="../../static/svgs/icon_yuan.svg" />
             <text class="amount">{{ formData.amount }}</text>
             <span class="cursor"></span>
 
@@ -454,7 +454,7 @@ onShareAppMessage();
                           hover-stay-time="100"
                           @click="onBackSpaceClick">
 
-                        <image src="../../static/svgs/backspace.svg" />
+                        <image src="../../static/svgs/icon_backspace.svg" />
 
                     </view>
 
