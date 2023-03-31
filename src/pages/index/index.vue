@@ -25,7 +25,7 @@ const {
 // 首次加载
 const firstLoading = ref(true);
 // 默认头像
-const defaultAvatar = ref('../../static/images/avatar.png');
+const defaultAvatar = ref('../../static/images/icon_avatar.png');
 // 日期选择器相关
 const showDatePicker = ref(false);
 const activeDateMode = ref(dateModeEnum.month);
@@ -115,7 +115,7 @@ const onTagSelect = ({ tagId }) => {
 const onAvatarClick = () => {
 
     uni.navigateTo({
-        url: '/pages/user_info/index'
+        url: '/pages/user-info/index'
     });
 
 };

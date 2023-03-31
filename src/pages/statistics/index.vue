@@ -87,6 +87,8 @@ const onDateSelect = ({ date }) => {
 
     onDatePickerClose();
 
+    initSetting();
+
     onQuery();
 
 };
@@ -105,7 +107,7 @@ const initSetting = () => {
 
     ringChartOpts.value = getRingChartOpts({ billType: billType.value });
 
-    columnChartOpts.value = getColumnChartOpts({ billType: billType.value });
+    columnChartOpts.value = getColumnChartOpts({ billType: billType.value, isYearMode: isYearMode() });
 
     changeColor({ billType: billType.value });
 
@@ -168,7 +170,18 @@ const onQuery = () => {
             categories: _.map((groupByTimeData), item => item.time),
             series: [
                 {
-                    data: _.map((groupByTimeData), item => item.amount)
+                    data: _.map((groupByTimeData), item => {
+
+                        let time = isYearMode()
+                            ? item.time
+                            : `${item.time.split('.')[0]}月${item.time.split('.')[1]}日`;
+
+                        return {
+                            name: `${time}共${billType.value === 'expenses' ? '支出' : '收入'}: ¥${currency(item.amount).divide(100).value}`,
+                            value: currency(item.amount).divide(100).value
+                        };
+
+                    }),
                 }
             ]
         };
@@ -268,11 +281,33 @@ onShareAppMessage();
                 <view class="chart">
 
                     <qiun-data-charts type="ring"
-                                      :loading-type="0"
                                       :canvas2d="true"
                                       :tooltip-show="false"
                                       :opts="ringChartOpts"
-                                      :chart-ata="ringChartData" />
+                                      :chart-data="ringChartData" />
+
+                </view>
+
+                <view class="list"></view>
+
+            </view>
+
+            <view class="divider" />
+
+            <view class="structure">
+
+                <view class="title">每{{ isYearMode() ? '月' : '日' }}对比</view>
+
+                <view class="chart">
+
+                    <qiun-data-charts type="column"
+                                      :canvas2d="true"
+                                      :tooltip-show="true"
+                                      :ontouch="true"
+                                      :onmovetip="true"
+                                      tooltipFormat="customToolTip"
+                                      :opts="columnChartOpts"
+                                      :chart-data="columnChartData" />
 
                 </view>
 
@@ -398,6 +433,7 @@ page {
             .value {
                 font-size: 50rpx;
                 margin-left: 20rpx;
+                margin-bottom: 10rpx;
             }
 
         }
@@ -411,10 +447,11 @@ page {
     }
 
     .structure {
-        padding: 40rpx;
+        margin: 40rpx 0;
 
         .title {
             font-size: 32rpx;
+            margin-left: 40rpx;
         }
 
         .chart {
