@@ -74,7 +74,7 @@ export const useStatisticsSetting = () => {
             type: "column",
             dataLabel: false,
             enableScroll: false,
-            padding: [20, 20, 20, 20],
+            padding: [20, 25, 20, 20],
             legend: {
                 show: false
             },

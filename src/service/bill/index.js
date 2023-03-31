@@ -349,9 +349,11 @@ export const getBillStatisticsGroupByTag = ({
 
     return query.then(({ result: { data } }) => {
 
+        let result = [];
+
         const maxAmount = _.maxBy(data, 'amount').amount;
 
-        data = _.map(data, item => {
+        _.each(data, item => {
 
             let percent = Number((item.amount * 100 / maxAmount).toFixed(2));
 
@@ -361,14 +363,18 @@ export const getBillStatisticsGroupByTag = ({
 
             }
 
-            item.percent = percent;
-            item.amount = (item.amount / 100).toFixed(2);
-
-            return item;
+            result.push({
+                totalCount: item.totalCount,
+                percent,
+                amount: (item.amount / 100).toFixed(2),
+                tagId: item.tagId[0]._id,
+                tagName: item.tagId[0].tagName,
+                tagIcon: item.tagId[0].selectTagIcon
+            });
 
         });
 
-        return data;
+        return result;
 
     });
 

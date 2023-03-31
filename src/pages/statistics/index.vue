@@ -42,9 +42,11 @@ const activeDate = ref(moment().format('YYYY-MM'));
 const totalAmount = ref(0);
 const totalCount = ref(0);
 // 圆环图
-const ringChartList = ref([]);
 const ringChartData = ref({});
 const ringChartOpts = ref({});
+// 构成列表
+const ringChartList = ref([]);
+const showExpand = ref(true);
 // 柱状图
 const columnChartData = ref({});
 const columnChartOpts = ref({});
@@ -104,6 +106,8 @@ const onTabItemClick = ({ type }) => {
 
 };
 
+const onClickExpand = () => showExpand.value = !showExpand.value;
+
 const initSetting = () => {
 
     ringChartOpts.value = getRingChartOpts({ billType: billType.value });
@@ -158,7 +162,7 @@ const onQuery = () => {
                     data: _.map((groupByTagData), item => {
 
                         return {
-                            name: item.tagId[0].tagName,
+                            name: item.tagName,
                             value: currency(item.amount).divide(100).value
                         };
 
@@ -294,6 +298,83 @@ onShareAppMessage();
 
                 </view>
 
+                <view class="list">
+
+                    <view v-for="item in (showExpand ? ringChartList.slice(0, 5) : ringChartList)"
+                          :key="item.tagId"
+                          class="list-item"
+                          hover-class="default-hover-class"
+                          hover-stay-time="100">
+
+                        <view class="icon"
+                              :class="{
+                                  'expenses': billType === 'expenses',
+                                  'income': billType === 'income'
+                              }">
+                            <image :src="item.tagIcon" />
+                        </view>
+
+                        <view class="wrap">
+
+                            <view class="wrap-top">
+
+                                <view class="tag-name">{{ item.tagName }}</view>
+                                <view class="total-count">{{ item.totalCount }}笔</view>
+
+                            </view>
+
+                            <view class="wrap-bottom">
+
+                                <van-progress :percentage="item.percent"
+                                              :show-pivot="false"
+                                              :color="billType === 'expenses' ? '#3eb575' : '#f0b73a'"
+                                              stroke-width="5"
+                                              track-color="#ffffff" />
+
+                            </view>
+
+                        </view>
+
+                        <view class="amount">
+
+                            <text>{{ billType === 'expenses' ? '-' : '+' }}</text>
+                            <text>{{ item.amount }}</text>
+                            <image src="../../static/svgs/icon_right_gray.svg" />
+
+                        </view>
+
+                    </view>
+
+                    <view v-if="ringChartList.length >= 5">
+
+                        <view v-if="showExpand"
+                              class="expand"
+                              hover-class="default-hover-class"
+                              hover-stay-time="100"
+                              @click="onClickExpand">
+
+                            展开更多
+
+                            <image src="../../static/svgs/icon_down_gray.svg" />
+
+                        </view>
+
+                        <view v-if="!showExpand"
+                              class="expand"
+                              hover-class="default-hover-class"
+                              hover-stay-time="100"
+                              @click="onClickExpand">
+
+                            收起
+
+                            <image src="../../static/svgs/icon_up_gray.svg" />
+
+                        </view>
+
+                    </view>
+
+                </view>
+
             </view>
 
             <view class="divider" />
@@ -319,60 +400,6 @@ onShareAppMessage();
 
             <view class="divider" />
 
-            <view class="list">
-
-                <view v-for="item in ringChartList"
-                      :key="item.tagId[0]._id"
-                      class="list-item"
-                      hover-class="select-hover"
-                      hover-stay-time="100">
-
-                    <view class="icon"
-                          :class="{
-                              'expenses': billType === 'expenses',
-                              'income': billType === 'income'
-                          }">
-
-                        <image :src="item.tagId[0].selectTagIcon" />
-
-                    </view>
-
-                    <view class="wrap">
-
-                        <view class="wrap-top">
-
-                            <view class="tag-name">{{ item.tagId[0].tagName }}</view>
-
-                            <view class="total-count">{{ item.totalCount }}笔</view>
-
-                        </view>
-
-                        <view class="wrap-bottom">
-
-                            <van-progress :percentage="item.percent"
-                                          :show-pivot="false"
-                                          :color="billType === 'expenses' ? '#3eb575' : '#f0b73a'"
-                                          stroke-width="5"
-                                          track-color="#ffffff" />
-
-                        </view>
-
-                    </view>
-
-                    <view class="amount">
-
-                        <text>{{ billType === 'expenses' ? '-' : '+' }}</text>
-
-                        <text>{{ item.amount }}</text>
-
-                        <image src="../../static/svgs/icon_right_gray.svg" />
-
-                    </view>
-
-                </view>
-
-            </view>
-
         </view>
 
         <view class="no-data" v-if="billList.length === 0 && !loading">
@@ -391,6 +418,9 @@ onShareAppMessage();
                      @change="onDateModeChange"
                      @select="onDateSelect"
                      @close="onDatePickerClose" />
+
+        <!-- 用于解决ios的bug -->
+        <view style="height: 1px" />
 
     </view>
 </template>
@@ -492,6 +522,10 @@ page {
                 font-size: 50rpx;
                 margin-left: 20rpx;
                 margin-bottom: 10rpx;
+                max-width: 400rpx;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
 
         }
@@ -518,96 +552,105 @@ page {
             height: 450rpx;
         }
 
-    }
+        .list {
+            padding: 20rpx 40rpx;
 
-    .list {
-        padding: 20rpx 40rpx;
+            .list-item {
+                display: flex;
+                align-items: center;
+                margin: 15rpx 0;
 
-        .list-item {
-            display: flex;
-            align-items: center;
-            margin: 15rpx 0;
+                .icon {
+                    flex-shrink: 0;
+                    width: 65rpx;
+                    height: 65rpx;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: #f7f7f7;
+                    margin: 10rpx 0;
 
-            .icon {
-                flex-shrink: 0;
-                width: 70rpx;
-                height: 70rpx;
-                border-radius: 50%;
+                    image {
+                        width: 30rpx;
+                        height: 30rpx;
+                    }
+
+                    &.expenses {
+                        background: $canbin-expenses-color;
+                    }
+
+                    &.income {
+                        background: $canbin-income-color;
+                    }
+
+                }
+
+                .wrap {
+                    flex-grow: 1;
+                    margin: 0 30rpx;
+
+                    .wrap-top {
+                        display: flex;
+                        align-items: center;
+                        margin-top: -5rpx;
+                        margin-bottom: 5rpx;
+
+                        .tag-name {
+                            font-size: 26rpx;
+                        }
+
+                        .total-count {
+                            font-size: 24rpx;
+                            color: #8e8e8e;
+                            margin-left: 20rpx;
+                        }
+
+                    }
+
+                    .wrap-bottom {}
+
+                }
+
+                .amount {
+                    font-size: 30rpx;
+                    flex-shrink: 0;
+                    display: flex;
+                    align-items: center;
+
+                    text {
+                        display: block;
+                        max-width: 150rpx;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+
+                    image {
+                        width: 30rpx;
+                        height: 30rpx;
+                        margin-left: 10rpx;
+                    }
+
+                }
+
+            }
+
+            .expand {
+                height: 44rpx;
+                line-height: 44rpx;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                background: #f7f7f7;
-                margin: 10rpx 0;
+                font-size: 28rpx;
+                color: #8e8e8e;
 
                 image {
-                    width: 35rpx;
-                    height: 35rpx;
-                }
-
-                &.expenses {
-                    background: $canbin-expenses-color;
-                }
-
-                &.income {
-                    background: $canbin-income-color;
-                }
-
-            }
-
-            .wrap {
-                flex-grow: 1;
-                margin: 0 30rpx;
-
-                .wrap-top {
-                    display: flex;
-                    align-items: center;
-                    margin-bottom: 5rpx;
-
-                    .tag-name {
-                        font-size: 26rpx;
-                    }
-
-                    .total-count {
-                        font-size: 22rpx;
-                        color: #8e8e8e;
-                        margin-left: 20rpx;
-                    }
-
-                }
-
-                .wrap-bottom {}
-
-            }
-
-            .amount {
-                font-size: 30rpx;
-                flex-shrink: 0;
-                display: flex;
-                align-items: center;
-
-                image {
-                    width: 30rpx;
-                    height: 30rpx;
+                    width: 34rpx;
+                    height: 34rpx;
                     margin-left: 10rpx;
                 }
 
-            }
-
-        }
-
-        .expand {
-            height: 44rpx;
-            line-height: 44rpx;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28rpx;
-            color: #8e8e8e;
-
-            image {
-                width: 34rpx;
-                height: 34rpx;
-                margin-left: 10rpx;
             }
 
         }
