@@ -191,7 +191,7 @@ const onQuery = () => {
                             value: currency(item.amount).divide(100).value
                         };
 
-                    }),
+                    })
                 }
             ]
         };
@@ -202,6 +202,7 @@ const onQuery = () => {
         loading.value = false;
 
         uni.hideLoading();
+        uni.stopPullDownRefresh();
 
     });
 
@@ -338,7 +339,7 @@ onShareAppMessage();
                         <view class="amount">
 
                             <text>{{ billType === 'expenses' ? '-' : '+' }}</text>
-                            <text>{{ item.amount }}</text>
+                            <text>{{ formatAmount(item.amount) }}</text>
                             <image src="../../static/svgs/icon_right_gray.svg" />
 
                         </view>

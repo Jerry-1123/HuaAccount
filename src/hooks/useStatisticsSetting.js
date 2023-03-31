@@ -112,7 +112,7 @@ export const useStatisticsSetting = () => {
             config.xAxis.format = "customXAxisLabelForYear";
 
             config.extra.column.width = 16;
-            config.extra.column.barBorderRadius = [];
+            config.extra.column.barBorderRadius = [30, 30, 0, 0];
 
         } else {
 

@@ -351,7 +351,7 @@ export const getBillStatisticsGroupByTag = ({
 
         let result = [];
 
-        const maxAmount = _.maxBy(data, 'amount').amount;
+        const maxAmount = data.length > 0 ? _.maxBy(data, 'amount').amount : 0;
 
         _.each(data, item => {
 
@@ -366,7 +366,7 @@ export const getBillStatisticsGroupByTag = ({
             result.push({
                 totalCount: item.totalCount,
                 percent,
-                amount: (item.amount / 100).toFixed(2),
+                amount: item.amount,
                 tagId: item.tagId[0]._id,
                 tagName: item.tagId[0].tagName,
                 tagIcon: item.tagId[0].selectTagIcon
