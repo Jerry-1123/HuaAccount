@@ -42,6 +42,7 @@ const activeDate = ref(moment().format('YYYY-MM'));
 const totalAmount = ref(0);
 const totalCount = ref(0);
 // 圆环图
+const ringChartList = ref([]);
 const ringChartData = ref({});
 const ringChartOpts = ref({});
 // 柱状图
@@ -117,6 +118,8 @@ const onQuery = () => {
 
     uni.showLoading({ title: '加载中' });
 
+    loading.value = true;
+
     const {
         startTime,
         endTime
@@ -164,6 +167,9 @@ const onQuery = () => {
                 }
             ]
         };
+
+        // 分类列表
+        ringChartList.value = groupByTagData;
 
         // 柱状图
         columnChartData.value = {
@@ -214,7 +220,7 @@ onShareAppMessage();
 </script>
 
 <template>
-    <view v-show="!loading" class="content">
+    <view class="content">
 
         <view class="header"
               :class="{
@@ -272,7 +278,7 @@ onShareAppMessage();
 
         </view>
 
-        <view v-if="billList.length > 0">
+        <view v-if="billList.length > 0 && !loading">
 
             <view class="structure">
 
@@ -287,8 +293,6 @@ onShareAppMessage();
                                       :chart-data="ringChartData" />
 
                 </view>
-
-                <view class="list"></view>
 
             </view>
 
@@ -311,13 +315,67 @@ onShareAppMessage();
 
                 </view>
 
-                <view class="list"></view>
+            </view>
+
+            <view class="divider" />
+
+            <view class="list">
+
+                <view v-for="item in ringChartList"
+                      :key="item.tagId[0]._id"
+                      class="list-item"
+                      hover-class="select-hover"
+                      hover-stay-time="100">
+
+                    <view class="icon"
+                          :class="{
+                              'expenses': billType === 'expenses',
+                              'income': billType === 'income'
+                          }">
+
+                        <image :src="item.tagId[0].selectTagIcon" />
+
+                    </view>
+
+                    <view class="wrap">
+
+                        <view class="wrap-top">
+
+                            <view class="tag-name">{{ item.tagId[0].tagName }}</view>
+
+                            <view class="total-count">{{ item.totalCount }}笔</view>
+
+                        </view>
+
+                        <view class="wrap-bottom">
+
+                            <van-progress :percentage="item.percent"
+                                          :show-pivot="false"
+                                          :color="billType === 'expenses' ? '#3eb575' : '#f0b73a'"
+                                          stroke-width="5"
+                                          track-color="#ffffff" />
+
+                        </view>
+
+                    </view>
+
+                    <view class="amount">
+
+                        <text>{{ billType === 'expenses' ? '-' : '+' }}</text>
+
+                        <text>{{ item.amount }}</text>
+
+                        <image src="../../static/svgs/icon_right_gray.svg" />
+
+                    </view>
+
+                </view>
 
             </view>
 
         </view>
 
-        <view class="no-data" v-if="billList.length === 0">
+        <view class="no-data" v-if="billList.length === 0 && !loading">
 
             <image v-show="billType === 'expenses'" src="../../static/svgs/pic_no_more.svg" />
 
@@ -447,7 +505,8 @@ page {
     }
 
     .structure {
-        margin: 40rpx 0;
+        margin-top: 40rpx;
+        margin-bottom: 10rpx;
 
         .title {
             font-size: 32rpx;
@@ -461,10 +520,104 @@ page {
 
     }
 
+    .list {
+        padding: 20rpx 40rpx;
+
+        .list-item {
+            display: flex;
+            align-items: center;
+            margin: 15rpx 0;
+
+            .icon {
+                flex-shrink: 0;
+                width: 70rpx;
+                height: 70rpx;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #f7f7f7;
+                margin: 10rpx 0;
+
+                image {
+                    width: 35rpx;
+                    height: 35rpx;
+                }
+
+                &.expenses {
+                    background: $canbin-expenses-color;
+                }
+
+                &.income {
+                    background: $canbin-income-color;
+                }
+
+            }
+
+            .wrap {
+                flex-grow: 1;
+                margin: 0 30rpx;
+
+                .wrap-top {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 5rpx;
+
+                    .tag-name {
+                        font-size: 26rpx;
+                    }
+
+                    .total-count {
+                        font-size: 22rpx;
+                        color: #8e8e8e;
+                        margin-left: 20rpx;
+                    }
+
+                }
+
+                .wrap-bottom {}
+
+            }
+
+            .amount {
+                font-size: 30rpx;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+
+                image {
+                    width: 30rpx;
+                    height: 30rpx;
+                    margin-left: 10rpx;
+                }
+
+            }
+
+        }
+
+        .expand {
+            height: 44rpx;
+            line-height: 44rpx;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28rpx;
+            color: #8e8e8e;
+
+            image {
+                width: 34rpx;
+                height: 34rpx;
+                margin-left: 10rpx;
+            }
+
+        }
+
+    }
+
     .divider {
         height: 1px;
         background: #eaeaea;
-        margin: 0 50rpx 50rpx;
+        margin: 0 50rpx;
     }
 
     .no-data {
