@@ -175,6 +175,12 @@ const onQuery = () => {
         endTime
     } = getTimeRange();
 
+    if (pageSize.value <= 0) {
+
+        pageSize.value = defaultPageSize;
+
+    }
+
     return getBillList({
         userId: userId.value,
         tagId: activeTagId.value,
@@ -283,6 +289,8 @@ const afterOperation = () => {
     pageSize.value = (pageNumber.value + 1) * defaultPageSize;
     pageNumber.value = 0;
 
+    console.log('afterOperation');
+
     uni.showLoading({ title: '加载中' });
 
     onQuery().then(() => {
@@ -343,7 +351,7 @@ onShareAppMessage();
                   @click="onDatePickerOpen">
 
                 <view class="header-item-text1">{{ formatDate }}</view>
-                <image class="header-item-img" src='../../static/svgs/icon_down_white.svg'  />
+                <image class="header-item-img" src='../../static/svgs/icon_down_white.svg' />
 
             </view>
 
@@ -352,7 +360,7 @@ onShareAppMessage();
                   hover-stay-time="100"
                   @click="onTagPickerOpen">
 
-                <image class="header-item-img" src='../../static/svgs/icon_more.svg'  />
+                <image class="header-item-img" src='../../static/svgs/icon_more.svg' />
                 <view class="header-item-text2">{{ formatTagName }}</view>
 
             </view>
@@ -461,7 +469,7 @@ onShareAppMessage();
                                       'income': bill.billType === 'income'
                                   }">
 
-                                <image :src="bill.tagIcon"  />
+                                <image :src="bill.tagIcon" />
 
                             </view>
 
@@ -505,7 +513,7 @@ onShareAppMessage();
 
             <view v-if="pageStatus === 'noMore' && list.length === 0" class="no-data">
 
-                <image src="../../static/svgs/pic_no_more.svg"  />
+                <image src="../../static/svgs/pic_no_more.svg" />
                 <text>暂无账单，快去记一笔吧^-^</text>
 
             </view>
@@ -524,7 +532,7 @@ onShareAppMessage();
               hover-stay-time="100"
               @click="onRecordButtonClick">
 
-            <image src="../../static/svgs/icon_record.svg"  />
+            <image src="../../static/svgs/icon_record.svg" />
             <text>记一笔</text>
 
         </view>
