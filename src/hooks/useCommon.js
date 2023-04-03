@@ -45,26 +45,26 @@ export const useCommon = () => {
         const { userId } = userStore;
         const { tags, shareInfo } = appStore;
 
-        let promiseForOpenId = Promise.resolve({ openId });
-        let promiseForTags = Promise.resolve({ tags });
-        let promiseForShare = Promise.resolve({ shareInfo });
+        let PromiseForOpenId = () => Promise.resolve({ openId });
+        let PromiseForTags = () => Promise.resolve({ tags });
+        let PromiseForShare = () => Promise.resolve({ shareInfo });
 
         if (!openId) {
-            promiseForOpenId = uni.login({ provider: 'weixin' }).then(({ code }) => getOpenIdByCode({ code }));
+            PromiseForOpenId = () => uni.login({ provider: 'weixin' }).then(({ code }) => getOpenIdByCode({ code }));
         }
 
         if (tags.length === 0) {
-            promiseForTags = getTags();
+            PromiseForTags = () => getTags();
         }
 
         if (_.isEmpty(shareInfo)) {
-            promiseForShare = getShareInfo();
+            PromiseForShare = () => getShareInfo();
         }
 
         return Promise.all([
-            promiseForOpenId,
-            promiseForTags,
-            promiseForShare
+            PromiseForOpenId(),
+            PromiseForTags(),
+            PromiseForShare()
         ]).then(([
             { openId },
             { tags },
