@@ -346,7 +346,7 @@ onShareAppMessage();
 
                     </view>
 
-                    <view v-if="ringChartList.length >= 5">
+                    <view v-if="ringChartList.length > 5">
 
                         <view v-if="showExpand"
                               class="expand"
