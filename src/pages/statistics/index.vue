@@ -123,6 +123,7 @@ const onQuery = () => {
     uni.showLoading({ title: '加载中' });
 
     loading.value = true;
+    showExpand.value = true;
 
     const {
         startTime,
