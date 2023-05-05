@@ -54,6 +54,9 @@
 				"disableScroll": true,
 				"navigationBarTitleText": "个人中心"
 			}
+		},
+		{
+			"path": "pages/list/index"
 		}
 	],
 	"globalStyle": {

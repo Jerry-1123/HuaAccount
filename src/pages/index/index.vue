@@ -443,10 +443,10 @@ onShareAppMessage();
 
                     <view class="amount-content">
 
-                        <text class="label">支出</text>
-                        <text class="value">{{ formatAmount(item.totalExpenses) }}</text>
-                        <text class="label">收入</text>
-                        <text class="value">{{ formatAmount(item.totalIncome) }}</text>
+                        <view class="label">支出</view>
+                        <view class="value">{{ formatAmount(item.totalExpenses) }}</view>
+                        <view class="label">收入</view>
+                        <view class="value">{{ formatAmount(item.totalIncome) }}</view>
 
                     </view>
 

@@ -149,16 +149,16 @@ const onConfirmButtonClick = () => {
 
     isSubmitting.value = true;
 
-    // 限制同一天同一种类型最多提交10笔账单
+    // 限制同一天同一种类型最多提交30笔账单
     getDayBillCount({
         userId: formData.userId,
         billTime: formData.billTime,
         billType: formData.billType
     }).then((total) => {
 
-        if (total >= 10) {
+        if (total >= 30) {
 
-            uni.showToast({ title: `同一天只能最多记录10笔${formData.billType === 'expenses' ? '支出' : '收入'}`, icon: 'none' });
+            uni.showToast({ title: `同一天只能最多记录30笔${formData.billType === 'expenses' ? '支出' : '收入'}`, icon: 'none' });
 
             isSubmitting.value = false;
 

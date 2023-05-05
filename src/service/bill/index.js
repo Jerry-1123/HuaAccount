@@ -572,3 +572,44 @@ export const getBillListOrderByAmount = ({
     });
 
 };
+
+export const getBillListByTag = ({
+    userId,
+    tagId,
+    pageNumber,
+    pageSize,
+    startTime,
+    endTime
+}) => {
+
+    const db = uniCloud.database();
+
+    const bill = db.collection('bill')
+        .where(`userId == "${userId}" && tagId == "${tagId}" && billTime >= "${startTime}" && billTime < "${endTime}"`)
+        .orderBy('billTime desc, createTime desc')
+        .skip(pageNumber * pageSize)
+        .limit(pageSize)
+        .getTemp();
+
+    return db.collection(bill, 'tag')
+        .get()
+        .then(({ result: { data } }) => {
+
+            return _.map(data, (item) => {
+
+                return {
+                    _id: item._id,
+                    billTime: item.billTime,
+                    billType: item.billType,
+                    expensesAmount: item.expensesAmount,
+                    incomeAmount: item.incomeAmount,
+                    remark: item.remark,
+                    tagName: item.tagId[0].tagName,
+                    tagIcon: item.tagId[0].selectTagIcon
+                };
+
+            });
+
+        });
+
+};

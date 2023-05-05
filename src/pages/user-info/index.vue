@@ -71,7 +71,7 @@ const onSubmitButtonClick = () => {
 
                 changeUserInfo({
                     nickName: nickName.value,
-                    avatarUrl: fileID
+                    avatar: fileID
                 });
 
                 uni.showToast({ title: '保存成功', icon: 'success', duration: 1000 });
