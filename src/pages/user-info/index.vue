@@ -1,18 +1,16 @@
 <script setup name="user-info">
 
 import { ref } from 'vue';
-import { useUserStore } from '@/store/user';
 import { onMounted } from '@/hooks/onMounted';
 import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
 import { getUserByOpenId, updateUser } from '@/service/user';
 import moment from 'moment';
 
-const userStore = useUserStore();
-
 // 全局信息
 const {
-    openId
+    openId,
+    changeUserInfo
 } = useState();
 
 // 加载
@@ -71,9 +69,9 @@ const onSubmitButtonClick = () => {
                 avatarUrl: fileID
             }).then(() => {
 
-                userStore.$patch((state) => {
-                    state.nickName = nickName.value;
-                    state.avatar = fileID;
+                changeUserInfo({
+                    nickName: nickName.value,
+                    avatarUrl: fileID
                 });
 
                 uni.showToast({ title: '保存成功', icon: 'success', duration: 1000 });

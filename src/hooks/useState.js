@@ -25,6 +25,39 @@ export const useState = () => {
         shareData
     } = storeToRefs(appStore);
 
+    const setUserInfo = ({ openId, userId, nickName, avatar }) => {
+
+        userStore.$patch((state) => {
+
+            state.openId = openId;
+            state.userId = userId;
+            state.nickName = nickName;
+            state.avatar = avatar;
+
+        });
+
+    };
+
+    const setAppInfo = ({ tags, shareInfo }) => {
+
+        appStore.$patch((state) => {
+            state.tags = tags;
+            state.shareInfo = shareInfo;
+        });
+
+    };
+
+    const changeUserInfo = ({ nickName, avatar }) => {
+
+        userStore.$patch((state) => {
+
+            state.nickName = nickName;
+            state.avatar = avatar;
+
+        });
+
+    };
+
     return {
         openId,
         userId,
@@ -36,7 +69,11 @@ export const useState = () => {
         tagsGroup,
         expenseTags,
         incomeTags,
-        shareData
+        shareData,
+
+        setUserInfo,
+        setAppInfo,
+        changeUserInfo
     };
 
 };
