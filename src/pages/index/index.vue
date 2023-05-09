@@ -483,7 +483,7 @@ onShareAppMessage();
                                 <text v-if="bill.billType === billTypeEnum.expenses" class="expenses">
                                     - {{ formatAmount(bill.expensesAmount) }}
                                 </text>
-                                <text v-if="bill.billType === billTypeEnum" class="income">
+                                <text v-if="bill.billType === billTypeEnum.income" class="income">
                                     + {{ formatAmount(bill.incomeAmount) }}
                                 </text>
 

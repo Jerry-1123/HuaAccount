@@ -262,6 +262,7 @@ export const getBillStatistics = ({
 export const getBillStatisticsAndTotal = ({
     userId,
     billType,
+    tagId,
     startTime,
     endTime
 }) => {
@@ -270,10 +271,18 @@ export const getBillStatisticsAndTotal = ({
 
     let query = null;
 
+    let condition = `userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`;
+
+    if(tagId){
+
+        condition += ` && tagId == "${tagId}"`;
+
+    }
+
     if (billType === billTypeEnum.expenses) {
 
         query = db.collection('bill')
-            .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`)
+            .where(condition)
             .groupBy('null')
             .groupField('sum(expensesAmount) as totalAmount, count(*) as totalCount')
             .get();
@@ -281,7 +290,7 @@ export const getBillStatisticsAndTotal = ({
     } else {
 
         query = db.collection('bill')
-            .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`)
+            .where(condition)
             .groupBy('null')
             .groupField('sum(incomeAmount) as totalAmount, count(*) as totalCount')
             .get();

@@ -12,7 +12,7 @@ import {
     getBillStatisticsGroupByTag,
     getBillStatisticsGroupByDay,
     getBillStatisticsGroupByMonth,
-    getBillListOrderByAmount
+    getBillList
 } from '@/service/bill';
 import moment from 'moment';
 import _ from 'lodash';
@@ -118,7 +118,7 @@ const onTagAmountItemClick = ({ tagId, tagName }) => {
     } = getTimeRange();
 
     uni.navigateTo({
-        url: `/pages/list/index?title=${tagName}${isYearMode() ? `${activeDate.value}年` : moment(activeDate.value).format('M月')}${billType.value === billTypeEnum.expenses ? '共支出' : '共收入'}&startTime=${startTime}&endTime=${endTime}&tagId=${tagId}`
+        url: `/pages/list/index?title=${tagName}${isYearMode() ? `${activeDate.value}年` : moment(activeDate.value).format('M月')}${billType.value === billTypeEnum.expenses ? '共支出' : '共收入'}&startTime=${startTime}&endTime=${endTime}&tagId=${tagId}&billType=${billType.value}`
     });
 
 };
@@ -131,7 +131,7 @@ const onWholeButtonClick = () => {
     } = getTimeRange();
 
     uni.navigateTo({
-        url: `/pages/list/index?title=${isYearMode() ? `${activeDate.value}年` : moment(activeDate.value).format('M月')}${billType.value === billTypeEnum.expenses ? '共支出' : '共收入'}&startTime=${startTime}&endTime=${endTime}`
+        url: `/pages/list/index?title=${isYearMode() ? `${activeDate.value}年` : moment(activeDate.value).format('M月')}${billType.value === billTypeEnum.expenses ? '共支出' : '共收入'}&startTime=${startTime}&endTime=${endTime}&billType=${billType.value}`
     });
 
 };
@@ -167,7 +167,7 @@ const onQuery = () => {
         getBillStatisticsAndTotal(params),
         getBillStatisticsGroupByTag(params),
         !isYearMode() ? getBillStatisticsGroupByDay(params) : getBillStatisticsGroupByMonth(params),
-        getBillListOrderByAmount(_.assign(params, {
+        getBillList(_.assign(params, {
             pageNumber: pageNumber.value,
             pageSize: pageSize.value
         }))
@@ -450,7 +450,7 @@ onShareAppMessage();
                         <view class="icon"
                               :class="{
                                   'expenses': bill.billType === billTypeEnum.expenses,
-                                  'income': bill.billType === billTypeEnum.expenses
+                                  'income': bill.billType === billTypeEnum.income
                               }">
 
                             <image :src="bill.tagIcon" />

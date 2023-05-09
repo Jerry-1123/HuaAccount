@@ -15,6 +15,6 @@ export const dateModeEnum = {
 };
 
 export const listTypeEnum = {
+    amount: 'amount',
     time: 'time',
-    amount: 'amount'
 };
