@@ -5,7 +5,7 @@ import { onPullDownRefresh, onReachBottom } from "@dcloudio/uni-app";
 import { onMounted } from '@/hooks/onMounted';
 import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
-import { listTypeEnum, defaultPageSize } from '@/constant';
+import { defaultPageSize } from '@/constant';
 import { getBillListByTag, getBillStatistics, deleteBill } from '@/service/bill';
 import moment from 'moment';
 import _ from 'lodash';
@@ -22,13 +22,19 @@ const list = ref([]);
 
 const onQuery = () => {
 
-    
+
 
 };
 
-onMounted(({ type }) => {
+onMounted(({ title, date, tagId }) => {
 
-    listType.value = type;
+    uni.setNavigationBarTitle({
+        title
+    });
+
+    console.log(date, tagId);
+
+    uni.hideLoading();
 
 });
 
@@ -47,12 +53,14 @@ onShareAppMessage();
 <template>
     <view class="content">
 
+        <view style="margin: 40rpx;text-align: center;font-size: 28rpx;">正在开发中，敬请期待...</view>
+
     </view>
 </template>
 
 <style>
 page {
-    background-color: #ededed;
+    background-color: #ffffff;
 }
 </style>
 

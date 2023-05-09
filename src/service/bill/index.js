@@ -137,15 +137,12 @@ export const getBillList = ({
     const bill = db.collection('bill')
         .where(condition)
         .orderBy('billTime desc, createTime desc')
-        .skip(pageNumber * pageSize)
-        .limit(pageSize)
-        .getTemp();
-
-    const tag = db.collection('tag')
         .getTemp();
 
     // 获取账单列表
-    return db.collection(bill, tag)
+    return db.collection(bill, 'tag')
+        .skip(pageNumber * pageSize)
+        .limit(pageSize)
         .get()
         .then(({ result: { data } }) => {
 
@@ -543,31 +540,44 @@ export const getBillListOrderByAmount = ({
 
         const bill = db.collection('bill')
             .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`)
-            .skip(pageNumber * pageSize)
-            .limit(pageSize)
             .getTemp();
 
         query = db.collection(bill, 'tag')
             .orderBy('expensesAmount desc')
+            .skip(pageNumber * pageSize)
+            .limit(pageSize)
             .get();
 
     } else {
 
         const bill = db.collection('bill')
             .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`)
-            .skip(pageNumber * pageSize)
-            .limit(pageSize)
             .getTemp();
 
         query = db.collection(bill, 'tag')
             .orderBy('incomeAmount desc')
+            .skip(pageNumber * pageSize)
+            .limit(pageSize)
             .get();
 
     }
 
     return query.then(({ result: { data } }) => {
 
-        return data;
+        return _.map(data, (item) => {
+
+            return {
+                _id: item._id,
+                billTime: item.billTime,
+                billType: item.billType,
+                expensesAmount: item.expensesAmount,
+                incomeAmount: item.incomeAmount,
+                remark: item.remark,
+                tagName: item.tagId[0].tagName,
+                tagIcon: item.tagId[0].selectTagIcon
+            };
+
+        });
 
     });
 
@@ -587,11 +597,11 @@ export const getBillListByTag = ({
     const bill = db.collection('bill')
         .where(`userId == "${userId}" && tagId == "${tagId}" && billTime >= "${startTime}" && billTime < "${endTime}"`)
         .orderBy('billTime desc, createTime desc')
-        .skip(pageNumber * pageSize)
-        .limit(pageSize)
         .getTemp();
 
     return db.collection(bill, 'tag')
+        .skip(pageNumber * pageSize)
+        .limit(pageSize)
         .get()
         .then(({ result: { data } }) => {
 

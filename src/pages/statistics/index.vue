@@ -110,6 +110,25 @@ const onTabItemClick = ({ type }) => {
 
 const onClickExpand = () => showExpand.value = !showExpand.value;
 
+const onTagAmountItemClick = ({ tagId, tagName }) => {
+
+    uni.navigateTo({
+        url: `/pages/list/index?title=${tagName}${isYearMode() ? `${activeDate.value}年` : moment(activeDate.value).format('M月')}${billType.value === 'expenses' ? '共支出' : '共收入'}&date=${activeDate.value}&tagId=${tagId}`
+    });
+
+};
+
+const onWholeButtonClick = () => {
+
+    uni.navigateTo({
+        url: `/pages/list/index?title=${isYearMode() ? `${activeDate.value}年` : moment(activeDate.value).format('M月')}${billType.value === 'expenses' ? '共支出' : '共收入'}&date=${activeDate.value}`
+    });
+
+    // 5月餐饮共支出
+    // 5月共支出
+
+};
+
 const initSetting = () => {
 
     ringChartOpts.value = getRingChartOpts({ billType: billType.value });
@@ -308,7 +327,8 @@ onShareAppMessage();
                           :key="item.tagId"
                           class="list-item"
                           hover-class="default-hover-class"
-                          hover-stay-time="100">
+                          hover-stay-time="100"
+                          @click="onTagAmountItemClick(item)">
 
                         <view class="icon"
                               :class="{
@@ -428,13 +448,13 @@ onShareAppMessage();
                                   'income': bill.billType === 'income'
                               }">
 
-                            <image :src="bill.tagId[0].selectTagIcon" />
+                            <image :src="bill.tagIcon" />
 
                         </view>
 
                         <view class="item-content">
 
-                            <view class="tag-name">{{ bill.tagId[0].tagName }}</view>
+                            <view class="tag-name">{{ bill.tagName }}</view>
                             <view class="remark">{{ bill.remark }}</view>
 
                         </view>
@@ -453,6 +473,17 @@ onShareAppMessage();
                         </view>
 
                     </view>
+
+                </view>
+
+                <view v-if="billList.length > 10"
+                      class="whole"
+                      hover-class="default-hover-class"
+                      hover-stay-time="100"
+                      @click="onWholeButtonClick">
+
+                    全部排行
+                    <image src="../../static/svgs/icon_right_gray.svg" />
 
                 </view>
 
@@ -787,6 +818,20 @@ page {
 
                 }
 
+            }
+
+        }
+
+        .whole {
+            margin-bottom: 50rpx;
+            font-size: 28rpx;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            image {
+                width: 35rpx;
+                height: 35rpx;
             }
 
         }
