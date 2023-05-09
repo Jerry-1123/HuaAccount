@@ -83,7 +83,7 @@ onMounted(({ billId }) => {
         bill.billType = billType;
         bill.tagName = tagId[0].tagName;
         bill.tagIcon = tagId[0].selectTagIcon;
-        bill.billTime = `${moment(billTime).format('YYYY年MM月DD日')} ${getWeekday({ day: moment(billTime).day() })}`;
+        bill.billTime = `${moment(billTime).format('YYYY年M月D日')} ${getWeekday({ day: moment(billTime).day() })}`;
         bill.amount = `${billType === 'expenses' ? '-' : '+'} ${currency(billType === 'expenses' ? expensesAmount : incomeAmount).divide(100)}`;
         bill.remark = remark;
 

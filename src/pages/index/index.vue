@@ -45,7 +45,7 @@ const list = ref([]);
 const headerScrollHeight = ref(rpx2px({ rpx: 80 }));
 const showStickyInfo = ref(false);
 
-const formatDate = computed(() => isYearMode() ? `${activeDate.value}年` : moment(activeDate.value).format('YYYY年MM月'));
+const formatDate = computed(() => isYearMode() ? `${activeDate.value}年` : moment(activeDate.value).format('YYYY年M月'));
 
 const formatTagName = computed(() => {
 
@@ -59,7 +59,7 @@ const formatAmount = computed(() => (amount) => currency(amount).divide(100));
 
 const formatTotalAmount = computed(() => currency(totalExpenses.value).subtract(totalIncome.value).divide(100));
 
-const formatDay = computed(() => (time) => moment(time).format('MM月DD日'));
+const formatDay = computed(() => (time) => moment(time).format('M月D日'));
 
 const formatWeekday = computed(() => (time) => getWeekday({ day: moment(time).day() }));
 
@@ -288,8 +288,6 @@ const afterOperation = () => {
 
     pageSize.value = (pageNumber.value + 1) * defaultPageSize;
     pageNumber.value = 0;
-
-    console.log('afterOperation');
 
     uni.showLoading({ title: '加载中' });
 

@@ -8,3 +8,8 @@ export const dateModeEnum = {
     month: 'month',
     year: 'year'
 };
+
+export const listTypeEnum = {
+    tag: 'tag',
+    period: 'period'
+};

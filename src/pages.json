@@ -56,7 +56,11 @@
 			}
 		},
 		{
-			"path": "pages/list/index"
+			"path": "pages/list/index",
+			"style": {
+				"enablePullDownRefresh": true,
+				"onReachBottomDistance": 50
+			}
 		}
 	],
 	"globalStyle": {

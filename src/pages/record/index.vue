@@ -42,7 +42,7 @@ const numbers = ref(["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "."]);
 // 为了防止提交的时候再次触发提交
 const isSubmitting = ref(false);
 
-const formatDate = computed(() => moment(formData.billTime).format('MM月DD日'));
+const formatDate = computed(() => moment(formData.billTime).format('M月D日'));
 
 const onTabItemClick = ({ billType }) => {
 

@@ -25,6 +25,16 @@ const expensesColorList = [
     "rgba(62,181,117,0.43)",
     "rgba(62,181,117,0.42)",
     "rgba(62,181,117,0.41)",
+    "rgba(62,181,117,0.40)",
+    "rgba(62,181,117,0.40)",
+    "rgba(62,181,117,0.40)",
+    "rgba(62,181,117,0.40)",
+    "rgba(62,181,117,0.40)",
+    "rgba(62,181,117,0.40)",
+    "rgba(62,181,117,0.40)",
+    "rgba(62,181,117,0.40)",
+    "rgba(62,181,117,0.40)",
+    "rgba(62,181,117,0.40)",
     "rgba(62,181,117,0.40)"
 ];
 
@@ -49,6 +59,16 @@ const incomeColorList = [
     "rgba(240,183,58,0.43)",
     "rgba(240,183,58,0.42)",
     "rgba(240,183,58,0.41)",
+    "rgba(240,183,58,0.40)",
+    "rgba(240,183,58,0.40)",
+    "rgba(240,183,58,0.40)",
+    "rgba(240,183,58,0.40)",
+    "rgba(240,183,58,0.40)",
+    "rgba(240,183,58,0.40)",
+    "rgba(240,183,58,0.40)",
+    "rgba(240,183,58,0.40)",
+    "rgba(240,183,58,0.40)",
+    "rgba(240,183,58,0.40)",
     "rgba(240,183,58,0.40)"
 ];
 
@@ -107,7 +127,6 @@ export const useStatisticsSetting = () => {
                 disableGrid: true,
                 data: [
                     {
-                        min: 0,
                         axisLine: false,
                         format: 'customYAxisLabel'
                     }
@@ -134,7 +153,7 @@ export const useStatisticsSetting = () => {
             config.xAxis.format = "customXAxisLabelForYear";
 
             config.extra.column.width = 16;
-            config.extra.column.barBorderRadius = [30, 30, 0, 0];
+            config.extra.column.barBorderRadius = [0, 0, 0, 0];
 
         } else {
 

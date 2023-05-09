@@ -92,7 +92,11 @@ const cfu = {
 		},
 		"customYAxisLabel": function (val, index, series, opts) {
 			if (index !== undefined) {
-				return '¥' + val;
+				if (parseInt(val) === parseFloat(val)) {
+					return '¥' + val;
+				} else {
+					return '¥' + val.toFixed(1);
+				}
 			}
 		},
 		"customToolTip": function (val, index, series) {

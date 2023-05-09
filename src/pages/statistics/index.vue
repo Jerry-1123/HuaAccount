@@ -53,11 +53,13 @@ const columnChartOpts = ref({});
 // 列表相关
 const billList = ref([]);
 const pageNumber = ref(0);
-const pageSize = ref(10);
+const pageSize = ref(20);
 
-const formatDate = computed(() => isYearMode() ? `${activeDate.value}年` : moment(activeDate.value).format('YYYY年MM月'));
+const formatDate = computed(() => isYearMode() ? `${activeDate.value}年` : moment(activeDate.value).format('YYYY年M月'));
 
 const formatAmount = computed(() => (amount) => currency(amount).divide(100));
+
+const formatBillTime = computed(() => (billTime) => isYearMode() ? moment(billTime).format('YYYY年M月D日') : moment(billTime).format('M月D日'));
 
 const isYearMode = () => activeDate.value.length === 4;
 
@@ -300,7 +302,7 @@ onShareAppMessage();
 
                 </view>
 
-                <view class="list">
+                <view class="ring-chart-list">
 
                     <view v-for="item in (showExpand ? ringChartList.slice(0, 5) : ringChartList)"
                           :key="item.tagId"
@@ -401,6 +403,60 @@ onShareAppMessage();
             </view>
 
             <view class="divider" />
+
+            <view class="structure">
+
+                <view class="title">
+
+                    {{ billType === 'expenses' ? '支出' : '收入' }}排行
+
+                </view>
+
+                <view class="list">
+
+                    <view v-for="(bill, index) in billList.slice(0, 10)"
+                          :key="bill._id"
+                          class="list-item"
+                          hover-class="default-hover-class"
+                          hover-stay-time="100">
+
+                        <view class="index">{{ index + 1 }}</view>
+
+                        <view class="icon"
+                              :class="{
+                                  'expenses': bill.billType === 'expenses',
+                                  'income': bill.billType === 'income'
+                              }">
+
+                            <image :src="bill.tagId[0].selectTagIcon" />
+
+                        </view>
+
+                        <view class="item-content">
+
+                            <view class="tag-name">{{ bill.tagId[0].tagName }}</view>
+                            <view class="remark">{{ bill.remark }}</view>
+
+                        </view>
+
+                        <view class="info">
+
+                            <view v-if="bill.billType === 'expenses'" class="amount">
+                                - {{ formatAmount(bill.expensesAmount) }}
+                            </view>
+                            <view v-if="bill.billType === 'income'" class="amount">
+                                + {{ formatAmount(bill.incomeAmount) }}
+                            </view>
+
+                            <view class="bill-time">{{ formatBillTime(bill.billTime) }}</view>
+
+                        </view>
+
+                    </view>
+
+                </view>
+
+            </view>
 
         </view>
 
@@ -554,7 +610,7 @@ page {
             height: 450rpx;
         }
 
-        .list {
+        .ring-chart-list {
             padding: 20rpx 40rpx;
 
             .list-item {
@@ -616,6 +672,7 @@ page {
 
                 .amount {
                     font-size: 30rpx;
+                    font-weight: bold;
                     flex-shrink: 0;
                     display: flex;
                     align-items: center;
@@ -651,6 +708,83 @@ page {
                     width: 34rpx;
                     height: 34rpx;
                     margin-left: 10rpx;
+                }
+
+            }
+
+        }
+
+        .list {
+            padding: 30rpx;
+
+            .list-item {
+                display: flex;
+                align-items: center;
+                padding: 16rpx 20rpx;
+
+                .index {
+                    width: 50rpx;
+                    flex-shrink: 0;
+                    font-size: 28rpx;
+                }
+
+                .icon {
+                    width: 65rpx;
+                    height: 65rpx;
+                    border-radius: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-shrink: 0;
+
+                    &.expenses {
+                        background: $canbin-expenses-color;
+                    }
+
+                    &.income {
+                        background: $canbin-income-color;
+                    }
+
+                    image {
+                        width: 30rpx;
+                        height: 30rpx;
+                    }
+
+                }
+
+                .item-content {
+                    flex-grow: 1;
+                    margin-left: 25rpx;
+
+                    .tag-name {
+                        font-size: 28rpx;
+                        margin-bottom: 5rpx;
+                    }
+
+                    .remark {
+                        font-size: 24rpx;
+                        color: #7e7e7e;
+                    }
+
+                }
+
+                .info {
+                    flex-shrink: 0;
+                    margin-left: 10rpx;
+
+                    .amount {
+                        font-size: 30rpx;
+                        font-weight: bold;
+                        text-align: right;
+                        margin-bottom: 5rpx;
+                    }
+
+                    .bill-time {
+                        font-size: 24rpx;
+                        color: #7e7e7e;
+                        text-align: right;
+                    }
+
                 }
 
             }
