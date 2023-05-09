@@ -4,7 +4,7 @@ import { ref, reactive, computed } from 'vue';
 import { onMounted } from '@/hooks/onMounted';
 import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
-import { minDate } from '@/constant';
+import { minDate, billTypeEnum } from '@/constant';
 import { getBillByBillId, getDayBillCount, createBill, updateBill } from '@/service/bill';
 import moment from 'moment';
 import _ from 'lodash';
@@ -47,7 +47,7 @@ const formatDate = computed(() => moment(formData.billTime).format('M月D日'));
 const onTabItemClick = ({ billType }) => {
 
     formData.billType = billType;
-    formData.tagId = billType === 'expenses' ? expenseTags.value[0]._id : incomeTags.value[0]._id;
+    formData.tagId = billType === billTypeEnum.expenses ? expenseTags.value[0]._id : incomeTags.value[0]._id;
 
 };
 
@@ -158,7 +158,7 @@ const onConfirmButtonClick = () => {
 
         if (total >= 30) {
 
-            uni.showToast({ title: `同一天只能最多记录30笔${formData.billType === 'expenses' ? '支出' : '收入'}`, icon: 'none' });
+            uni.showToast({ title: `同一天只能最多记录30笔${formData.billType === billTypeEnum.expenses ? '支出' : '收入'}`, icon: 'none' });
 
             isSubmitting.value = false;
 
@@ -172,8 +172,8 @@ const onConfirmButtonClick = () => {
             createBill({
                 userId: formData.userId,
                 billType: formData.billType,
-                expensesAmount: formData.billType === 'expenses' ? currency(formData.amount).multiply(100).value : 0,
-                incomeAmount: formData.billType === 'income' ? currency(formData.amount).multiply(100).value : 0,
+                expensesAmount: formData.billType === billTypeEnum.billTypeEnum ? currency(formData.amount).multiply(100).value : 0,
+                incomeAmount: formData.billType === billTypeEnum.income ? currency(formData.amount).multiply(100).value : 0,
                 remark: formData.remark,
                 billTime: formData.billTime,
                 tagId: formData.tagId
@@ -203,8 +203,8 @@ const onConfirmButtonClick = () => {
                 billId: formData.billId,
                 userId: formData.userId,
                 billType: formData.billType,
-                expensesAmount: formData.billType === 'expenses' ? currency(formData.amount).multiply(100).value : 0,
-                incomeAmount: formData.billType === 'income' ? currency(formData.amount).multiply(100).value : 0,
+                expensesAmount: formData.billType === billTypeEnum.expenses ? currency(formData.amount).multiply(100).value : 0,
+                incomeAmount: formData.billType === billTypeEnum.income ? currency(formData.amount).multiply(100).value : 0,
                 remark: formData.remark,
                 billTime: formData.billTime,
                 tagId: formData.tagId
@@ -253,7 +253,7 @@ onMounted(({ billId }) => {
 
         formData.billId = '';
         formData.userId = userId;
-        formData.billType = 'expenses';
+        formData.billType = billTypeEnum.expenses;
         formData.billTime = moment().format('YYYY-MM-DD');
         formData.tagId = expenseTags.value[0]._id;
         formData.amount = '';
@@ -283,7 +283,7 @@ onMounted(({ billId }) => {
             formData.billType = billType;
             formData.billTime = billTime;
             formData.tagId = tagId[0]._id;
-            formData.amount = `${currency(billType === 'expenses' ? expensesAmount : incomeAmount).divide(100).value}`;
+            formData.amount = `${currency(billType === billTypeEnum.expenses ? expensesAmount : incomeAmount).divide(100).value}`;
             formData.remark = remark;
 
             remarkInput.value = remark;
@@ -309,17 +309,17 @@ onShareAppMessage();
             <view class="tab">
 
                 <view class="tab-item"
-                      :class="{ 'expenses': formData.billType === 'expenses' }"
-                      :hover-class="formData.billType === 'expenses' ? '' : 'gray-hover-class'"
+                      :class="{ 'expenses': formData.billType === billTypeEnum.expenses }"
+                      :hover-class="formData.billType === billTypeEnum.expenses ? '' : 'gray-hover-class'"
                       hover-stay-time="100"
-                      @click="onTabItemClick({ billType: 'expenses' })">支出
+                      @click="onTabItemClick({ billType: billTypeEnum.expenses })">支出
                 </view>
 
                 <view class="tab-item"
-                      :class="{ 'income': formData.billType === 'income' }"
-                      :hover-class="formData.billType === 'income' ? '' : 'gray-hover-class'"
+                      :class="{ 'income': formData.billType === billTypeEnum.income }"
+                      :hover-class="formData.billType === billTypeEnum.income ? '' : 'gray-hover-class'"
                       hover-stay-time="100"
-                      @click="onTabItemClick({ billType: 'income' })">收入
+                      @click="onTabItemClick({ billType: billTypeEnum.income })">收入
                 </view>
 
             </view>
@@ -347,7 +347,7 @@ onShareAppMessage();
 
         <view class="tag-content">
 
-            <view v-show="formData.billType === 'expenses'">
+            <view v-show="formData.billType === billTypeEnum.expenses">
 
                 <view class="tag-wrapper">
 
@@ -374,7 +374,7 @@ onShareAppMessage();
 
             </view>
 
-            <view v-show="formData.billType === 'income'">
+            <view v-show="formData.billType === billTypeEnum.income">
 
                 <view class="tag-wrapper">
 
@@ -464,8 +464,8 @@ onShareAppMessage();
 
                     <view class="keyboard-item"
                           :class="{
-                              'expenses': formData.billType === 'expenses',
-                              'income': formData.billType === 'income'
+                              'expenses': formData.billType === billTypeEnum.expenses,
+                              'income': formData.billType === billTypeEnum.income
                           }"
                           hover-class="default-hover-class"
                           hover-stay-time="100"
@@ -483,7 +483,7 @@ onShareAppMessage();
                       :showConfirm="false"
                       :min-date="calendarMinDate"
                       :max-date="calendarMaxDate"
-                      :color="formData.billType === 'expenses' ? '#3eb575' : '#f0b73a'"
+                      :color="formData.billType === billTypeEnum.expenses ? '#3eb575' : '#f0b73a'"
                       @close="onCalendarClose"
                       @select="onCalendarSelect" />
 
@@ -509,8 +509,8 @@ onShareAppMessage();
 
                 <view class="popup-button"
                       :class="{
-                          'expenses': formData.billType === 'expenses' && remarkInput.length > 0,
-                          'income': formData.billType === 'income' && remarkInput.length > 0
+                          'expenses': formData.billType === billTypeEnum.expenses && remarkInput.length > 0,
+                          'income': formData.billType === billTypeEnum.income && remarkInput.length > 0
                       }"
                       :hover-class="remarkInput.length > 0 ? 'default-hover-class' : ''"
                       hover-stay-time="100"

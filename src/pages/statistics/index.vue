@@ -6,7 +6,7 @@ import { onMounted } from '@/hooks/onMounted';
 import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
 import { useStatisticsSetting } from '@/hooks/useStatisticsSetting';
-import { dateModeEnum } from '@/constant';
+import { dateModeEnum, billTypeEnum } from '@/constant';
 import {
     getBillStatisticsAndTotal,
     getBillStatisticsGroupByTag,
@@ -33,7 +33,7 @@ const {
 
 // 加载
 const loading = ref(true);
-const billType = ref('expenses');
+const billType = ref(billTypeEnum.expenses);
 // 日期选择器相关
 const showDatePicker = ref(false);
 const activeDateMode = ref(dateModeEnum.month);
@@ -112,20 +112,27 @@ const onClickExpand = () => showExpand.value = !showExpand.value;
 
 const onTagAmountItemClick = ({ tagId, tagName }) => {
 
+    const {
+        startTime,
+        endTime
+    } = getTimeRange();
+
     uni.navigateTo({
-        url: `/pages/list/index?title=${tagName}${isYearMode() ? `${activeDate.value}年` : moment(activeDate.value).format('M月')}${billType.value === 'expenses' ? '共支出' : '共收入'}&date=${activeDate.value}&tagId=${tagId}`
+        url: `/pages/list/index?title=${tagName}${isYearMode() ? `${activeDate.value}年` : moment(activeDate.value).format('M月')}${billType.value === billTypeEnum.expenses ? '共支出' : '共收入'}&startTime=${startTime}&endTime=${endTime}&tagId=${tagId}`
     });
 
 };
 
 const onWholeButtonClick = () => {
 
-    uni.navigateTo({
-        url: `/pages/list/index?title=${isYearMode() ? `${activeDate.value}年` : moment(activeDate.value).format('M月')}${billType.value === 'expenses' ? '共支出' : '共收入'}&date=${activeDate.value}`
-    });
+    const {
+        startTime,
+        endTime
+    } = getTimeRange();
 
-    // 5月餐饮共支出
-    // 5月共支出
+    uni.navigateTo({
+        url: `/pages/list/index?title=${isYearMode() ? `${activeDate.value}年` : moment(activeDate.value).format('M月')}${billType.value === billTypeEnum.expenses ? '共支出' : '共收入'}&startTime=${startTime}&endTime=${endTime}`
+    });
 
 };
 
@@ -140,8 +147,6 @@ const initSetting = () => {
 };
 
 const onQuery = () => {
-
-    uni.showLoading({ title: '加载中' });
 
     loading.value = true;
     showExpand.value = true;
@@ -209,7 +214,7 @@ const onQuery = () => {
                             : `${item.time.split('.')[0]}月${item.time.split('.')[1]}日`;
 
                         return {
-                            name: `${time}共${billType.value === 'expenses' ? '支出' : '收入'}: ¥${currency(item.amount).divide(100).value}`,
+                            name: `${time}共${billType.value === billTypeEnum.expenses ? '支出' : '收入'}: ¥${currency(item.amount).divide(100).value}`,
                             value: currency(item.amount).divide(100).value
                         };
 
@@ -251,8 +256,8 @@ onShareAppMessage();
 
         <view class="header"
               :class="{
-                  'expenses': billType === 'expenses',
-                  'income': billType === 'income'
+                  'expenses': billType === billTypeEnum.expenses,
+                  'income': billType === billTypeEnum.income
               }">
 
             <view class="header-item"
@@ -268,13 +273,13 @@ onShareAppMessage();
             <view class="header-item">
 
                 <view class="tab"
-                      :class="{ 'expenses': billType === 'expenses' }"
-                      @click="onTabItemClick({ type: 'expenses' })">支出
+                      :class="{ 'expenses': billType === billTypeEnum.expenses }"
+                      @click="onTabItemClick({ type: billTypeEnum.expenses })">支出
                 </view>
 
                 <view class="tab"
-                      :class="{ 'income': billType === 'income' }"
-                      @click="onTabItemClick({ type: 'income' })">收入
+                      :class="{ 'income': billType === billTypeEnum.income }"
+                      @click="onTabItemClick({ type: billTypeEnum.income })">收入
                 </view>
 
             </view>
@@ -283,18 +288,18 @@ onShareAppMessage();
 
         <view class="total"
               :class="{
-                  'expenses': billType === 'expenses',
-                  'income': billType === 'income'
+                  'expenses': billType === billTypeEnum.expenses,
+                  'income': billType === billTypeEnum.income
               }">
 
             <view class="total-amount">
 
-                <block v-if="billType === 'expenses'">
+                <block v-if="billType === billTypeEnum.expenses">
                     <text class="label"> {{ isYearMode() ? '年支出' : '月支出' }}</text>
                     <text class="value">{{ formatAmount(totalAmount) }}</text>
                 </block>
 
-                <block v-if="billType === 'income'">
+                <block v-if="billType === billTypeEnum.income">
                     <text class="label">{{ isYearMode() ? '年收入' : '月收入' }}</text>
                     <text class="value">{{ formatAmount(totalAmount) }}</text>
                 </block>
@@ -309,7 +314,7 @@ onShareAppMessage();
 
             <view class="structure">
 
-                <view class="title">{{ billType === 'expenses' ? '支出' : '收入' }}构成</view>
+                <view class="title">{{ billType === billTypeEnum.expenses ? '支出' : '收入' }}构成</view>
 
                 <view class="chart">
 
@@ -332,8 +337,8 @@ onShareAppMessage();
 
                         <view class="icon"
                               :class="{
-                                  'expenses': billType === 'expenses',
-                                  'income': billType === 'income'
+                                  'expenses': billType === billTypeEnum.expenses,
+                                  'income': billType === billTypeEnum.income
                               }">
                             <image :src="item.tagIcon" />
                         </view>
@@ -351,7 +356,7 @@ onShareAppMessage();
 
                                 <van-progress :percentage="item.percent"
                                               :show-pivot="false"
-                                              :color="billType === 'expenses' ? '#3eb575' : '#f0b73a'"
+                                              :color="billType === billTypeEnum.expenses ? '#3eb575' : '#f0b73a'"
                                               stroke-width="5"
                                               track-color="#ffffff" />
 
@@ -361,7 +366,7 @@ onShareAppMessage();
 
                         <view class="amount">
 
-                            <text>{{ billType === 'expenses' ? '-' : '+' }}</text>
+                            <text>{{ billType === billTypeEnum.expenses ? '-' : '+' }}</text>
                             <text>{{ formatAmount(item.amount) }}</text>
                             <image src="../../static/svgs/icon_right_gray.svg" />
 
@@ -428,7 +433,7 @@ onShareAppMessage();
 
                 <view class="title">
 
-                    {{ billType === 'expenses' ? '支出' : '收入' }}排行
+                    {{ billType === billTypeEnum.expenses ? '支出' : '收入' }}排行
 
                 </view>
 
@@ -444,8 +449,8 @@ onShareAppMessage();
 
                         <view class="icon"
                               :class="{
-                                  'expenses': bill.billType === 'expenses',
-                                  'income': bill.billType === 'income'
+                                  'expenses': bill.billType === billTypeEnum.expenses,
+                                  'income': bill.billType === billTypeEnum.expenses
                               }">
 
                             <image :src="bill.tagIcon" />
@@ -461,10 +466,10 @@ onShareAppMessage();
 
                         <view class="info">
 
-                            <view v-if="bill.billType === 'expenses'" class="amount">
+                            <view v-if="bill.billType === billTypeEnum.expenses" class="amount">
                                 - {{ formatAmount(bill.expensesAmount) }}
                             </view>
-                            <view v-if="bill.billType === 'income'" class="amount">
+                            <view v-if="bill.billType === billTypeEnum.income" class="amount">
                                 + {{ formatAmount(bill.incomeAmount) }}
                             </view>
 
@@ -493,9 +498,9 @@ onShareAppMessage();
 
         <view class="no-data" v-if="billList.length === 0 && !loading">
 
-            <image v-show="billType === 'expenses'" src="../../static/svgs/pic_no_more.svg" />
+            <image v-show="billType === billTypeEnum.expenses" src="../../static/svgs/pic_no_more.svg" />
 
-            <image v-show="billType === 'income'" src="../../static/svgs/pic_no_more_income.svg" />
+            <image v-show="billType === billTypeEnum.income" src="../../static/svgs/pic_no_more_income.svg" />
 
             <text>暂无账单，快去记一笔吧^-^</text>
 

@@ -4,6 +4,7 @@ import { ref, reactive } from 'vue';
 import { onMounted } from '@/hooks/onMounted';
 import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { getWeekday } from '@/util';
+import { billTypeEnum } from '@/constant';
 import { getBillByBillId, deleteBill } from '@/service/bill';
 import moment from 'moment';
 import currency from 'currency.js';
@@ -76,7 +77,7 @@ onMounted(({ billId }) => {
     }) => {
 
         uni.setNavigationBarTitle({
-            title: billType === 'expenses' ? '支出' : '收入'
+            title: billType === billTypeEnum.expenses ? '支出' : '收入'
         });
 
         bill.billId = billId;
@@ -84,7 +85,7 @@ onMounted(({ billId }) => {
         bill.tagName = tagId[0].tagName;
         bill.tagIcon = tagId[0].selectTagIcon;
         bill.billTime = `${moment(billTime).format('YYYY年M月D日')} ${getWeekday({ day: moment(billTime).day() })}`;
-        bill.amount = `${billType === 'expenses' ? '-' : '+'} ${currency(billType === 'expenses' ? expensesAmount : incomeAmount).divide(100)}`;
+        bill.amount = `${billType === billTypeEnum.expenses ? '-' : '+'} ${currency(billType === billTypeEnum.billTypeEnum ? expensesAmount : incomeAmount).divide(100)}`;
         bill.remark = remark;
 
         loading.value = false;
@@ -106,8 +107,8 @@ onShareAppMessage();
 
             <view class="tag-icon"
                   :class="{
-                      'expenses': bill.billType === 'expenses',
-                      'income': bill.billType === 'income'
+                      'expenses': bill.billType === billTypeEnum.expenses,
+                      'income': bill.billType === billTypeEnum.income
                   }">
 
                 <image :src="bill.tagIcon" />

@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import _ from 'lodash';
+import { billTypeEnum } from '@/constant';
 
 export const useAppStore = defineStore('app', {
     state: () => ({
@@ -59,12 +60,12 @@ export const useAppStore = defineStore('app', {
         },
         expenseTags(state) {
 
-            return _.filter(state.tags, item => item.tagType === 'expenses');
+            return _.filter(state.tags, item => item.tagType === billTypeEnum.expenses);
 
         },
         incomeTags(state) {
 
-            return _.filter(state.tags, item => item.tagType === 'income');
+            return _.filter(state.tags, item => item.tagType === billTypeEnum.income);
 
         },
         shareData(state) {

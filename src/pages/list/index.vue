@@ -6,12 +6,15 @@ import { onMounted } from '@/hooks/onMounted';
 import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
 import { defaultPageSize } from '@/constant';
-import { getBillListByTag, getBillStatistics, deleteBill } from '@/service/bill';
+import { getBillList, getBillStatistics, deleteBill } from '@/service/bill';
 import moment from 'moment';
 import _ from 'lodash';
 
 // 加载
 const loading = ref(true);
+const startTime = ref('');
+const endTime = ref('');
+const tagId = ref('');
 // 类型(按标签分类/按周期分类)
 const listType = ref('');
 // 列表相关
@@ -24,17 +27,29 @@ const onQuery = () => {
 
 
 
+    uni.hideLoading();
+
 };
 
-onMounted(({ title, date, tagId }) => {
+const onQueryStatistics = () => {
+
+
+
+};
+
+onMounted(({ _title, _startTime, _endTime, _tagId }) => {
 
     uni.setNavigationBarTitle({
-        title
+        title: _title
     });
 
-    console.log(date, tagId);
+    startTime.value = _startTime;
+    endTime.value = _endTime;
+    tagId.value = _tagId;
 
-    uni.hideLoading();
+    onQuery();
+
+    onQueryStatistics();
 
 });
 

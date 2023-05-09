@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import moment from 'moment';
+import { billTypeEnum, listTypeEnum } from '@/constant';
 
 export const getBillByBillId = ({
     billId
@@ -105,7 +106,7 @@ export const deleteBill = ({
 
 };
 
-export const getBillList = ({
+export const getBillRecord = ({
     userId,
     tagId,
     pageNumber,
@@ -126,11 +127,11 @@ export const getBillList = ({
 
     } else if (tagId === 'allExpenses') {
 
-        condition = `userId == "${userId}" && billType == "expenses" && billTime >="${startTime}" && billTime < "${endTime}"`;
+        condition = `userId == "${userId}" && billType == "${billTypeEnum.expenses}" && billTime >="${startTime}" && billTime < "${endTime}"`;
 
     } else if (tagId === 'allIncome') {
 
-        condition = `userId == "${userId}" && billType == "income" && billTime >="${startTime}" && billTime < "${endTime}"`;
+        condition = `userId == "${userId}" && billType == "${income.income}" && billTime >="${startTime}" && billTime < "${endTime}"`;
 
     }
 
@@ -171,11 +172,11 @@ export const getBillList = ({
 
             } else if (tagId === 'allExpenses') {
 
-                groupCondition = `userId == "${userId}" && billType == "expenses" && billTime in ${JSON.stringify(billTimeArray)}`;
+                groupCondition = `userId == "${userId}" && billType == "${billTypeEnum.expenses}" && billTime in ${JSON.stringify(billTimeArray)}`;
 
             } else if (tagId === 'allIncome') {
 
-                groupCondition = `userId == "${userId}" && billType == "income" && billTime in ${JSON.stringify(billTimeArray)}`;
+                groupCondition = `userId == "${userId}" && billType == "${billTypeEnum.income}" && billTime in ${JSON.stringify(billTimeArray)}`;
 
             }
 
@@ -225,11 +226,11 @@ export const getBillStatistics = ({
 
     } else if (tagId === 'allExpenses') {
 
-        condition = `userId == "${userId}" && billType == "expenses" && billTime >="${startTime}" && billTime < "${endTime}"`;
+        condition = `userId == "${userId}" && billType == "${billTypeEnum.expenses}" && billTime >="${startTime}" && billTime < "${endTime}"`;
 
     } else if (tagId === 'allIncome') {
 
-        condition = `userId == "${userId}" && billType == "income" && billTime >="${startTime}" && billTime < "${endTime}"`;
+        condition = `userId == "${userId}" && billType == "${billTypeEnum.income}" && billTime >="${startTime}" && billTime < "${endTime}"`;
 
     }
 
@@ -269,7 +270,7 @@ export const getBillStatisticsAndTotal = ({
 
     let query = null;
 
-    if (billType === 'expenses') {
+    if (billType === billTypeEnum.expenses) {
 
         query = db.collection('bill')
             .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`)
@@ -318,7 +319,7 @@ export const getBillStatisticsGroupByTag = ({
 
     let query = null;
 
-    if (billType === 'expenses') {
+    if (billType === billTypeEnum.expenses) {
 
         const bill = db.collection('bill')
             .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`)
@@ -388,7 +389,7 @@ export const getBillStatisticsGroupByDay = ({
 
     let query = null;
 
-    if (billType === 'expenses') {
+    if (billType === billTypeEnum.expenses) {
 
         const bill = db.collection('bill')
             .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`)
@@ -462,7 +463,7 @@ export const getBillStatisticsGroupByMonth = ({
 
     let query = null;
 
-    if (billType === 'expenses') {
+    if (billType === billTypeEnum.expenses) {
 
         const bill = db.collection('bill')
             .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`)
@@ -523,48 +524,51 @@ export const getBillStatisticsGroupByMonth = ({
 
 };
 
-export const getBillListOrderByAmount = ({
+export const getBillList = ({
     userId,
     billType,
+    tagId,
     pageNumber,
     pageSize,
     startTime,
-    endTime
+    endTime,
+    type
 }) => {
 
     const db = uniCloud.database();
 
-    let query = null;
+    let condition = '';
+    let orderBy = '';
 
-    if (billType === 'expenses') {
+    if (!tagId) {
 
-        const bill = db.collection('bill')
-            .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`)
-            .getTemp();
-
-        query = db.collection(bill, 'tag')
-            .orderBy('expensesAmount desc')
-            .skip(pageNumber * pageSize)
-            .limit(pageSize)
-            .get();
+        condition = `userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`;
 
     } else {
 
-        const bill = db.collection('bill')
-            .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`)
-            .getTemp();
-
-        query = db.collection(bill, 'tag')
-            .orderBy('incomeAmount desc')
-            .skip(pageNumber * pageSize)
-            .limit(pageSize)
-            .get();
+        condition = `userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}" && tagId == "${tagId}"`;
 
     }
 
-    return query.then(({ result: { data } }) => {
+    if (type === listTypeEnum.amount) {
 
-        return _.map(data, (item) => {
+        orderBy = billType === billTypeEnum.expenses ? 'expensesAmount desc' : 'incomeAmount desc';
+
+    } else {
+
+        orderBy = 'billTime desc, createTime desc';
+
+    }
+
+    const bill = db.collection('bill')
+        .where(condition)
+        .getTemp();
+
+    return db.collection(bill, 'tag')
+        .orderBy(orderBy)
+        .skip(pageNumber * pageSize)
+        .limit(pageSize)
+        .get().then(({ result: { data } }) => _.map(data, (item) => {
 
             return {
                 _id: item._id,
@@ -577,49 +581,6 @@ export const getBillListOrderByAmount = ({
                 tagIcon: item.tagId[0].selectTagIcon
             };
 
-        });
-
-    });
-
-};
-
-export const getBillListByTag = ({
-    userId,
-    tagId,
-    pageNumber,
-    pageSize,
-    startTime,
-    endTime
-}) => {
-
-    const db = uniCloud.database();
-
-    const bill = db.collection('bill')
-        .where(`userId == "${userId}" && tagId == "${tagId}" && billTime >= "${startTime}" && billTime < "${endTime}"`)
-        .orderBy('billTime desc, createTime desc')
-        .getTemp();
-
-    return db.collection(bill, 'tag')
-        .skip(pageNumber * pageSize)
-        .limit(pageSize)
-        .get()
-        .then(({ result: { data } }) => {
-
-            return _.map(data, (item) => {
-
-                return {
-                    _id: item._id,
-                    billTime: item.billTime,
-                    billType: item.billType,
-                    expensesAmount: item.expensesAmount,
-                    incomeAmount: item.incomeAmount,
-                    remark: item.remark,
-                    tagName: item.tagId[0].tagName,
-                    tagIcon: item.tagId[0].selectTagIcon
-                };
-
-            });
-
-        });
+        }));
 
 };

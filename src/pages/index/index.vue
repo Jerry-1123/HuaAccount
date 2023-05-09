@@ -6,8 +6,8 @@ import { onMounted } from '@/hooks/onMounted';
 import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
 import { rpx2px, getWeekday } from '@/util';
-import { defaultTagId, defaultPageSize, dateModeEnum } from '@/constant';
-import { getBillList, getBillStatistics, deleteBill } from '@/service/bill';
+import { defaultTagId, defaultPageSize, dateModeEnum, billTypeEnum } from '@/constant';
+import { getBillRecord, getBillStatistics, deleteBill } from '@/service/bill';
 import moment from 'moment';
 import _ from 'lodash';
 import currency from 'currency.js';
@@ -181,7 +181,7 @@ const onQuery = () => {
 
     }
 
-    return getBillList({
+    return getBillRecord({
         userId: userId.value,
         tagId: activeTagId.value,
         pageNumber: pageNumber.value,
@@ -463,8 +463,8 @@ onShareAppMessage();
 
                             <view class="icon"
                                   :class="{
-                                      'expenses': bill.billType === 'expenses',
-                                      'income': bill.billType === 'income'
+                                      'expenses': bill.billType === billTypeEnum.expenses,
+                                      'income': bill.billType === billTypeEnum.income
                                   }">
 
                                 <image :src="bill.tagIcon" />
@@ -480,10 +480,10 @@ onShareAppMessage();
 
                             <view class="amount">
 
-                                <text v-if="bill.billType === 'expenses'" class="expenses">
+                                <text v-if="bill.billType === billTypeEnum.expenses" class="expenses">
                                     - {{ formatAmount(bill.expensesAmount) }}
                                 </text>
-                                <text v-if="bill.billType === 'income'" class="income">
+                                <text v-if="bill.billType === billTypeEnum" class="income">
                                     + {{ formatAmount(bill.incomeAmount) }}
                                 </text>
 

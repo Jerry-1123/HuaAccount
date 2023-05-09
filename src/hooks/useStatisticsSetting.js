@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { billTypeEnum } from '@/constant';
 
 const expensesColor = '#3eb575';
 
@@ -103,7 +104,7 @@ export const useStatisticsSetting = () => {
                     centerColor: '#ffffff'
                 },
             },
-            color: billType === 'expenses' ? expensesColorList : incomeColorList
+            color: billType === billTypeEnum.expenses ? expensesColorList : incomeColorList
         };
 
         return config;
@@ -135,7 +136,7 @@ export const useStatisticsSetting = () => {
             extra: {
                 column: {
                     type: "group",
-                    activeBgColor: billType === 'expenses' ? expensesColor : incomeColor,
+                    activeBgColor: billType === billTypeEnum.expenses ? expensesColor : incomeColor,
                     activeBgOpacity: 0.2
                 },
                 tooltip: {
@@ -145,7 +146,7 @@ export const useStatisticsSetting = () => {
                     fontColor: "#fff"
                 }
             },
-            color: billType === 'expenses' ? expensesColorList : incomeColorList
+            color: billType === billTypeEnum.expenses ? expensesColorList : incomeColorList
         };
 
         if (isYearMode) {
@@ -170,7 +171,7 @@ export const useStatisticsSetting = () => {
 
     const changeColor = ({ billType }) => {
 
-        if (billType === 'expenses') {
+        if (billType === billTypeEnum.expenses) {
 
             uni.setNavigationBarColor({
                 frontColor: '#ffffff',
