@@ -540,6 +540,7 @@ page {
         flex-shrink: 0;
         padding: 50rpx 50rpx 30rpx;
         display: flex;
+        align-items: center;
         justify-content: space-between;
         font-size: 34rpx;
 
