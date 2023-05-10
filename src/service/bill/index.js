@@ -138,12 +138,12 @@ export const getBillRecord = ({
     const bill = db.collection('bill')
         .where(condition)
         .orderBy('billTime desc, createTime desc')
+        .skip(pageNumber * pageSize)
+        .limit(pageSize)
         .getTemp();
 
     // 获取账单列表
     return db.collection(bill, 'tag')
-        .skip(pageNumber * pageSize)
-        .limit(pageSize)
         .get()
         .then(({ result: { data } }) => {
 
@@ -273,7 +273,7 @@ export const getBillStatisticsAndTotal = ({
 
     let condition = `userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`;
 
-    if(tagId){
+    if (tagId) {
 
         condition += ` && tagId == "${tagId}"`;
 
@@ -541,7 +541,7 @@ export const getBillList = ({
     pageSize,
     startTime,
     endTime,
-    type
+    type = listTypeEnum.amount
 }) => {
 
     const db = uniCloud.database();
@@ -571,13 +571,14 @@ export const getBillList = ({
 
     const bill = db.collection('bill')
         .where(condition)
-        .getTemp();
-
-    return db.collection(bill, 'tag')
         .orderBy(orderBy)
         .skip(pageNumber * pageSize)
         .limit(pageSize)
-        .get().then(({ result: { data } }) => _.map(data, (item) => {
+        .getTemp();
+
+    return db.collection(bill, 'tag')
+        .get()
+        .then(({ result: { data } }) => _.map(data, (item) => {
 
             return {
                 _id: item._id,

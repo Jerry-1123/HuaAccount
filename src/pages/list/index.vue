@@ -114,7 +114,7 @@ const onQueryStatistics = () => {
         endTime: endTime.value
     }).then((data) => {
 
-        totalAmount.value = data.totalAmount;
+        totalAmount.value = currency(data.totalAmount).divide(100);
         totalCount.value = data.totalCount;
 
     });
@@ -196,7 +196,7 @@ onShareAppMessage();
 
             <view class="total">
 
-                {{ billType === billTypeEnum.expenses ? '共支出' : '共收入' }}{{ totalAmount }}100000000000000000
+                {{ billType === billTypeEnum.expenses ? '共支出' : '共收入' }}{{ totalAmount }}
 
             </view>
 
@@ -251,6 +251,9 @@ onShareAppMessage();
 
         </view>
 
+        <!-- 用于解决ios的bug -->
+        <view style="height: 1px" />
+
     </view>
 </template>
 
@@ -297,7 +300,8 @@ page {
         }
 
         .total {
-            font-size: 28rpx;
+            font-size: 30rpx;
+            font-weight: bold;
             max-width: 350rpx;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -382,7 +386,7 @@ page {
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 30rpx 0;
+        margin-bottom: 30rpx;
     }
 
 }
