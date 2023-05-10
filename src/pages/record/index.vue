@@ -172,7 +172,7 @@ const onConfirmButtonClick = () => {
             createBill({
                 userId: formData.userId,
                 billType: formData.billType,
-                expensesAmount: formData.billType === billTypeEnum.billTypeEnum ? currency(formData.amount).multiply(100).value : 0,
+                expensesAmount: formData.billType === billTypeEnum.expenses ? currency(formData.amount).multiply(100).value : 0,
                 incomeAmount: formData.billType === billTypeEnum.income ? currency(formData.amount).multiply(100).value : 0,
                 remark: formData.remark,
                 billTime: formData.billTime,
