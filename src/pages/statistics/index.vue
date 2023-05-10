@@ -148,6 +148,8 @@ const initSetting = () => {
 
 const onQuery = () => {
 
+    uni.showLoading({ title: '加载中' });
+
     loading.value = true;
     showExpand.value = true;
 
@@ -442,7 +444,7 @@ onShareAppMessage();
                     <view v-for="(bill, index) in billList.slice(0, 10)"
                           :key="bill._id"
                           class="list-item"
-                          hover-class="default-hover-class"
+                          hover-class="gray-hover-class"
                           hover-stay-time="100">
 
                         <view class="index">{{ index + 1 }}</view>

@@ -561,7 +561,9 @@ export const getBillList = ({
 
     if (type === listTypeEnum.amount) {
 
-        orderBy = billType === billTypeEnum.expenses ? 'expensesAmount desc' : 'incomeAmount desc';
+        orderBy = billType === billTypeEnum.expenses
+            ? 'expensesAmount desc, billTime desc, createTime desc'
+            : 'incomeAmount desc, billTime desc, createTime desc';
 
     } else {
 

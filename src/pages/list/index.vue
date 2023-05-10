@@ -86,6 +86,8 @@ const onQuery = () => {
 
         }
 
+        loading.value = false;
+
         uni.hideLoading();
         uni.stopPullDownRefresh();
 
@@ -95,10 +97,10 @@ const onQuery = () => {
 
 const onClear = () => {
 
+    uni.showLoading({ title: '加载中' });
+
     pageStatus.value = '';
     pageNumber.value = 0;
-
-    uni.showLoading();
 
     onQuery();
 
@@ -166,7 +168,7 @@ onShareAppMessage();
 </script>
 
 <template>
-    <view class="content">
+    <view v-show="!loading" class="content">
 
         <view class="action-content">
 
@@ -177,9 +179,8 @@ onShareAppMessage();
                           'expenses': activeListType === listTypeEnum.amount && billType === billTypeEnum.expenses,
                           'income': activeListType === listTypeEnum.amount && billType === billTypeEnum.income
                       }"
-                      :hover-class="activeListType === listTypeEnum.amount ? '' : 'gray-hover-class'"
                       hover-stay-time="100"
-                      @click="onTabItemClick({ listType: listTypeEnum.amount })">金额
+                      @click="onTabItemClick({ listType: listTypeEnum.amount })">按金额
                 </view>
 
                 <view class="tab-item"
@@ -187,16 +188,15 @@ onShareAppMessage();
                           'expenses': activeListType === listTypeEnum.time && billType === billTypeEnum.expenses,
                           'income': activeListType === listTypeEnum.time && billType === billTypeEnum.income
                       }"
-                      :hover-class="activeListType === listTypeEnum.time ? '' : 'gray-hover-class'"
                       hover-stay-time="100"
-                      @click="onTabItemClick({ listType: listTypeEnum.time })">时间
+                      @click="onTabItemClick({ listType: listTypeEnum.time })">按时间
                 </view>
 
             </view>
 
             <view class="total">
 
-                {{ billType === billTypeEnum.expenses ? '共支出' : '共收入' }}{{ totalAmount }}
+                {{ billType === billTypeEnum.expenses ? '支出' : '收入' }}¥{{ totalAmount }}
 
             </view>
 
@@ -207,7 +207,7 @@ onShareAppMessage();
             <view v-for="(bill) in list"
                   :key="bill._id"
                   class="list-item"
-                  hover-class="default-hover-class"
+                  hover-class="gray-hover-class"
                   hover-stay-time="100">
 
                 <view class="icon"
@@ -273,7 +273,7 @@ page {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        font-size: 34rpx;
+        font-size: 30rpx;
 
         .tab {
             display: flex;
@@ -311,7 +311,7 @@ page {
     }
 
     .list {
-        padding: 30rpx;
+        padding: 0 30rpx;
 
         .list-item {
             display: flex;
@@ -386,7 +386,7 @@ page {
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 30rpx;
+        margin: 30rpx;
     }
 
 }
