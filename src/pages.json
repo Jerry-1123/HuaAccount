@@ -27,6 +27,13 @@
 			}
 		},
 		{
+			"path": "pages/user/index",
+			"style": {
+				"disableScroll": true,
+				"navigationBarTitleText": "我的"
+			}
+		},
+		{
 			"path": "pages/record/index",
 			"style": {
 				"disableScroll": true,

@@ -61,7 +61,7 @@ export const onMounted = (fucntion) => {
                             setUserInfo({
                                 openId,
                                 userId,
-                                nickName: '',
+                                nickName: `微信用户${_.random(100000, 999999)}`,
                                 avatar: ''
                             });
 
