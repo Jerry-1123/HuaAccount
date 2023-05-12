@@ -1,6 +1,6 @@
 <script setup name="user">
 
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { onMounted } from '@/hooks/onMounted';
 import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
@@ -16,7 +16,6 @@ onMounted(() => {
     // 头像、昵称
     // 意见反馈
     // 分享
-    // 彩蛋(ONE·一个)
     // 关于
 
 });
@@ -25,8 +24,20 @@ onShareAppMessage();
 
 </script>
 
-<template></template>
+<template>
+    <view class="content">
 
-<style></style>
+        
 
-<style lang="scss" scoped></style>
+    </view>
+</template>
+
+<style>
+page {
+    background-color: #ffffff;
+}
+</style>
+
+<style lang="scss" scoped>
+.content {}
+</style>
