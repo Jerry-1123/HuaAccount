@@ -7,10 +7,13 @@ import { useState } from '@/hooks/useState';
 
 // 全局数据
 const {
-    userId
+    avatar,
+    nickName
 } = useState();
 
 onMounted(() => {
+
+    uni.hideLoading();
 
     // 我的界面
     // 头像、昵称
@@ -27,7 +30,9 @@ onShareAppMessage();
 <template>
     <view class="content">
 
-        
+        <image :src="avatar" />
+
+        <text>{{ nickName }}</text>
 
     </view>
 </template>

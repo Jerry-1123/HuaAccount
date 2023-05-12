@@ -56,13 +56,6 @@
 			}
 		},
 		{
-			"path": "pages/user/index",
-			"style": {
-				"disableScroll": true,
-				"navigationBarTitleText": "个人中心"
-			}
-		},
-		{
 			"path": "pages/list/index",
 			"style": {
 				"enablePullDownRefresh": true,
@@ -99,6 +92,12 @@
 				"iconPath": "static/images/icon_statistics_default.png",
 				"selectedIconPath": "static/images/icon_statistics_selected.png",
 				"text": "统计"
+			},
+			{
+				"pagePath": "pages/user/index",
+				"iconPath": "static/images/icon_user_default.png",
+				"selectedIconPath": "static/images/icon_user_selected.png",
+				"text": "我的"
 			}
 		]
 	}
