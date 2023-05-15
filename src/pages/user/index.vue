@@ -1,25 +1,41 @@
 <script setup name="user">
 
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { onMounted } from '@/hooks/onMounted';
 import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
+import moment from 'moment';
 
 // 全局数据
 const {
     avatar,
-    nickName
+    nickName,
+    registerTime
 } = useState();
+
+const defaultAvatar = ref('../../static/images/icon_avatar.png');
+
+const formatDuration = computed(() => moment(moment().valueOf()).diff(moment(registerTime.value), 'days') + 1);
+
+const onUserInfoClick = () => {
+
+    uni.navigateTo({
+        url: '/pages/user-info/index'
+    });
+
+};
+
+const onAboutClick = () => {
+
+    uni.navigateTo({
+        url: '/pages/about/index'
+    });
+
+};
 
 onMounted(() => {
 
     uni.hideLoading();
-
-    // 我的界面
-    // 头像、昵称
-    // 意见反馈
-    // 分享
-    // 关于
 
 });
 
@@ -30,9 +46,57 @@ onShareAppMessage();
 <template>
     <view class="content">
 
-        <image :src="avatar" />
+        <view class="user-info" @click="onUserInfoClick">
 
-        <text>{{ nickName }}</text>
+            <image class="avatar" :src="avatar || defaultAvatar" />
+
+            <view class="wrap">
+
+                <view class="name">{{ nickName }}</view>
+
+                <text class="time">已使用{{ formatDuration }}天</text>
+
+            </view>
+
+            <image class="more" src="../../static/svgs/icon_right_gray.svg" />
+
+        </view>
+
+        <button class="cell" open-type="feedback">
+
+            <image class="icon" src="../../static/svgs/icon_feedback.svg" />
+
+            <view class="label">意见反馈</view>
+
+            <image class="more" src="../../static/svgs/icon_right_gray.svg" />
+
+        </button>
+
+        <view class="divider" />
+
+        <button class="cell" open-type="share">
+
+            <image class="icon" src="../../static/svgs/icon_share.svg" />
+
+            <view class="label">推荐花花记账本给好友</view>
+
+            <image class="more" src="../../static/svgs/icon_right_gray.svg" />
+
+        </button>
+
+        <view class="divider" />
+
+        <button class="cell" @click="onAboutClick">
+
+            <image class="icon" src="../../static/svgs/icon_about.svg" />
+
+            <view class="label">关于</view>
+
+            <image class="more" src="../../static/svgs/icon_right_gray.svg" />
+
+        </button>
+
+        <view class="version">版本：2.0.12</view>
 
     </view>
 </template>
@@ -44,5 +108,96 @@ page {
 </style>
 
 <style lang="scss" scoped>
-.content {}
+.content {
+    padding: 50rpx;
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 80rpx;
+
+        .avatar {
+            flex-shrink: 0;
+            width: 145rpx;
+            height: 145rpx;
+            border-radius: 100%;
+        }
+
+        .wrap {
+            flex-grow: 1;
+            margin-left: 30rpx;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            .name {
+                font-size: 38rpx;
+                font-weight: bold;
+            }
+
+            .time {
+                margin-top: 8rpx;
+                font-size: 26rpx;
+                color: #8e8e8e;
+            }
+
+        }
+
+        .more {
+            flex-shrink: 0;
+            width: 60rpx;
+            height: 60rpx;
+        }
+
+    }
+
+    .cell {
+        padding: 0;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        background: #ffffff;
+
+        &::after {
+            border: none;
+        }
+
+        .icon {
+            flex-shrink: 0;
+            width: 40rpx;
+            height: 40rpx;
+        }
+
+        .label {
+            flex-grow: 1;
+            margin-left: 30rpx;
+            text-align: left;
+            font-size: 30rpx;
+        }
+
+        .more {
+            flex-shrink: 0;
+            width: 40rpx;
+            height: 40rpx;
+        }
+
+    }
+
+    .divider {
+        height: 1px;
+        background: #F7F8FA;
+        margin: 15rpx 0;
+    }
+
+    .version {
+        text-align: center;
+        color: #8e8e8e;
+        position: fixed;
+        left: 0;
+        bottom: 50rpx;
+        width: 100%;
+        font-size: 26rpx;
+    }
+
+}
 </style>

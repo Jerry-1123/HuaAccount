@@ -190,7 +190,6 @@ page {
             align-items: center;
 
             .avatar-wrapper {
-                padding: 0;
                 width: 80rpx !important;
                 padding: 0;
                 margin: 0;

@@ -11,7 +11,8 @@ export const useState = () => {
         openId,
         userId,
         nickName,
-        avatar
+        avatar,
+        registerTime
     } = storeToRefs(userStore);
 
     const {
@@ -25,7 +26,7 @@ export const useState = () => {
         shareData
     } = storeToRefs(appStore);
 
-    const setUserInfo = ({ openId, userId, nickName, avatar }) => {
+    const setUserInfo = ({ openId, userId, nickName, avatar, registerTime }) => {
 
         userStore.$patch((state) => {
 
@@ -33,6 +34,7 @@ export const useState = () => {
             state.userId = userId;
             state.nickName = nickName;
             state.avatar = avatar;
+            state.registerTime = registerTime;
 
         });
 
@@ -63,6 +65,7 @@ export const useState = () => {
         userId,
         nickName,
         avatar,
+        registerTime,
         tags,
         shareInfo,
         tagsList,

@@ -5,6 +5,7 @@ import { getUserByOpenId, createUser } from '@/service/user';
 import { getTags } from '@/service/tag';
 import { getShareInfo } from '@/service/share';
 import _ from 'lodash';
+import moment from "moment";
 
 export const onMounted = (fucntion) => {
 
@@ -61,8 +62,9 @@ export const onMounted = (fucntion) => {
                             setUserInfo({
                                 openId,
                                 userId,
-                                nickName: `微信用户${_.random(100000, 999999)}`,
-                                avatar: ''
+                                nickName: `微信用户${_.random(10000000, 99999999)}`,
+                                avatar: '',
+                                registerTime: moment().valueOf()
                             });
 
                             return Promise.resolve();
@@ -75,7 +77,8 @@ export const onMounted = (fucntion) => {
                             openId,
                             userId: userInfo._id,
                             nickName: userInfo.nickName,
-                            avatar: userInfo.avatarUrl
+                            avatar: userInfo.avatarUrl,
+                            registerTime: userInfo.createTime
                         });
 
                         return Promise.resolve();

@@ -61,6 +61,12 @@
 				"enablePullDownRefresh": true,
 				"onReachBottomDistance": 50
 			}
+		},
+		{
+			"path": "pages/about/index",
+			"style": {
+				"navigationBarTitleText": "关于"
+			}
 		}
 	],
 	"globalStyle": {

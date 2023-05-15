@@ -5,7 +5,8 @@ export const useUserStore = defineStore('user', {
         openId: '',
         userId: '',
         nickName: '',
-        avatar: ''
+        avatar: '',
+        registerTime: ''
     }),
     getters: {},
     actions: {}
