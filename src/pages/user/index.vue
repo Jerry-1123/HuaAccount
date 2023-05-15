@@ -4,6 +4,7 @@ import { ref, computed } from 'vue';
 import { onMounted } from '@/hooks/onMounted';
 import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
+import { appVersion } from "@/constant";
 import moment from 'moment';
 
 // 全局数据
@@ -12,6 +13,8 @@ const {
     nickName,
     registerTime
 } = useState();
+
+const version = ref(appVersion);
 
 const defaultAvatar = ref('../../static/images/icon_avatar.png');
 
@@ -96,7 +99,7 @@ onShareAppMessage();
 
         </button>
 
-        <view class="version">版本：2.0.12</view>
+        <view class="version">版本：{{ version }}</view>
 
     </view>
 </template>
@@ -118,14 +121,14 @@ page {
 
         .avatar {
             flex-shrink: 0;
-            width: 145rpx;
-            height: 145rpx;
+            width: 128rpx;
+            height: 128rpx;
             border-radius: 100%;
         }
 
         .wrap {
             flex-grow: 1;
-            margin-left: 30rpx;
+            margin-left: 50rpx;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -145,8 +148,8 @@ page {
 
         .more {
             flex-shrink: 0;
-            width: 60rpx;
-            height: 60rpx;
+            width: 40rpx;
+            height: 40rpx;
         }
 
     }

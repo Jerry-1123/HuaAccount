@@ -15,7 +15,7 @@
 
         <view class="text">希望这个小程序可以为你的生活，添加色彩</view>
 
-        <view class="text">有问题联系我QQ: 610500714</view>
+        <view class="text">有问题联系QQ: 610500714</view>
 
     </view>
 </template>

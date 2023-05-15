@@ -1,3 +1,5 @@
+export const appVersion = '2.0.14';
+
 export const defaultPageSize = 20;
 
 export const defaultTagId = 'all';
