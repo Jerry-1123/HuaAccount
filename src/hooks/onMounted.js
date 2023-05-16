@@ -57,12 +57,12 @@ export const onMounted = (fucntion) => {
 
                     if (!userInfo) {
 
-                        return createUser({ openId }).then(({ result: { id: userId } }) => {
+                        return createUser({ openId }).then(({ userId, nickName }) => {
 
                             setUserInfo({
                                 openId,
                                 userId,
-                                nickName: `微信用户${_.random(10000000, 99999999)}`,
+                                nickName,
                                 avatar: '',
                                 registerTime: moment().valueOf()
                             });

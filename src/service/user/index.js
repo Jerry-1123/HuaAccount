@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export const getUserByOpenId = ({
     openId
 }) => {
@@ -23,11 +25,22 @@ export const createUser = ({
 
     const db = uniCloud.database();
 
+    const nickName = `微信用户${_.random(10000000, 99999999)}`;
+
     return db.collection('user')
         .add({
-            openId: openId,
+            openId,
+            nickName,
             createTime: new Date().getTime(),
             updateTime: new Date().getTime()
+        })
+        .then(({ result: { id: userId } }) => {
+
+            return {
+                userId,
+                nickName
+            };
+
         });
 
 };

@@ -121,8 +121,8 @@ page {
 
         .avatar {
             flex-shrink: 0;
-            width: 128rpx;
-            height: 128rpx;
+            width: 120rpx;
+            height: 120rpx;
             border-radius: 100%;
         }
 

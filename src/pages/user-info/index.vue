@@ -93,7 +93,7 @@ onMounted(() => {
     }).then(({ userInfo }) => {
 
         nickName.value = userInfo.nickName;
-        avatar.value = userInfo.avatarUrl;
+        avatar.value = userInfo.avatarUrl || '../../static/images/icon_avatar.png';
 
         loading.value = false;
 
