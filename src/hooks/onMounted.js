@@ -4,6 +4,7 @@ import { getOpenIdByCode } from '@/service-cloud/user';
 import { getUserByOpenId, createUser } from '@/service/user';
 import { getTags } from '@/service/tag';
 import { getShareInfo } from '@/service/share';
+import { shareInfoData } from '@/constant';
 import _ from 'lodash';
 import moment from "moment";
 
@@ -19,7 +20,8 @@ export const onMounted = (fucntion) => {
         const openId = uni.getStorageSync('openId');
         const userId = useState().userId.value;
         const tags = useState().tags.value;
-        const shareInfo = useState().shareInfo.value;
+        // const shareInfo = useState().shareInfo.value;
+        const shareInfo = shareInfoData;
 
         let PromiseForOpenId = () => Promise.resolve({ openId });
         let PromiseForTags = () => Promise.resolve({ tags });
@@ -33,9 +35,9 @@ export const onMounted = (fucntion) => {
             PromiseForTags = () => getTags();
         }
 
-        if (_.isEmpty(shareInfo)) {
-            PromiseForShare = () => getShareInfo();
-        }
+        // if (_.isEmpty(shareInfo)) {
+        //     PromiseForShare = () => getShareInfo();
+        // }
 
         return Promise.all([
             PromiseForOpenId(),
