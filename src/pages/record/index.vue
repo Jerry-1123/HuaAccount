@@ -145,7 +145,7 @@ const onConfirmButtonClick = () => {
         return;
     }
 
-    uni.showLoading({ title: '记录中' });
+    uni.showLoading({ title: '记录中', mask: true });
 
     isSubmitting.value = true;
 

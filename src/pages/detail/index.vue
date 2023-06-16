@@ -41,7 +41,7 @@ const onDeleteButtonClick = () => {
 
         if (confirm) {
 
-            uni.showLoading({ title: '删除中' });
+            uni.showLoading({ title: '删除中', mask: true });
 
             deleteBill({ billId: bill.billId }).then(() => {
 

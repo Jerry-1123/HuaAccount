@@ -148,7 +148,7 @@ const initSetting = () => {
 
 const onQuery = () => {
 
-    uni.showLoading({ title: '加载中' });
+    uni.showLoading({ title: '加载中', mask: true });
 
     loading.value = true;
     showExpand.value = true;

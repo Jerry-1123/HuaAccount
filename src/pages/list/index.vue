@@ -97,7 +97,7 @@ const onQuery = () => {
 
 const onClear = () => {
 
-    uni.showLoading({ title: '加载中' });
+    uni.showLoading({ title: '加载中', mask: true });
 
     pageStatus.value = '';
     pageNumber.value = 0;

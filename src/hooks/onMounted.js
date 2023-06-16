@@ -101,7 +101,7 @@ export const onMounted = (fucntion) => {
 
     onLoad((options) => {
 
-        uni.showLoading({ title: '加载中' });
+        uni.showLoading({ title: '加载中', mask: true });
 
         checkForPageLoad().then(() => {
 

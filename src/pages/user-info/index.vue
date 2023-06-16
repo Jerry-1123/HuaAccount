@@ -42,7 +42,7 @@ const onSubmitButtonClick = () => {
         return;
     }
 
-    uni.showLoading({ title: '保存中' });
+    uni.showLoading({ title: '保存中', mask: true });
 
     isSubmitting.value = true;
 

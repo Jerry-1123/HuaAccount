@@ -269,7 +269,7 @@ const onClear = () => {
     pageSize.value = defaultPageSize;
     pageNumber.value = 0;
 
-    uni.showLoading({ title: '加载中' });
+    uni.showLoading({ title: '加载中', mask: true });
 
     onQuery().then(() => {
 
@@ -289,7 +289,7 @@ const afterOperation = () => {
     pageSize.value = (pageNumber.value + 1) * defaultPageSize;
     pageNumber.value = 0;
 
-    uni.showLoading({ title: '加载中' });
+    uni.showLoading({ title: '加载中', mask: true });
 
     onQuery().then(() => {
 
