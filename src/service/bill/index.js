@@ -131,7 +131,7 @@ export const getBillRecord = ({
 
     } else if (tagId === 'allIncome') {
 
-        condition = `userId == "${userId}" && billType == "${income.income}" && billTime >="${startTime}" && billTime < "${endTime}"`;
+        condition = `userId == "${userId}" && billType == "${billTypeEnum.income}" && billTime >="${startTime}" && billTime < "${endTime}"`;
 
     }
 
