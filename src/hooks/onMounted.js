@@ -3,16 +3,14 @@ import { useState } from '@/hooks/useState';
 import { getOpenIdByCode } from '@/service-cloud/user';
 import { getUserByOpenId, createUser } from '@/service/user';
 import { getTags } from '@/service/tag';
-import { getShareInfo } from '@/service/share';
-import { shareInfoData } from '@/constant';
 import _ from 'lodash';
 import moment from "moment";
 
-export const onMounted = (fucntion) => {
+export const onMounted = (fucntion, needLoading = true) => {
 
     const {
         setUserInfo,
-        setAppInfo,
+        setTags
     } = useState();
 
     const checkForPageLoad = () => {
@@ -20,12 +18,9 @@ export const onMounted = (fucntion) => {
         const openId = uni.getStorageSync('openId');
         const userId = useState().userId.value;
         const tags = useState().tags.value;
-        // const shareInfo = useState().shareInfo.value;
-        const shareInfo = shareInfoData;
 
         let PromiseForOpenId = () => Promise.resolve({ openId });
         let PromiseForTags = () => Promise.resolve({ tags });
-        let PromiseForShare = () => Promise.resolve({ shareInfo });
 
         if (!openId) {
             PromiseForOpenId = () => uni.login({ provider: 'weixin' }).then(({ code }) => getOpenIdByCode({ code }));
@@ -35,21 +30,15 @@ export const onMounted = (fucntion) => {
             PromiseForTags = () => getTags();
         }
 
-        // if (_.isEmpty(shareInfo)) {
-        //     PromiseForShare = () => getShareInfo();
-        // }
-
         return Promise.all([
             PromiseForOpenId(),
             PromiseForTags(),
-            PromiseForShare()
         ]).then(([
             { openId },
             { tags },
-            { shareInfo }
         ]) => {
 
-            setAppInfo({ tags, shareInfo });
+            setTags({ tags });
 
             uni.setStorageSync('openId', openId);
 
@@ -99,13 +88,17 @@ export const onMounted = (fucntion) => {
 
     };
 
-    onLoad((options) => {
+    onLoad((opts) => {
 
-        uni.showLoading({ title: '加载中', mask: true });
+        if (needLoading) {
+
+            uni.showLoading({ title: '加载中', mask: true });
+
+        }
 
         checkForPageLoad().then(() => {
 
-            fucntion(options);
+            fucntion(opts);
 
         });
 

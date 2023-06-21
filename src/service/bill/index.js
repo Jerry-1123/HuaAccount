@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import moment from 'moment';
-import { billTypeEnum, listTypeEnum } from '@/constant';
+import { BillTypeEnum, ListTypeEnum } from '@/enums';
 
 export const getBillByBillId = ({
     billId
@@ -127,11 +127,11 @@ export const getBillRecord = ({
 
     } else if (tagId === 'allExpenses') {
 
-        condition = `userId == "${userId}" && billType == "${billTypeEnum.expenses}" && billTime >="${startTime}" && billTime < "${endTime}"`;
+        condition = `userId == "${userId}" && billType == "${BillTypeEnum.EXPENSES}" && billTime >="${startTime}" && billTime < "${endTime}"`;
 
     } else if (tagId === 'allIncome') {
 
-        condition = `userId == "${userId}" && billType == "${billTypeEnum.income}" && billTime >="${startTime}" && billTime < "${endTime}"`;
+        condition = `userId == "${userId}" && billType == "${BillTypeEnum.INCOME}" && billTime >="${startTime}" && billTime < "${endTime}"`;
 
     }
 
@@ -172,11 +172,11 @@ export const getBillRecord = ({
 
             } else if (tagId === 'allExpenses') {
 
-                groupCondition = `userId == "${userId}" && billType == "${billTypeEnum.expenses}" && billTime in ${JSON.stringify(billTimeArray)}`;
+                groupCondition = `userId == "${userId}" && billType == "${BillTypeEnum.EXPENSES}" && billTime in ${JSON.stringify(billTimeArray)}`;
 
             } else if (tagId === 'allIncome') {
 
-                groupCondition = `userId == "${userId}" && billType == "${billTypeEnum.income}" && billTime in ${JSON.stringify(billTimeArray)}`;
+                groupCondition = `userId == "${userId}" && billType == "${BillTypeEnum.INCOME}" && billTime in ${JSON.stringify(billTimeArray)}`;
 
             }
 
@@ -226,11 +226,11 @@ export const getBillStatistics = ({
 
     } else if (tagId === 'allExpenses') {
 
-        condition = `userId == "${userId}" && billType == "${billTypeEnum.expenses}" && billTime >="${startTime}" && billTime < "${endTime}"`;
+        condition = `userId == "${userId}" && billType == "${BillTypeEnum.EXPENSES}" && billTime >="${startTime}" && billTime < "${endTime}"`;
 
     } else if (tagId === 'allIncome') {
 
-        condition = `userId == "${userId}" && billType == "${billTypeEnum.income}" && billTime >="${startTime}" && billTime < "${endTime}"`;
+        condition = `userId == "${userId}" && billType == "${BillTypeEnum.INCOME}" && billTime >="${startTime}" && billTime < "${endTime}"`;
 
     }
 
@@ -279,7 +279,7 @@ export const getBillStatisticsAndTotal = ({
 
     }
 
-    if (billType === billTypeEnum.expenses) {
+    if (billType === BillTypeEnum.EXPENSES) {
 
         query = db.collection('bill')
             .where(condition)
@@ -328,7 +328,7 @@ export const getBillStatisticsGroupByTag = ({
 
     let query = null;
 
-    if (billType === billTypeEnum.expenses) {
+    if (billType === BillTypeEnum.EXPENSES) {
 
         const bill = db.collection('bill')
             .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`)
@@ -398,7 +398,7 @@ export const getBillStatisticsGroupByDay = ({
 
     let query = null;
 
-    if (billType === billTypeEnum.expenses) {
+    if (billType === BillTypeEnum.EXPENSES) {
 
         const bill = db.collection('bill')
             .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`)
@@ -472,7 +472,7 @@ export const getBillStatisticsGroupByMonth = ({
 
     let query = null;
 
-    if (billType === billTypeEnum.expenses) {
+    if (billType === BillTypeEnum.EXPENSES) {
 
         const bill = db.collection('bill')
             .where(`userId == "${userId}" && billTime >="${startTime}" && billTime < "${endTime}" && billType == "${billType}"`)
@@ -541,7 +541,7 @@ export const getBillList = ({
     pageSize,
     startTime,
     endTime,
-    type = listTypeEnum.amount
+    type = ListTypeEnum.AMOUNT
 }) => {
 
     const db = uniCloud.database();
@@ -559,9 +559,9 @@ export const getBillList = ({
 
     }
 
-    if (type === listTypeEnum.amount) {
+    if (type === ListTypeEnum.AMOUNT) {
 
-        orderBy = billType === billTypeEnum.expenses
+        orderBy = billType === BillTypeEnum.EXPENSES
             ? 'expensesAmount desc, billTime desc, createTime desc'
             : 'incomeAmount desc, billTime desc, createTime desc';
 

@@ -2,7 +2,6 @@
 
 import { ref } from 'vue';
 import { onMounted } from '@/hooks/onMounted';
-import { useState } from '@/hooks/useState';
 
 // 加载
 const loading = ref(true);

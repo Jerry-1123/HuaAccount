@@ -1,7 +1,7 @@
 <script setup name="date-picker">
 
 import { ref } from 'vue';
-import { dateModeEnum } from '@/constant';
+import { DateModeEnum } from '@/enums';
 import { getDateOptions } from '@/util';
 import moment from 'moment';
 
@@ -54,27 +54,27 @@ const onPopupClose = () => emit('close');
 
             <view class="title">
 
-                {{ activeMode === dateModeEnum.month ? '请选择月账单' : '请选择年账单' }}
+                {{ activeMode === DateModeEnum.MONTH ? '请选择月账单' : '请选择年账单' }}
 
             </view>
 
             <view class="tab">
 
                 <view class="tab-item"
-                      :class="{ 'active': activeMode === dateModeEnum.month }"
+                      :class="{ 'active': activeMode === DateModeEnum.MONTH }"
                       hover-class="default-hover-class"
                       hover-stay-time="100"
-                      @click="onModeChange({ mode: dateModeEnum.month })">
+                      @click="onModeChange({ mode: DateModeEnum.MONTH })">
 
                     月账单
 
                 </view>
 
                 <view class="tab-item"
-                      :class="{ 'active': activeMode === dateModeEnum.year }"
+                      :class="{ 'active': activeMode === DateModeEnum.YEAR }"
                       hover-class="default-hover-class"
                       hover-stay-time="100"
-                      @click="onModeChange({ mode: dateModeEnum.year })">
+                      @click="onModeChange({ mode: DateModeEnum.YEAR })">
 
                     年账单
 
@@ -82,7 +82,7 @@ const onPopupClose = () => emit('close');
 
             </view>
 
-            <view v-show="activeMode === dateModeEnum.month" class="container">
+            <view v-show="activeMode === DateModeEnum.MONTH" class="container">
 
                 <view v-for="(item, key) in options"
                       :key="key">
@@ -109,7 +109,7 @@ const onPopupClose = () => emit('close');
 
             </view>
 
-            <view v-show="activeMode === dateModeEnum.year" class="container">
+            <view v-show="activeMode === DateModeEnum.YEAR" class="container">
 
                 <view class="grid">
 

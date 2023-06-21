@@ -9,5 +9,25 @@ export const useUserStore = defineStore('user', {
         registerTime: ''
     }),
     getters: {},
-    actions: {}
+    actions: {
+        setUserInfo({ openId, userId, nickName, avatar, registerTime }) {
+
+            this.$patch({
+                openId,
+                userId,
+                nickName,
+                avatar,
+                registerTime
+            });
+
+        },
+        changeUserInfo({ nickName, avatar }) {
+
+            this.$patch({
+                nickName,
+                avatar
+            });
+
+        }
+    }
 });

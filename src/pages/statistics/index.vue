@@ -6,7 +6,7 @@ import { onMounted } from '@/hooks/onMounted';
 import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
 import { useStatisticsSetting } from '@/hooks/useStatisticsSetting';
-import { dateModeEnum, billTypeEnum } from '@/constant';
+import { DateModeEnum, BillTypeEnum } from '@/enums';
 import {
     getBillStatisticsAndTotal,
     getBillStatisticsGroupByTag,
@@ -33,10 +33,10 @@ const {
 
 // 加载
 const loading = ref(true);
-const billType = ref(billTypeEnum.expenses);
+const billType = ref(BillTypeEnum.EXPENSES);
 // 日期选择器相关
 const showDatePicker = ref(false);
-const activeDateMode = ref(dateModeEnum.month);
+const activeDateMode = ref(DateModeEnum.MONTH);
 const activeDate = ref(moment().format('YYYY-MM'));
 // 顶部统计
 const totalAmount = ref(0);
@@ -65,7 +65,7 @@ const isYearMode = () => activeDate.value.length === 4;
 
 const getTimeRange = () => {
 
-    let unit = activeDateMode.value === dateModeEnum.month ? 'month' : 'year';
+    let unit = activeDateMode.value === DateModeEnum.MONTH ? 'month' : 'year';
 
     return {
         startTime: moment(activeDate.value).startOf(unit).format('YYYY-MM-DD'),
@@ -82,7 +82,7 @@ const onDatePickerClose = () => {
 
     showDatePicker.value = false;
 
-    setTimeout(() => activeDateMode.value = isYearMode() ? dateModeEnum.year : dateModeEnum.month, 300);
+    setTimeout(() => activeDateMode.value = isYearMode() ? DateModeEnum.YEAR : DateModeEnum.MONTH, 300);
 
 };
 
@@ -118,7 +118,7 @@ const onTagAmountItemClick = ({ tagId, tagName }) => {
     } = getTimeRange();
 
     uni.navigateTo({
-        url: `/pages/list/index?title=${tagName}${isYearMode() ? `${activeDate.value}年` : moment(activeDate.value).format('M月')}${billType.value === billTypeEnum.expenses ? '共支出' : '共收入'}&startTime=${startTime}&endTime=${endTime}&tagId=${tagId}&billType=${billType.value}`
+        url: `/pages/list/index?title=${tagName}${isYearMode() ? `${activeDate.value}年` : moment(activeDate.value).format('M月')}${billType.value === BillTypeEnum.EXPENSES ? '共支出' : '共收入'}&startTime=${startTime}&endTime=${endTime}&tagId=${tagId}&billType=${billType.value}`
     });
 
 };
@@ -131,7 +131,7 @@ const onWholeButtonClick = () => {
     } = getTimeRange();
 
     uni.navigateTo({
-        url: `/pages/list/index?title=${isYearMode() ? `${activeDate.value}年` : moment(activeDate.value).format('M月')}${billType.value === billTypeEnum.expenses ? '共支出' : '共收入'}&startTime=${startTime}&endTime=${endTime}&billType=${billType.value}`
+        url: `/pages/list/index?title=${isYearMode() ? `${activeDate.value}年` : moment(activeDate.value).format('M月')}${billType.value === BillTypeEnum.EXPENSES ? '共支出' : '共收入'}&startTime=${startTime}&endTime=${endTime}&billType=${billType.value}`
     });
 
 };
@@ -216,7 +216,7 @@ const onQuery = () => {
                             : `${item.time.split('.')[0]}月${item.time.split('.')[1]}日`;
 
                         return {
-                            name: `${time}共${billType.value === billTypeEnum.expenses ? '支出' : '收入'}: ¥${currency(item.amount).divide(100).value}`,
+                            name: `${time}共${billType.value === BillTypeEnum.EXPENSES ? '支出' : '收入'}: ¥${currency(item.amount).divide(100).value}`,
                             value: currency(item.amount).divide(100).value
                         };
 
@@ -258,8 +258,8 @@ onShareAppMessage();
 
         <view class="header"
               :class="{
-                  'expenses': billType === billTypeEnum.expenses,
-                  'income': billType === billTypeEnum.income
+                  'expenses': billType === BillTypeEnum.EXPENSES,
+                  'income': billType === BillTypeEnum.INCOME
               }">
 
             <view class="header-item"
@@ -275,13 +275,13 @@ onShareAppMessage();
             <view class="header-item">
 
                 <view class="tab"
-                      :class="{ 'expenses': billType === billTypeEnum.expenses }"
-                      @click="onTabItemClick({ type: billTypeEnum.expenses })">支出
+                      :class="{ 'expenses': billType === BillTypeEnum.EXPENSES }"
+                      @click="onTabItemClick({ type: BillTypeEnum.EXPENSES })">支出
                 </view>
 
                 <view class="tab"
-                      :class="{ 'income': billType === billTypeEnum.income }"
-                      @click="onTabItemClick({ type: billTypeEnum.income })">收入
+                      :class="{ 'income': billType === BillTypeEnum.INCOME }"
+                      @click="onTabItemClick({ type: BillTypeEnum.INCOME })">收入
                 </view>
 
             </view>
@@ -290,18 +290,18 @@ onShareAppMessage();
 
         <view class="total"
               :class="{
-                  'expenses': billType === billTypeEnum.expenses,
-                  'income': billType === billTypeEnum.income
+                  'expenses': billType === BillTypeEnum.EXPENSES,
+                  'income': billType === BillTypeEnum.INCOME
               }">
 
             <view class="total-amount">
 
-                <block v-if="billType === billTypeEnum.expenses">
+                <block v-if="billType === BillTypeEnum.EXPENSES">
                     <text class="label"> {{ isYearMode() ? '年支出' : '月支出' }}</text>
                     <text class="value">{{ formatAmount(totalAmount) }}</text>
                 </block>
 
-                <block v-if="billType === billTypeEnum.income">
+                <block v-if="billType === BillTypeEnum.INCOME">
                     <text class="label">{{ isYearMode() ? '年收入' : '月收入' }}</text>
                     <text class="value">{{ formatAmount(totalAmount) }}</text>
                 </block>
@@ -316,7 +316,7 @@ onShareAppMessage();
 
             <view class="structure">
 
-                <view class="title">{{ billType === billTypeEnum.expenses ? '支出' : '收入' }}构成</view>
+                <view class="title">{{ billType === BillTypeEnum.EXPENSES ? '支出' : '收入' }}构成</view>
 
                 <view class="chart">
 
@@ -339,8 +339,8 @@ onShareAppMessage();
 
                         <view class="icon"
                               :class="{
-                                  'expenses': billType === billTypeEnum.expenses,
-                                  'income': billType === billTypeEnum.income
+                                  'expenses': billType === BillTypeEnum.EXPENSES,
+                                  'income': billType === BillTypeEnum.INCOME
                               }">
                             <image :src="item.tagIcon" />
                         </view>
@@ -358,7 +358,7 @@ onShareAppMessage();
 
                                 <van-progress :percentage="item.percent"
                                               :show-pivot="false"
-                                              :color="billType === billTypeEnum.expenses ? '#3eb575' : '#f0b73a'"
+                                              :color="billType === BillTypeEnum.EXPENSES ? '#3eb575' : '#f0b73a'"
                                               stroke-width="5"
                                               track-color="#ffffff" />
 
@@ -368,7 +368,7 @@ onShareAppMessage();
 
                         <view class="amount">
 
-                            <text>{{ billType === billTypeEnum.expenses ? '-' : '+' }}</text>
+                            <text>{{ billType === BillTypeEnum.EXPENSES ? '-' : '+' }}</text>
                             <text>{{ formatAmount(item.amount) }}</text>
                             <image src="../../static/svgs/icon_right_gray.svg" />
 
@@ -435,7 +435,7 @@ onShareAppMessage();
 
                 <view class="title">
 
-                    {{ billType === billTypeEnum.expenses ? '支出' : '收入' }}排行
+                    {{ billType === BillTypeEnum.EXPENSES ? '支出' : '收入' }}排行
 
                 </view>
 
@@ -451,8 +451,8 @@ onShareAppMessage();
 
                         <view class="icon"
                               :class="{
-                                  'expenses': bill.billType === billTypeEnum.expenses,
-                                  'income': bill.billType === billTypeEnum.income
+                                  'expenses': bill.billType === BillTypeEnum.EXPENSES,
+                                  'income': bill.billType === BillTypeEnum.INCOME
                               }">
 
                             <image :src="bill.tagIcon" />
@@ -468,10 +468,10 @@ onShareAppMessage();
 
                         <view class="info">
 
-                            <view v-if="bill.billType === billTypeEnum.expenses" class="amount">
+                            <view v-if="bill.billType === BillTypeEnum.EXPENSES" class="amount">
                                 - {{ formatAmount(bill.expensesAmount) }}
                             </view>
-                            <view v-if="bill.billType === billTypeEnum.income" class="amount">
+                            <view v-if="bill.billType === BillTypeEnum.INCOME" class="amount">
                                 + {{ formatAmount(bill.incomeAmount) }}
                             </view>
 
@@ -500,9 +500,9 @@ onShareAppMessage();
 
         <view class="no-data" v-if="billList.length === 0 && !loading">
 
-            <image v-show="billType === billTypeEnum.expenses" src="../../static/svgs/pic_no_more.svg" />
+            <image v-show="billType === BillTypeEnum.EXPENSES" src="../../static/svgs/pic_no_more.svg" />
 
-            <image v-show="billType === billTypeEnum.income" src="../../static/svgs/pic_no_more_income.svg" />
+            <image v-show="billType === BillTypeEnum.INCOME" src="../../static/svgs/pic_no_more_income.svg" />
 
             <text>暂无账单，快去记一笔吧^-^</text>
 

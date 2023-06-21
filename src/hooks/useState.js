@@ -7,6 +7,7 @@ export const useState = () => {
     const userStore = useUserStore();
     const appStore = useAppStore();
 
+    // state
     const {
         openId,
         userId,
@@ -15,68 +16,47 @@ export const useState = () => {
         registerTime
     } = storeToRefs(userStore);
 
+    // actions
     const {
-        tags,
-        shareInfo,
+        setUserInfo,
+        changeUserInfo
+    } = userStore;
 
+    // state
+    const {
+        tags
+    } = storeToRefs(appStore);
+
+    // getters
+    const {
         tagsList,
         tagsGroup,
         expenseTags,
         incomeTags,
-        shareData
     } = storeToRefs(appStore);
 
-    const setUserInfo = ({ openId, userId, nickName, avatar, registerTime }) => {
-
-        userStore.$patch((state) => {
-
-            state.openId = openId;
-            state.userId = userId;
-            state.nickName = nickName;
-            state.avatar = avatar;
-            state.registerTime = registerTime;
-
-        });
-
-    };
-
-    const setAppInfo = ({ tags, shareInfo }) => {
-
-        appStore.$patch((state) => {
-            state.tags = tags;
-            state.shareInfo = shareInfo;
-        });
-
-    };
-
-    const changeUserInfo = ({ nickName, avatar }) => {
-
-        userStore.$patch((state) => {
-
-            state.nickName = nickName;
-            state.avatar = avatar;
-
-        });
-
-    };
+    // actions
+    const {
+        setTags
+    } = appStore;
 
     return {
+        // state
         openId,
         userId,
         nickName,
         avatar,
         registerTime,
         tags,
-        shareInfo,
+        // getters
         tagsList,
         tagsGroup,
         expenseTags,
         incomeTags,
-        shareData,
-
+        // actions
         setUserInfo,
-        setAppInfo,
-        changeUserInfo
+        changeUserInfo,
+        setTags
     };
 
 };

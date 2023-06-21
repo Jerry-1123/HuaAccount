@@ -6,7 +6,8 @@ import { onMounted } from '@/hooks/onMounted';
 import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
 import { rpx2px, getWeekday } from '@/util';
-import { defaultTagId, defaultPageSize, dateModeEnum, billTypeEnum } from '@/constant';
+import { defaultTagId, defaultPageSize } from '@/constant';
+import { DateModeEnum, BillTypeEnum } from '@/enums';
 import { getBillRecord, getBillStatistics, deleteBill } from '@/service/bill';
 import moment from 'moment';
 import _ from 'lodash';
@@ -28,7 +29,7 @@ const firstLoading = ref(true);
 const defaultAvatar = ref('../../static/images/icon_avatar.png');
 // 日期选择器相关
 const showDatePicker = ref(false);
-const activeDateMode = ref(dateModeEnum.month);
+const activeDateMode = ref(DateModeEnum.MONTH);
 const activeDate = ref(moment().format('YYYY-MM'));
 // 标签选择器相关
 const showTagPicker = ref(false);
@@ -67,7 +68,7 @@ const isYearMode = () => activeDate.value.length === 4;
 
 const getTimeRange = () => {
 
-    let unit = activeDateMode.value === dateModeEnum.month ? 'month' : 'year';
+    let unit = activeDateMode.value === DateModeEnum.MONTH ? 'month' : 'year';
 
     return {
         startTime: moment(activeDate.value).startOf(unit).format('YYYY-MM-DD'),
@@ -84,7 +85,7 @@ const onDatePickerClose = () => {
 
     showDatePicker.value = false;
 
-    setTimeout(() => activeDateMode.value = isYearMode() ? dateModeEnum.year : dateModeEnum.month, 300);
+    setTimeout(() => activeDateMode.value = isYearMode() ? DateModeEnum.YEAR : DateModeEnum.MONTH, 300);
 
 };
 
@@ -463,8 +464,8 @@ onShareAppMessage();
 
                             <view class="icon"
                                   :class="{
-                                      'expenses': bill.billType === billTypeEnum.expenses,
-                                      'income': bill.billType === billTypeEnum.income
+                                      'expenses': bill.billType === BillTypeEnum.EXPENSES,
+                                      'income': bill.billType === BillTypeEnum.INCOME
                                   }">
 
                                 <image :src="bill.tagIcon" />
@@ -480,10 +481,10 @@ onShareAppMessage();
 
                             <view class="amount">
 
-                                <text v-if="bill.billType === billTypeEnum.expenses" class="expenses">
+                                <text v-if="bill.billType === BillTypeEnum.EXPENSES" class="expenses">
                                     - {{ formatAmount(bill.expensesAmount) }}
                                 </text>
-                                <text v-if="bill.billType === billTypeEnum.income" class="income">
+                                <text v-if="bill.billType === BillTypeEnum.INCOME" class="income">
                                     + {{ formatAmount(bill.incomeAmount) }}
                                 </text>
 

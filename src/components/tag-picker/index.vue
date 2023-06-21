@@ -1,7 +1,7 @@
 <script setup name="tag-picker">
 
 import { useState } from '@/hooks/useState';
-import { billTypeEnum } from '@/constant';
+import { BillTypeEnum } from '@/enums';
 
 const {
     tagsGroup
@@ -53,8 +53,8 @@ const onPopupClose = () => emit('close');
                 <view v-for="(tags, key) in tagsGroup"
                       :key="key">
 
-                    <view v-if="key === billTypeEnum.expenses" class="tag-type">支出 </view>
-                    <view v-if="key === billTypeEnum.income" class="tag-type">收入 </view>
+                    <view v-if="key === BillTypeEnum.EXPENSES" class="tag-type">支出 </view>
+                    <view v-if="key === BillTypeEnum.INCOME" class="tag-type">收入 </view>
 
                     <view class="tag-list">
 

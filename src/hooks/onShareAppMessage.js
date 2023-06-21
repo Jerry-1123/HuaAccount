@@ -1,10 +1,8 @@
 import { onShareAppMessage as onShareApp } from "@dcloudio/uni-app";
-import { useState } from "./useState";
+import { shareInfoData } from '@/constant';
 
 export const onShareAppMessage = () => onShareApp(() => {
 
-    const { shareData } = useState();
-
-    return shareData.value;
+    return shareInfoData;
 
 });

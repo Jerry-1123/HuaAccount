@@ -5,7 +5,8 @@ import { onPullDownRefresh, onReachBottom } from "@dcloudio/uni-app";
 import { onMounted } from '@/hooks/onMounted';
 import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
-import { defaultPageSize, listTypeEnum, billTypeEnum } from '@/constant';
+import { defaultPageSize } from '@/constant';
+import { ListTypeEnum, BillTypeEnum } from '@/enums';
 import { getBillList, getBillStatisticsAndTotal } from '@/service/bill';
 import moment from 'moment';
 import _ from 'lodash';
@@ -24,7 +25,7 @@ const isYear = ref(false);
 // 加载
 const loading = ref(true);
 // 类型(按金额分类/按时间分类)
-const activeListType = ref(listTypeEnum.amount);
+const activeListType = ref(ListTypeEnum.AMOUNT);
 // 列表相关
 const pageNumber = ref(0);
 const pageSize = ref(defaultPageSize);
@@ -176,27 +177,27 @@ onShareAppMessage();
 
                 <view class="tab-item"
                       :class="{
-                          'expenses': activeListType === listTypeEnum.amount && billType === billTypeEnum.expenses,
-                          'income': activeListType === listTypeEnum.amount && billType === billTypeEnum.income
+                          'expenses': activeListType === ListTypeEnum.AMOUNT && billType === BillTypeEnum.EXPENSES,
+                          'income': activeListType === ListTypeEnum.AMOUNT && billType === BillTypeEnum.INCOME
                       }"
                       hover-stay-time="100"
-                      @click="onTabItemClick({ listType: listTypeEnum.amount })">按金额
+                      @click="onTabItemClick({ listType: ListTypeEnum.AMOUNT })">按金额
                 </view>
 
                 <view class="tab-item"
                       :class="{
-                          'expenses': activeListType === listTypeEnum.time && billType === billTypeEnum.expenses,
-                          'income': activeListType === listTypeEnum.time && billType === billTypeEnum.income
+                          'expenses': activeListType === ListTypeEnum.TIME && billType === BillTypeEnum.EXPENSES,
+                          'income': activeListType === ListTypeEnum.TIME && billType === BillTypeEnum.INCOME
                       }"
                       hover-stay-time="100"
-                      @click="onTabItemClick({ listType: listTypeEnum.time })">按时间
+                      @click="onTabItemClick({ listType: ListTypeEnum.TIME })">按时间
                 </view>
 
             </view>
 
             <view class="total">
 
-                {{ billType === billTypeEnum.expenses ? '支出' : '收入' }}¥{{ totalAmount }}
+                {{ billType === BillTypeEnum.EXPENSES ? '支出' : '收入' }}¥{{ totalAmount }}
 
             </view>
 
@@ -212,8 +213,8 @@ onShareAppMessage();
 
                 <view class="icon"
                       :class="{
-                          'expenses': bill.billType === billTypeEnum.expenses,
-                          'income': bill.billType === billTypeEnum.income
+                          'expenses': bill.billType === BillTypeEnum.EXPENSES,
+                          'income': bill.billType === BillTypeEnum.INCOME
                       }">
 
                     <image :src="bill.tagIcon" />
@@ -229,10 +230,10 @@ onShareAppMessage();
 
                 <view class="info">
 
-                    <view v-if="bill.billType === billTypeEnum.expenses" class="amount">
+                    <view v-if="bill.billType === BillTypeEnum.EXPENSES" class="amount">
                         - {{ formatAmount(bill.expensesAmount) }}
                     </view>
-                    <view v-if="bill.billType === billTypeEnum.income" class="amount">
+                    <view v-if="bill.billType === BillTypeEnum.INCOME" class="amount">
                         + {{ formatAmount(bill.incomeAmount) }}
                     </view>
 

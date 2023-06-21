@@ -1,11 +1,10 @@
 import { defineStore } from 'pinia';
+import { BillTypeEnum } from '@/enums';
 import _ from 'lodash';
-import { billTypeEnum } from '@/constant';
 
 export const useAppStore = defineStore('app', {
     state: () => ({
         tags: [],
-        shareInfo: {}
     }),
     getters: {
         tagsList(state) {
@@ -60,35 +59,20 @@ export const useAppStore = defineStore('app', {
         },
         expenseTags(state) {
 
-            return _.filter(state.tags, item => item.tagType === billTypeEnum.expenses);
+            return _.filter(state.tags, item => item.tagType === BillTypeEnum.EXPENSES);
 
         },
         incomeTags(state) {
 
-            return _.filter(state.tags, item => item.tagType === billTypeEnum.income);
-
-        },
-        shareData(state) {
-
-            if (_.isEmpty(state.shareInfo)) {
-
-                return {
-                    title: '',
-                    path: '',
-                    imageUrl: ''
-                };
-
-            } else {
-
-                return {
-                    title: state.shareInfo.title,
-                    path: state.shareInfo.path,
-                    imageUrl: state.shareInfo.imageUrl
-                };
-
-            }
+            return _.filter(state.tags, item => item.tagType === BillTypeEnum.INCOME);
 
         }
     },
-    actions: {}
+    actions: {
+        setTags({ tags }) {
+
+            this.tags = tags;
+
+        }
+    }
 });
