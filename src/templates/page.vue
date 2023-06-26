@@ -4,7 +4,6 @@ import { ref } from 'vue';
 import { onMounted } from '@/hooks/onMounted';
 import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
-import { } from '@/hooks/useCommon';
 import { } from '@/enums';
 import { } from '@/constant';
 
