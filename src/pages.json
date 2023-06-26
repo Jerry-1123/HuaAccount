@@ -67,12 +67,6 @@
 			"style": {
 				"navigationBarTitleText": "关于"
 			}
-		},
-		{
-			"path": "pages/report/index",
-			"style": {
-				"navigationBarTitleText": "使用报告"
-			}
 		}
 	],
 	"globalStyle": {

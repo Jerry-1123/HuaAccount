@@ -1,4 +1,4 @@
-import { callCloudFunction } from '@/util';
+import { callCloudFunction } from '@/utils';
 
 // 根据code获取openId
 export const getOpenIdByCode = ({
