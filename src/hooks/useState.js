@@ -48,11 +48,13 @@ export const useState = () => {
         avatar,
         registerTime,
         tags,
+
         // getters
         tagsList,
         tagsGroup,
         expenseTags,
         incomeTags,
+        
         // actions
         setUserInfo,
         changeUserInfo,
