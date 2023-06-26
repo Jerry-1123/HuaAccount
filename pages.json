@@ -1,0 +1,92 @@
+{
+	"pages": [
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor": "#3eb575",
+				"backgroundColor": "#ededed",
+				"backgroundColorTop": "#3eb575",
+				"backgroundTextStyle": "light",
+				"navigationBarTitleText": "花花记账本",
+				"enablePullDownRefresh": true,
+				"onReachBottomDistance": 50
+			}
+		},
+		{
+			"path": "pages/statistics/index",
+			"style": {
+				"navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor": "#3eb575",
+				"backgroundColor": "#ffffff",
+				"backgroundColorTop": "#3eb575",
+				"backgroundTextStyle": "light",
+				"navigationBarTitleText": "统计",
+				"enablePullDownRefresh": true,
+				"onReachBottomDistance": 50
+			}
+		},
+		{
+			"path": "pages/bookkeeping/index",
+			"style": {
+				"disableScroll": true,
+				"app-plus": {
+					"softinputMode": "adjustPan"
+				}
+			}
+		},
+		{
+			"path": "pages/detail/index",
+			"style": {
+				"disableScroll": true
+			}
+		},
+		{
+			"path": "pages/userInfo/index",
+			"style": {
+				"disableScroll": true,
+				"navigationBarTitleText": "个人信息",
+				"usingComponents": {
+					"van-cell": "/wxcomponents/vant/cell/index",
+					"van-cell-group": "/wxcomponents/vant/cell-group/index"
+				}
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "",
+		"navigationBarBackgroundColor": "#ffffff",
+		"backgroundColor": "#ffffff",
+		"usingComponents": {
+			"van-tab": "/wxcomponents/vant/tab/index",
+			"van-tabs": "/wxcomponents/vant/tabs/index",
+			"van-popup": "/wxcomponents/vant/popup/index",
+			"van-swipe-cell": "/wxcomponents/vant/swipe-cell/index",
+			"van-datetime-picker": "/wxcomponents/vant/datetime-picker/index",
+			"van-calendar": "/wxcomponents/vant/calendar/index",
+			"van-progress": "/wxcomponents/vant/progress/index"
+		}
+	},
+	"tabBar": {
+		"color": "#7A7E83",
+		"selectedColor": "#3EB575",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/images/index.png",
+				"selectedIconPath": "static/images/index_selected.png",
+				"text": "明细"
+			},
+			{
+				"pagePath": "pages/statistics/index",
+				"iconPath": "static/images/statistics.png",
+				"selectedIconPath": "static/images/statistics_selected.png",
+				"text": "统计"
+			}
+		]
+	},
+	"uniIdRouter": {}
+}
