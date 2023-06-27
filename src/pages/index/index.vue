@@ -15,6 +15,7 @@ import currency from 'currency.js';
 
 import DatePicker from '@/components/date-picker';
 import TagPicker from '@/components/tag-picker';
+import BackToTop from '@/components/back-to-top';
 
 // 全局数据
 const {
@@ -45,6 +46,8 @@ const list = ref([]);
 // 头部滑动高度
 const headerScrollHeight = ref(rpx2px({ rpx: 80 }));
 const showStickyInfo = ref(false);
+// 显示返回顶部
+const showBackToTop = ref(false);
 
 const formatDate = computed(() => isYearMode() ? `${activeDate.value}年` : moment(activeDate.value).format('YYYY年M月'));
 
@@ -353,9 +356,10 @@ onReachBottom(() => {
 
 });
 
-onPageScroll((e) => {
+onPageScroll(({ scrollTop }) => {
 
-    showStickyInfo.value = e.scrollTop >= headerScrollHeight.value;
+    showStickyInfo.value = scrollTop >= headerScrollHeight.value;
+    showBackToTop.value = scrollTop >= (uni.getSystemInfoSync().windowHeight / 4);
 
 });
 
@@ -543,17 +547,21 @@ onShareAppMessage();
 
             <view v-if="list.length !== 0" class="loading-content">
 
-                <van-loading v-show="pageStatus === PageStatusEnum.LOADING" size="30rpx" type="spinner">正在加载...</van-loading>
-                <van-loading v-show="pageStatus === PageStatusEnum.NOMORE" size="30px" type="">没有更多数据了，快去记一笔吧^-^</van-loading>
+                <van-loading v-show="pageStatus === PageStatusEnum.LOADING" size="30rpx"
+                             type="spinner">正在加载...</van-loading>
+                <van-loading v-show="pageStatus === PageStatusEnum.NOMORE" size="30px"
+                             type="">没有更多数据了，快去记一笔吧^-^</van-loading>
 
             </view>
 
         </view>
 
+        <back-to-top :visible="showBackToTop" />
+
         <view class="record-button"
               hover-class="gray-hover-class"
               hover-stay-time="100"
-              @click="onRecordButtonClick">
+              @tap.native.stop="onRecordButtonClick">
 
             <image src="../../static/svgs/icon_record.svg" />
             <text>记一笔</text>

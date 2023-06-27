@@ -1,7 +1,7 @@
 <script setup name="list">
 
-import { ref, computed } from 'vue';
-import { onPullDownRefresh, onReachBottom } from "@dcloudio/uni-app";
+import { ref, computed, nextTick } from 'vue';
+import { onPullDownRefresh, onReachBottom, onPageScroll } from "@dcloudio/uni-app";
 import { onMounted } from '@/hooks/onMounted';
 import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
@@ -12,11 +12,15 @@ import moment from 'moment';
 import _ from 'lodash';
 import currency from 'currency.js';
 
+import BackToTop from '@/components/back-to-top';
+
 // 全局数据
 const {
     userId
 } = useState();
 
+// 操作拦高度
+const actionHeight = ref(0);
 // 条件
 const startTime = ref('');
 const endTime = ref('');
@@ -35,6 +39,8 @@ const list = ref([]);
 // 统计
 const totalAmount = ref(0);
 const totalCount = ref(0);
+// 显示返回顶部
+const showBackToTop = ref(false);
 
 const formatAmount = computed(() => (amount) => currency(amount).divide(100));
 
@@ -58,7 +64,7 @@ const onQuery = () => {
 
     pageStatus.value = PageStatusEnum.LOADING;
 
-    getBillList({
+    return getBillList({
         userId: userId.value,
         billType: billType.value,
         tagId: tagId.value,
@@ -88,11 +94,6 @@ const onQuery = () => {
 
         }
 
-        loading.value = false;
-
-        uni.hideLoading();
-        uni.stopPullDownRefresh();
-
     });
 
 };
@@ -104,7 +105,12 @@ const onClear = () => {
     pageStatus.value = '';
     pageNumber.value = 0;
 
-    onQuery();
+    onQuery().then(() => {
+
+        uni.hideLoading();
+        uni.stopPullDownRefresh();
+
+    });
 
 };
 
@@ -137,7 +143,22 @@ onMounted((opts) => {
     billType.value = opts.billType;
     isYear.value = opts.title.includes('年');
 
-    onQuery();
+    onQuery().then(() => {
+
+        loading.value = false;
+
+        nextTick(() => {
+
+            uni.createSelectorQuery()
+                .select('#action')
+                .boundingClientRect(rect => actionHeight.value = rect.height)
+                .exec();
+
+        });
+
+        uni.hideLoading();
+
+    });
 
     onQueryStatistics();
 
@@ -163,6 +184,12 @@ onReachBottom(() => {
 
 });
 
+onPageScroll(({ scrollTop }) => {
+
+    showBackToTop.value = scrollTop >= (uni.getSystemInfoSync().windowHeight / 4);
+
+});
+
 onShareAppMessage();
 
 </script>
@@ -170,7 +197,7 @@ onShareAppMessage();
 <template>
     <view v-show="!loading" class="content">
 
-        <view class="action-content">
+        <view class="action-content" id="action">
 
             <view class="tab">
 
@@ -202,7 +229,10 @@ onShareAppMessage();
 
         </view>
 
-        <view class="list">
+        <view class="list"
+              :style="{
+                  'margin-top': `${actionHeight}px`
+              }">
 
             <view v-for="(bill) in list"
                   :key="bill._id"
@@ -250,6 +280,9 @@ onShareAppMessage();
             <van-loading v-show="pageStatus === PageStatusEnum.NOMORE" size="30px" type="">没有更多数据了，快去记一笔吧^-^</van-loading>
 
         </view>
+
+        <back-to-top :visible="showBackToTop"
+                     :bill-type="billType" />
 
         <!-- 用于解决ios的bug -->
         <view style="height: 1px" />

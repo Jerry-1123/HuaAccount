@@ -4,7 +4,6 @@ import { ref, computed } from 'vue';
 import { onMounted } from '@/hooks/onMounted';
 import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
-import { appVersion } from "@/constant";
 import moment from 'moment';
 
 // 全局数据
@@ -14,7 +13,7 @@ const {
     registerTime
 } = useState();
 
-const version = ref(appVersion);
+const version = ref(uni.getAccountInfoSync().miniProgram.version);
 const defaultAvatar = ref('../../static/images/icon_avatar.png');
 
 const formatDuration = computed(() => moment(moment().valueOf()).diff(moment(registerTime.value), 'days') + 1);

@@ -2,6 +2,12 @@
     margin-bottom: 40rpx;
 
     .action-content {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 999;
+        width: 100%;
+        background-color: #ffffff;
         flex-shrink: 0;
         padding: 50rpx 50rpx 30rpx;
         display: flex;
@@ -45,6 +51,8 @@
     }
 
     .list {
+        position: relative;
+        z-index: 99;
         padding: 0 30rpx;
 
         .list-item {

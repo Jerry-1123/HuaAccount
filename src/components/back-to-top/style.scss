@@ -1,0 +1,20 @@
+.button {
+    position: fixed;
+    z-index: 100;
+    right: 40rpx;
+    bottom: 135rpx;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5rpx 15rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    padding: 20rpx;
+    border-radius: 100%;
+    cursor: pointer;
+
+    image {
+        width: 40rpx;
+        height: 40rpx;
+    }
+
+}
