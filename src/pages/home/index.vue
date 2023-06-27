@@ -1,4 +1,4 @@
-<script setup name="index">
+<script setup name="home">
 
 import { ref, computed } from 'vue';
 import { onPullDownRefresh, onReachBottom, onPageScroll } from "@dcloudio/uni-app";
@@ -25,7 +25,7 @@ const {
 } = useState();
 
 // 首次加载
-const firstLoading = ref(true);
+const loading = ref(true);
 // 默认头像
 const defaultAvatar = ref('../../static/images/icon_avatar.png');
 // 日期选择器相关
@@ -325,7 +325,7 @@ onMounted(() => {
 
     onQuery().then(() => {
 
-        firstLoading.value = false;
+        loading.value = false;
 
         uni.hideLoading();
 
@@ -368,7 +368,7 @@ onShareAppMessage();
 </script>
 
 <template>
-    <view v-show="!firstLoading" class="content">
+    <view v-show="!loading" class="content">
 
         <view class="header">
 

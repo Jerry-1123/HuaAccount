@@ -1,7 +1,7 @@
 {
 	"pages": [
 		{
-			"path": "pages/index/index",
+			"path": "pages/home/index",
 			"style": {
 				"navigationBarTextStyle": "white",
 				"navigationBarBackgroundColor": "#3eb575",
@@ -88,9 +88,9 @@
 		"backgroundColor": "#ffffff",
 		"list": [
 			{
-				"pagePath": "pages/index/index",
-				"iconPath": "static/images/icon_index_default.png",
-				"selectedIconPath": "static/images/icon_index_selected.png",
+				"pagePath": "pages/home/index",
+				"iconPath": "static/images/icon_home_default.png",
+				"selectedIconPath": "static/images/icon_home_selected.png",
 				"text": "明细"
 			},
 			{
