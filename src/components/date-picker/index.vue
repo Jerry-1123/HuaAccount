@@ -2,7 +2,7 @@
 
 import { ref } from 'vue';
 import { DateModeEnum } from '@/enums';
-import { getDateOptions } from '@/util';
+import { getDateOptions } from '@/utils';
 import moment from 'moment';
 
 const options = ref(getDateOptions());

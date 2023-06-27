@@ -3,7 +3,7 @@
 import { ref, reactive } from 'vue';
 import { onMounted } from '@/hooks/onMounted';
 import { onShareAppMessage } from '@/hooks/onShareAppMessage';
-import { getWeekday } from '@/util';
+import { getWeekday } from '@/utils';
 import { BillTypeEnum } from '@/enums';
 import { getBillByBillId, deleteBill } from '@/service/bill';
 import moment from 'moment';

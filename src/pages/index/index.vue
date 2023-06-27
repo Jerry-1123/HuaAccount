@@ -5,7 +5,7 @@ import { onPullDownRefresh, onReachBottom, onPageScroll } from "@dcloudio/uni-ap
 import { onMounted } from '@/hooks/onMounted';
 import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
-import { rpx2px, getWeekday } from '@/util';
+import { rpx2px, getWeekday } from '@/utils';
 import { defaultTagId, defaultPageSize } from '@/constant';
 import { DateModeEnum, BillTypeEnum } from '@/enums';
 import { getBillRecord, getBillStatistics, deleteBill } from '@/service/bill';
