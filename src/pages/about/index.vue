@@ -20,28 +20,5 @@
     </view>
 </template>
 
-<style>
-page {
-    background-color: #ffffff;
-}
-</style>
-
-<style lang="scss" scoped>
-.content {
-    padding-top: 80rpx;
-
-    .name {
-        font-size: 38rpx;
-        text-align: center;
-        margin-bottom: 80rpx;
-    }
-
-    .text {
-        font-size: 30rpx;
-        color: #5d5d5d;
-        text-align: center;
-        margin: 40rpx 0;
-    }
-
-}
-</style>
+<style src="./page.scss" lang="scss"/>
+<style src="./style.scss" lang="scss" scoped/>

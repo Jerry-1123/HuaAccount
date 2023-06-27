@@ -22,9 +22,17 @@ const avatar = ref('../../static/images/icon_avatar.png');
 // 为了防止提交的时候再次触发提交
 const isSubmitting = ref(false);
 
-const onAvatarClick = (e) => avatar.value = e.detail.avatarUrl;
+const onAvatarClick = (e) => {
 
-const onInputChange = (e) => nickName.value = e.detail.value;
+    avatar.value = e.detail.avatarUrl;
+
+};
+
+const onInputChange = (e) => {
+
+    nickName.value = e.detail.value;
+
+};
 
 const onSubmitButtonClick = () => {
 
@@ -152,81 +160,14 @@ onShareAppMessage();
         <button class="button"
                 hover-class="default-hover-class"
                 hover-stay-time="100"
-                @click="onSubmitButtonClick">保 存
+                @click="onSubmitButtonClick">
+                
+                保 存
+
         </button>
 
     </view>
 </template>
-  
-<style>
-page {
-    height: 100%;
-}
-</style>
 
-<style lang="scss" scoped>
-.content {
-    height: 100%;
-    background-color: #fff;
-    margin-top: 20rpx;
-
-    .cell {
-        display: flex;
-        align-items: center;
-        border-bottom: 1px solid rgb(235, 237, 240);
-        height: 120rpx;
-        padding: 0 40rpx;
-        font-size: 32rpx;
-
-        .label {
-            width: 100rpx;
-            flex-shrink: 0;
-        }
-
-        .value {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: row-reverse;
-            align-items: center;
-
-            .avatar-wrapper {
-                width: 80rpx !important;
-                padding: 0;
-                margin: 0;
-                border-radius: 100%;
-                overflow: hidden;
-
-                &::after {
-                    border: none;
-                }
-
-                image {
-                    display: block;
-                    width: 80rpx;
-                    height: 80rpx;
-                }
-
-            }
-
-            .input {
-                text-align: right;
-                margin-right: 10rpx;
-            }
-
-        }
-
-    }
-
-    .button {
-        color: #fff;
-        border: 0;
-        border-radius: 10rpx;
-        font-size: 35rpx;
-        line-height: 1.3;
-        padding: 20rpx 75rpx;
-        margin: 40rpx 30rpx;
-        background: $canbin-expenses-color;
-    }
-
-}
-</style>
+<style src="./page.scss" lang="scss"/>
+<style src="./style.scss" lang="scss" scoped/>

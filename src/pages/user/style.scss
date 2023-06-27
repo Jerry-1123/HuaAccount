@@ -1,0 +1,92 @@
+.content {
+    padding: 50rpx;
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 80rpx;
+
+        .avatar {
+            flex-shrink: 0;
+            width: 120rpx;
+            height: 120rpx;
+            border-radius: 100%;
+        }
+
+        .wrap {
+            flex-grow: 1;
+            margin-left: 50rpx;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            .name {
+                font-size: 38rpx;
+                font-weight: bold;
+            }
+
+            .time {
+                margin-top: 8rpx;
+                font-size: 26rpx;
+                color: #8e8e8e;
+            }
+
+        }
+
+        .more {
+            flex-shrink: 0;
+            width: 40rpx;
+            height: 40rpx;
+        }
+
+    }
+
+    .cell {
+        padding: 0;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        background: #ffffff;
+
+        &::after {
+            border: none;
+        }
+
+        .icon {
+            flex-shrink: 0;
+            width: 40rpx;
+            height: 40rpx;
+        }
+
+        .label {
+            flex-grow: 1;
+            margin-left: 30rpx;
+            text-align: left;
+            font-size: 30rpx;
+        }
+
+        .more {
+            flex-shrink: 0;
+            width: 40rpx;
+            height: 40rpx;
+        }
+
+    }
+
+    .divider {
+        height: 1px;
+        background: #F7F8FA;
+        margin: 15rpx 0;
+    }
+
+    .version {
+        text-align: center;
+        color: #8e8e8e;
+        position: fixed;
+        left: 0;
+        bottom: 50rpx;
+        width: 100%;
+        font-size: 26rpx;
+    }
+
+}

@@ -6,7 +6,7 @@ import { onMounted } from '@/hooks/onMounted';
 import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
 import { defaultPageSize } from '@/constant';
-import { ListTypeEnum, BillTypeEnum } from '@/enums';
+import { ListTypeEnum, BillTypeEnum, PageStatusEnum } from '@/enums';
 import { getBillList, getBillStatisticsAndTotal } from '@/service/bill';
 import moment from 'moment';
 import _ from 'lodash';
@@ -17,6 +17,7 @@ const {
     userId
 } = useState();
 
+// 条件
 const startTime = ref('');
 const endTime = ref('');
 const tagId = ref('');
@@ -29,7 +30,7 @@ const activeListType = ref(ListTypeEnum.AMOUNT);
 // 列表相关
 const pageNumber = ref(0);
 const pageSize = ref(defaultPageSize);
-const pageStatus = ref('');
+const pageStatus = ref(PageStatusEnum.LOADING);
 const list = ref([]);
 // 统计
 const totalAmount = ref(0);
@@ -49,13 +50,13 @@ const onTabItemClick = ({ listType }) => {
 
 const onQuery = () => {
 
-    if (pageStatus.value === 'noMore') {
+    if (pageStatus.value === PageStatusEnum.NOMORE) {
 
         return;
 
     }
 
-    pageStatus.value = 'loading';
+    pageStatus.value = PageStatusEnum.LOADING;
 
     getBillList({
         userId: userId.value,
@@ -70,7 +71,7 @@ const onQuery = () => {
 
         if (data.length < pageSize.value) {
 
-            pageStatus.value = 'noMore';
+            pageStatus.value = PageStatusEnum.NOMORE;
 
         }
 
@@ -124,23 +125,17 @@ const onQueryStatistics = () => {
 
 };
 
-onMounted(({
-    title: _title,
-    startTime: _startTime,
-    endTime: _endTime,
-    tagId: _tagId,
-    billType: _billType
-}) => {
+onMounted((opts) => {
 
     uni.setNavigationBarTitle({
-        title: _title
+        title: opts.title
     });
 
-    startTime.value = _startTime;
-    endTime.value = _endTime;
-    tagId.value = _tagId;
-    billType.value = _billType;
-    isYear.value = _title.includes('年');
+    startTime.value = opts.startTime;
+    endTime.value = opts.endTime;
+    tagId.value = opts.tagId;
+    billType.value = opts.billType;
+    isYear.value = opts.title.includes('年');
 
     onQuery();
 
@@ -148,11 +143,15 @@ onMounted(({
 
 });
 
-onPullDownRefresh(() => onClear());
+onPullDownRefresh(() => {
+
+    onClear();
+
+});
 
 onReachBottom(() => {
 
-    if (pageStatus.value === 'noMore') {
+    if (pageStatus.value === PageStatusEnum.NOMORE) {
 
         return;
 
@@ -247,8 +246,8 @@ onShareAppMessage();
 
         <view class="loading-content">
 
-            <van-loading v-show="pageStatus === 'loading'" size="30rpx" type="spinner">正在加载...</van-loading>
-            <van-loading v-show="pageStatus === 'noMore'" size="30px" type="">没有更多数据了，快去记一笔吧^-^</van-loading>
+            <van-loading v-show="pageStatus === PageStatusEnum.LOADING" size="30rpx" type="spinner">正在加载...</van-loading>
+            <van-loading v-show="pageStatus === PageStatusEnum.NOMORE" size="30px" type="">没有更多数据了，快去记一笔吧^-^</van-loading>
 
         </view>
 
@@ -258,137 +257,5 @@ onShareAppMessage();
     </view>
 </template>
 
-<style>
-page {
-    background-color: #ffffff;
-}
-</style>
-
-<style lang="scss" scoped>
-.content {
-    margin-bottom: 40rpx;
-
-    .action-content {
-        flex-shrink: 0;
-        padding: 50rpx 50rpx 30rpx;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-size: 30rpx;
-
-        .tab {
-            display: flex;
-
-            &-item {
-                margin-right: 30rpx;
-                padding: 10rpx 20rpx;
-                color: #acabab;
-                background: #f7f7f7;
-                border-radius: 4px;
-
-                &.expenses {
-                    background: #eef8f3;
-                    color: $canbin-expenses-color;
-                }
-
-                &.income {
-                    background: #fff5e1;
-                    color: $canbin-income-color;
-                }
-
-            }
-
-        }
-
-        .total {
-            font-size: 30rpx;
-            font-weight: bold;
-            max-width: 350rpx;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-    }
-
-    .list {
-        padding: 0 30rpx;
-
-        .list-item {
-            display: flex;
-            align-items: center;
-            padding: 25rpx;
-            border-bottom: 1px solid #ececec;
-
-            .icon {
-                width: 70rpx;
-                height: 70rpx;
-                border-radius: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-shrink: 0;
-
-                &.expenses {
-                    background: $canbin-expenses-color;
-                }
-
-                &.income {
-                    background: $canbin-income-color;
-                }
-
-                image {
-                    width: 45rpx;
-                    height: 45rpx;
-                }
-
-            }
-
-            .item-content {
-                flex-grow: 1;
-                margin-left: 25rpx;
-
-                .tag-name {
-                    font-size: 28rpx;
-                    margin-bottom: 5rpx;
-                }
-
-                .remark {
-                    font-size: 24rpx;
-                    color: #7e7e7e;
-                }
-
-            }
-
-            .info {
-                flex-shrink: 0;
-                margin-left: 10rpx;
-
-                .amount {
-                    font-size: 30rpx;
-                    font-weight: bold;
-                    text-align: right;
-                    margin-bottom: 5rpx;
-                }
-
-                .bill-time {
-                    font-size: 24rpx;
-                    color: #7e7e7e;
-                    text-align: right;
-                }
-
-            }
-
-        }
-
-    }
-
-    .loading-content {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 30rpx;
-    }
-
-}
-</style>
+<style src="./page.scss" lang="scss"/>
+<style src="./style.scss" lang="scss" scoped/>

@@ -9,6 +9,8 @@ import { getBillByBillId, deleteBill } from '@/service/bill';
 import moment from 'moment';
 import currency from 'currency.js';
 
+// 加载
+const loading = ref(true);
 // 账单信息
 const bill = reactive({
     billId: '',
@@ -19,9 +21,6 @@ const bill = reactive({
     amount: '',
     remark: ''
 });
-
-// 加载
-const loading = ref(true);
 
 const onEditButtonClick = () => {
 
@@ -63,7 +62,9 @@ const onDeleteButtonClick = () => {
 
 };
 
-onMounted(({ billId }) => {
+onMounted(({
+    billId
+}) => {
 
     getBillByBillId({
         billId
@@ -162,117 +163,5 @@ onShareAppMessage();
     </view>
 </template>
 
-<style>
-page {
-    background-color: #ededed;
-}
-</style>
-
-<style lang="scss" scoped>
-.content {
-    background: #ffffff;
-    margin: 20rpx;
-    padding: 50rpx 30rpx;
-    border-radius: 20rpx;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    .tag {
-        display: flex;
-        align-items: center;
-
-        &-icon {
-            width: 70rpx;
-            height: 70rpx;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #f7f7f7;
-
-            &.expenses {
-                background-color: $canbin-expenses-color;
-            }
-
-            &.income {
-                background-color: $canbin-income-color;
-            }
-
-            image {
-                width: 40rpx;
-                height: 40rpx;
-            }
-
-        }
-
-        &-name {
-            width: 100rpx;
-            margin-left: 20rpx;
-            font-size: 36rpx;
-        }
-    }
-
-    .amount {
-        margin-top: 30rpx;
-        margin-bottom: 40rpx;
-        font-size: 70rpx;
-        height: 80rpx;
-        display: flex;
-        align-items: center;
-    }
-
-    .cell {
-        width: 100%;
-        display: flex;
-        margin: 10rpx;
-        padding: 0 30rpx;
-        font-size: 32rpx;
-
-        .label {
-            width: 180rpx;
-            color: #8e8e8e;
-        }
-
-        .value {
-            width: 400rpx;
-        }
-
-    }
-
-    .button-content {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 30rpx;
-        border-top: 1px solid #e3e3e3;
-        padding-top: 35rpx;
-
-        .button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 300rpx;
-            font-size: 30rpx;
-            background: #ffffff;
-
-            &-delete {
-                border-right: 1px solid #e3e3e3;
-            }
-
-            image {
-                width: 40rpx;
-                height: 40rpx;
-                margin-right: 20rpx;
-            }
-
-            .delete {
-                color: #cd6661;
-            }
-
-        }
-
-    }
-
-}
-</style>
+<style src="./page.scss" lang="scss"/>
+<style src="./style.scss" lang="scss" scoped/>

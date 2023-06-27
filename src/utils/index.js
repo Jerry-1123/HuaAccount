@@ -1,6 +1,6 @@
+import { minDate } from '@/constant';
 import moment from 'moment';
 import _ from 'lodash';
-import { minDate } from '@/constant';
 
 // 云函数调用
 export const callCloudFunction = ({
@@ -90,7 +90,7 @@ export const getWeekday = ({ day }) => {
             weekday = '周六';
             break;
     }
-    
+
     return weekday;
 
 };

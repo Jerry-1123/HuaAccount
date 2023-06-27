@@ -34,7 +34,7 @@ const {
 // 加载
 const loading = ref(true);
 const billType = ref(BillTypeEnum.EXPENSES);
-// 日期选择器相关
+// 日期选择器相关n
 const showDatePicker = ref(false);
 const activeDateMode = ref(DateModeEnum.MONTH);
 const activeDate = ref(moment().format('YYYY-MM'));
@@ -74,9 +74,17 @@ const getTimeRange = () => {
 
 };
 
-const onDateModeChange = ({ mode }) => activeDateMode.value = mode;
+const onDateModeChange = ({ mode }) => {
 
-const onDatePickerOpen = () => showDatePicker.value = true;
+    activeDateMode.value = mode;
+
+};
+
+const onDatePickerOpen = () => {
+
+    showDatePicker.value = true;
+
+};
 
 const onDatePickerClose = () => {
 
@@ -108,7 +116,11 @@ const onTabItemClick = ({ type }) => {
 
 };
 
-const onClickExpand = () => showExpand.value = !showExpand.value;
+const onClickExpand = () => {
+
+    showExpand.value = !showExpand.value;
+
+};
 
 const onTagAmountItemClick = ({ tagId, tagName }) => {
 
@@ -239,15 +251,17 @@ const onQuery = () => {
 
 onMounted(() => {
 
-    // 加入笔数
-
     initSetting();
 
     onQuery();
 
 });
 
-onPullDownRefresh(() => onQuery());
+onPullDownRefresh(() => {
+
+    onQuery();
+
+});
 
 onShareAppMessage();
 
@@ -508,7 +522,7 @@ onShareAppMessage();
 
         </view>
 
-        <date-picker :show="showDatePicker"
+        <date-picker :visible="showDatePicker"
                      :active-mode="activeDateMode"
                      :active-date="activeDate"
                      @change="onDateModeChange"
@@ -521,352 +535,5 @@ onShareAppMessage();
     </view>
 </template>
 
-<style>
-page {
-    background-color: #ffffff;
-}
-</style>
-
-<style lang="scss" scoped>
-.content {
-    padding-top: 160rpx;
-
-    .header {
-        position: fixed;
-        z-index: 30;
-        width: 100%;
-        top: 0;
-        left: 0;
-        color: #ffffff;
-        height: 80rpx;
-        padding: 0 40rpx;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        &.expenses {
-            background: $canbin-expenses-color;
-        }
-
-        &.income {
-            background: $canbin-income-color;
-        }
-
-        &-item {
-            display: flex;
-            align-items: center;
-
-            text {
-                font-size: 34rpx;
-                margin-right: 5rpx;
-            }
-
-            image {
-                width: 32rpx;
-                height: 32rpx;
-            }
-
-            .tab {
-                margin-left: 30rpx;
-                padding: 10rpx 20rpx;
-                color: #ffffff;
-                border-radius: 3px;
-
-                &.expenses {
-                    background: #54c486;
-                }
-
-                &.income {
-                    background: #f1c73d;
-                }
-
-            }
-
-        }
-
-    }
-
-    .total {
-        position: fixed;
-        z-index: 30;
-        width: 100%;
-        top: 80rpx;
-        left: 0;
-        height: 80rpx;
-        display: flex;
-        align-items: center;
-        padding: 0 40rpx;
-        color: #fff;
-
-        &.expenses {
-            background: $canbin-expenses-color;
-        }
-
-        &.income {
-            background: $canbin-income-color;
-        }
-
-        &-amount {
-            display: flex;
-            align-items: center;
-
-            .label {
-                font-size: 30rpx;
-            }
-
-            .value {
-                font-size: 50rpx;
-                margin-left: 20rpx;
-                margin-bottom: 10rpx;
-                max-width: 400rpx;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-
-        }
-
-        &-count {
-            font-size: 28rpx;
-            margin-left: 20rpx;
-            opacity: 0.7;
-        }
-
-    }
-
-    .structure {
-        margin-top: 40rpx;
-        margin-bottom: 10rpx;
-
-        .title {
-            font-size: 32rpx;
-            margin-left: 40rpx;
-        }
-
-        .chart {
-            padding: 20rpx 0;
-            height: 450rpx;
-        }
-
-        .ring-chart-list {
-            padding: 20rpx 40rpx;
-
-            .list-item {
-                display: flex;
-                align-items: center;
-                margin: 15rpx 0;
-
-                .icon {
-                    flex-shrink: 0;
-                    width: 65rpx;
-                    height: 65rpx;
-                    border-radius: 50%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    background: #f7f7f7;
-                    margin: 10rpx 0;
-
-                    image {
-                        width: 30rpx;
-                        height: 30rpx;
-                    }
-
-                    &.expenses {
-                        background: $canbin-expenses-color;
-                    }
-
-                    &.income {
-                        background: $canbin-income-color;
-                    }
-
-                }
-
-                .wrap {
-                    flex-grow: 1;
-                    margin: 0 30rpx;
-
-                    .wrap-top {
-                        display: flex;
-                        align-items: center;
-                        margin-top: -5rpx;
-                        margin-bottom: 5rpx;
-
-                        .tag-name {
-                            font-size: 26rpx;
-                        }
-
-                        .total-count {
-                            font-size: 24rpx;
-                            color: #8e8e8e;
-                            margin-left: 20rpx;
-                        }
-
-                    }
-
-                    .wrap-bottom {}
-
-                }
-
-                .amount {
-                    font-size: 30rpx;
-                    font-weight: bold;
-                    flex-shrink: 0;
-                    display: flex;
-                    align-items: center;
-
-                    text {
-                        display: block;
-                        max-width: 150rpx;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                    }
-
-                    image {
-                        width: 30rpx;
-                        height: 30rpx;
-                        margin-left: 10rpx;
-                    }
-
-                }
-
-            }
-
-            .expand {
-                height: 44rpx;
-                line-height: 44rpx;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 28rpx;
-                color: #8e8e8e;
-
-                image {
-                    width: 34rpx;
-                    height: 34rpx;
-                    margin-left: 10rpx;
-                }
-
-            }
-
-        }
-
-        .list {
-            padding: 30rpx;
-
-            .list-item {
-                display: flex;
-                align-items: center;
-                padding: 16rpx 20rpx;
-
-                .index {
-                    width: 50rpx;
-                    flex-shrink: 0;
-                    font-size: 28rpx;
-                }
-
-                .icon {
-                    width: 65rpx;
-                    height: 65rpx;
-                    border-radius: 100%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    flex-shrink: 0;
-
-                    &.expenses {
-                        background: $canbin-expenses-color;
-                    }
-
-                    &.income {
-                        background: $canbin-income-color;
-                    }
-
-                    image {
-                        width: 30rpx;
-                        height: 30rpx;
-                    }
-
-                }
-
-                .item-content {
-                    flex-grow: 1;
-                    margin-left: 25rpx;
-
-                    .tag-name {
-                        font-size: 28rpx;
-                        margin-bottom: 5rpx;
-                    }
-
-                    .remark {
-                        font-size: 24rpx;
-                        color: #7e7e7e;
-                    }
-
-                }
-
-                .info {
-                    flex-shrink: 0;
-                    margin-left: 10rpx;
-
-                    .amount {
-                        font-size: 30rpx;
-                        font-weight: bold;
-                        text-align: right;
-                        margin-bottom: 5rpx;
-                    }
-
-                    .bill-time {
-                        font-size: 24rpx;
-                        color: #7e7e7e;
-                        text-align: right;
-                    }
-
-                }
-
-            }
-
-        }
-
-        .whole {
-            margin-bottom: 50rpx;
-            font-size: 28rpx;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            image {
-                width: 35rpx;
-                height: 35rpx;
-            }
-
-        }
-
-    }
-
-    .divider {
-        height: 1px;
-        background: #eaeaea;
-        margin: 0 50rpx;
-    }
-
-    .no-data {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-        image {
-            width: 200rpx;
-            height: 200rpx;
-        }
-
-        text {
-            font-size: 30rpx;
-            margin-top: 10rpx;
-        }
-    }
-
-}
-</style>
+<style src="./page.scss" lang="scss"/>
+<style src="./style.scss" lang="scss" scoped/>

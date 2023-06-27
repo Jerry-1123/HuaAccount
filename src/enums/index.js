@@ -12,3 +12,9 @@ export const ListTypeEnum = {
     AMOUNT: 'amount',
     TIME: 'time',
 };
+
+export const PageStatusEnum = {
+    MORE: 'more',
+    LOADING: 'loading',
+    NOMORE: 'noMore'
+};

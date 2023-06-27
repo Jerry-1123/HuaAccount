@@ -3,12 +3,10 @@
 import { useState } from '@/hooks/useState';
 import { BillTypeEnum } from '@/enums';
 
-const {
-    tagsGroup
-} = useState();
+const emit = defineEmits(['select', 'close']);
 
 const props = defineProps({
-    show: {
+    visible: {
         type: Boolean,
         default: false
     },
@@ -18,7 +16,9 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(['select', 'close']);
+const {
+    tagsGroup
+} = useState();
 
 const onTagItemClick = ({ tagId }) => {
 
@@ -30,12 +30,16 @@ const onTagItemClick = ({ tagId }) => {
 
 };
 
-const onPopupClose = () => emit('close');
+const onPopupClose = () => {
+
+    emit('close');
+
+};
 
 </script>
 
 <template>
-    <van-popup :show="show"
+    <van-popup :show="visible"
                :safe-area-inset-bottom="false"
                custom-style="height: 800rpx"
                position="bottom"
@@ -81,53 +85,4 @@ const onPopupClose = () => emit('close');
     </van-popup>
 </template>
 
-<style lang="scss" scoped>
-.content {
-    background: #fafafa;
-
-    .title {
-        height: 100rpx;
-        line-height: 100rpx;
-        text-align: center;
-        font-size: 32rpx;
-    }
-
-    .tag-content {
-        height: 700rpx;
-        overflow: scroll;
-        padding: 0 40rpx 40rpx;
-        font-size: 28rpx;
-
-        .tag-type {
-            margin: 30rpx 30rpx 10rpx;
-            color: #acabab;
-        }
-
-        .tag-list {
-            display: flex;
-            flex-wrap: wrap;
-
-            .tag-item {
-                padding: 20rpx 0;
-                margin: 10rpx;
-                width: 203rpx;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: #ffffff;
-                cursor: pointer;
-                border-radius: 4px;
-
-                &.active {
-                    color: #ffffff;
-                    background: $canbin-expenses-color;
-                }
-
-            }
-
-        }
-
-    }
-
-}
-</style>
+<style src="./style.scss" lang="scss" scoped/>

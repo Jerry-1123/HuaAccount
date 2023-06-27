@@ -1,17 +1,19 @@
-<script setup name="xxx">
+<!-- 页面公共模版 -->
+<script setup name="page">
 
 import { ref } from 'vue';
 import { onMounted } from '@/hooks/onMounted';
 import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
+import { } from '@/service';
 import { } from '@/enums';
 import { } from '@/constant';
+import _ from 'lodash';
 
 const {
 } = useState();
 
 onMounted(() => {
-
 
 
 });
@@ -21,12 +23,8 @@ onMounted(() => {
 <template>
     <view class="content">
 
-
     </view>
 </template>
 
-<style lang="scss" scoped>
-.content {
-    padding: 30rpx;
-}
-</style>
+<style src="./page.scss" lang="scss"/>
+<style src="./style.scss" lang="scss" scoped/>

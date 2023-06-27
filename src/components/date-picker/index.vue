@@ -5,10 +5,10 @@ import { DateModeEnum } from '@/enums';
 import { getDateOptions } from '@/utils';
 import moment from 'moment';
 
-const options = ref(getDateOptions());
+const emit = defineEmits(['change', 'select', 'close']);
 
 const props = defineProps({
-    show: {
+    visible: {
         type: Boolean,
         default: false
     },
@@ -22,9 +22,13 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(['change', 'select', 'close']);
+const options = ref(getDateOptions());
 
-const onModeChange = ({ mode }) => emit('change', { mode });
+const onModeChange = ({ mode }) => {
+
+    emit('change', { mode });
+
+};
 
 const onDateItemClick = ({ date }) => {
 
@@ -36,12 +40,16 @@ const onDateItemClick = ({ date }) => {
 
 };
 
-const onPopupClose = () => emit('close');
+const onPopupClose = () => {
+
+    emit('close');
+
+};
 
 </script>
 
 <template>
-    <van-popup :show="show"
+    <van-popup :show="visible"
                :safe-area-inset-bottom="false"
                custom-style="height: 800rpx"
                position="bottom"
@@ -134,73 +142,4 @@ const onPopupClose = () => emit('close');
     </van-popup>
 </template>
 
-<style lang="scss" scoped>
-.content {
-    background: #fafafa;
-
-    .title {
-        height: 100rpx;
-        line-height: 100rpx;
-        text-align: center;
-        font-size: 32rpx;
-    }
-
-    .tab {
-        height: 100rpx;
-        display: flex;
-        align-items: center;
-        font-size: 30rpx;
-
-        &-item {
-            flex-grow: 1;
-            text-align: center;
-
-            &.active {
-                color: #3eb575;
-            }
-
-        }
-
-    }
-
-    .container {
-        height: 600rpx;
-        overflow-y: scroll;
-        padding: 0 40rpx 40rpx;
-        font-size: 28rpx;
-
-        .year {
-            text-align: center;
-            margin: 15rpx 0;
-            color: #acabab;
-        }
-
-        .grid {
-            width: 100%;
-            display: flex;
-            flex-wrap: wrap;
-
-            .grid-item {
-                padding: 20rpx 0;
-                margin: 10rpx;
-                width: 146rpx;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: #ffffff;
-                cursor: pointer;
-                border-radius: 4px;
-
-                &.active {
-                    color: #fff;
-                    background: $canbin-expenses-color;
-                }
-
-            }
-
-        }
-
-    }
-
-}
-</style>
+<style src="./style.scss" lang="scss" scoped/>

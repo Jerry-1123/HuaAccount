@@ -7,7 +7,7 @@ import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
 import { rpx2px, getWeekday } from '@/utils';
 import { defaultTagId, defaultPageSize } from '@/constant';
-import { DateModeEnum, BillTypeEnum } from '@/enums';
+import { DateModeEnum, BillTypeEnum, PageStatusEnum } from '@/enums';
 import { getBillRecord, getBillStatistics, deleteBill } from '@/service/bill';
 import moment from 'moment';
 import _ from 'lodash';
@@ -40,7 +40,7 @@ const totalIncome = ref(0);
 // 列表相关
 const pageNumber = ref(0);
 const pageSize = ref(defaultPageSize);
-const pageStatus = ref('');
+const pageStatus = ref(PageStatusEnum.LOADING);
 const list = ref([]);
 // 头部滑动高度
 const headerScrollHeight = ref(rpx2px({ rpx: 80 }));
@@ -77,9 +77,17 @@ const getTimeRange = () => {
 
 };
 
-const onDateModeChange = ({ mode }) => activeDateMode.value = mode;
+const onDateModeChange = ({ mode }) => {
 
-const onDatePickerOpen = () => showDatePicker.value = true;
+    activeDateMode.value = mode;
+
+};
+
+const onDatePickerOpen = () => {
+
+    showDatePicker.value = true;
+
+};
 
 const onDatePickerClose = () => {
 
@@ -99,9 +107,17 @@ const onDateSelect = ({ date }) => {
 
 };
 
-const onTagPickerOpen = () => showTagPicker.value = true;
+const onTagPickerOpen = () => {
 
-const onTagPickerClose = () => showTagPicker.value = false;
+    showTagPicker.value = true;
+
+};
+
+const onTagPickerClose = () => {
+
+    showTagPicker.value = false;
+
+};
 
 const onTagSelect = ({ tagId }) => {
 
@@ -201,7 +217,7 @@ const onQuery = () => {
             }
 
             pageNumber.value--;
-            pageStatus.value = 'noMore';
+            pageStatus.value = PageStatusEnum.NOMORE;
 
         } else {
 
@@ -235,7 +251,7 @@ const onQuery = () => {
             }
 
             pageStatus.value = _.reduce(data, (meme, item) => meme + item.billList.length, 0) < pageSize.value
-                ? 'noMore' : 'loading';
+                ? PageStatusEnum.NOMORE : PageStatusEnum.LOADING;
 
         }
 
@@ -323,7 +339,11 @@ onMounted(() => {
 
 });
 
-onPullDownRefresh(() => onClear());
+onPullDownRefresh(() => {
+
+    onClear();
+
+});
 
 onReachBottom(() => {
 
@@ -333,7 +353,11 @@ onReachBottom(() => {
 
 });
 
-onPageScroll((e) => showStickyInfo.value = e.scrollTop >= headerScrollHeight.value);
+onPageScroll((e) => {
+
+    showStickyInfo.value = e.scrollTop >= headerScrollHeight.value;
+
+});
 
 onShareAppMessage();
 
@@ -510,7 +534,7 @@ onShareAppMessage();
 
             </view>
 
-            <view v-if="pageStatus === 'noMore' && list.length === 0" class="no-data">
+            <view v-if="pageStatus === PageStatusEnum.NOMORE && list.length === 0" class="no-data">
 
                 <image src="../../static/svgs/pic_no_more.svg" />
                 <text>暂无账单，快去记一笔吧^-^</text>
@@ -519,8 +543,8 @@ onShareAppMessage();
 
             <view v-if="list.length !== 0" class="loading-content">
 
-                <van-loading v-show="pageStatus === 'loading'" size="30rpx" type="spinner">正在加载...</van-loading>
-                <van-loading v-show="pageStatus === 'noMore'" size="30px" type="">没有更多数据了，快去记一笔吧^-^</van-loading>
+                <van-loading v-show="pageStatus === PageStatusEnum.LOADING" size="30rpx" type="spinner">正在加载...</van-loading>
+                <van-loading v-show="pageStatus === PageStatusEnum.NOMORE" size="30px" type="">没有更多数据了，快去记一笔吧^-^</van-loading>
 
             </view>
 
@@ -536,14 +560,14 @@ onShareAppMessage();
 
         </view>
 
-        <date-picker :show="showDatePicker"
+        <date-picker :visible="showDatePicker"
                      :active-mode="activeDateMode"
                      :active-date="activeDate"
                      @change="onDateModeChange"
                      @select="onDateSelect"
                      @close="onDatePickerClose" />
 
-        <tag-picker :show="showTagPicker"
+        <tag-picker :visible="showTagPicker"
                     :active-tag-id="activeTagId"
                     @select="onTagSelect"
                     @close="onTagPickerClose" />
@@ -554,390 +578,5 @@ onShareAppMessage();
     </view>
 </template>
 
-<style>
-page {
-    background-color: #ededed;
-}
-</style>
-
-<style lang="scss" scoped>
-.content {
-    height: 100%;
-
-    .header {
-        position: fixed;
-        z-index: 30;
-        width: 100%;
-        top: 0;
-        left: 0;
-        background: $canbin-expenses-color;
-        color: #ffffff;
-        height: 80rpx;
-        padding: 0 40rpx;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        &-item {
-            display: flex;
-            align-items: center;
-
-            &-text1 {
-                font-size: 34rpx;
-                margin-right: 5rpx;
-            }
-
-            &-text2 {
-                font-size: 30rpx;
-                margin-left: 10rpx;
-            }
-
-            &-img {
-                width: 32rpx;
-                height: 32rpx;
-            }
-
-        }
-
-    }
-
-    .blank-content {
-        position: fixed;
-        z-index: 10;
-        left: 0;
-        top: 80rpx;
-        width: 100%;
-        height: 80rpx;
-        background: $canbin-expenses-color;
-    }
-
-    .sticky-info-content {
-        position: fixed;
-        z-index: 30;
-        left: 0;
-        top: 80rpx;
-        width: 100%;
-        height: 80rpx;
-        line-height: 80rpx;
-        padding: 0 40rpx;
-        background: #fff;
-        border-bottom: 1px solid #eaeaea;
-        font-size: 30rpx;
-
-        .stick-info {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            .amount {
-                display: flex;
-                align-items: center;
-
-                .label {
-                    color: #8e8e8e;
-                    margin-right: 20rpx;
-                }
-
-                .value {
-                    font-weight: bold;
-                    margin-right: 30rpx;
-                    max-width: 150rpx;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                }
-
-            }
-
-            .avatar {
-                width: 55rpx;
-                height: 55rpx;
-                border-radius: 100%;
-            }
-
-        }
-
-    }
-
-    .info-content {
-        position: relative;
-        z-index: 20;
-        margin: 80rpx 20rpx 20rpx;
-        height: 160rpx;
-        background: #ffffff;
-        border: 1px solid #ececec;
-        border-radius: 15rpx;
-        padding: 20rpx 30rpx;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        .info-wrapper {
-            flex-grow: 1;
-
-            .total {
-                font-size: 50rpx;
-                font-weight: bold;
-                display: flex;
-                align-items: center;
-
-                .yuan {
-                    margin-right: 30rpx;
-                }
-
-                &-amount {
-                    max-width: 420rpx;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                }
-
-                &.expenses {
-                    color: $canbin-expenses-color;
-                }
-
-                &.income {
-                    color: $canbin-income-color
-                }
-
-            }
-
-            .statistics {
-                display: flex;
-                align-items: center;
-                font-size: 30rpx;
-                margin-top: 20rpx;
-
-                .label {
-                    color: #8e8e8e;
-                    margin-right: 12rpx;
-                }
-
-                .value {
-                    font-weight: bold;
-                    margin-right: 20rpx;
-                    max-width: 140rpx;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                }
-
-            }
-        }
-
-        .avatar {
-            flex-shrink: 0;
-            width: 100rpx;
-            height: 100rpx;
-            border-radius: 100%;
-        }
-
-    }
-
-    .list-content {
-        position: relative;
-        z-index: 20;
-
-        .day-bill {
-            background: #ffffff;
-            margin: 20rpx;
-            padding-bottom: 20rpx;
-            border-radius: 15rpx;
-            overflow: hidden;
-
-            .statistics {
-                background: #fbfbfb;
-                padding: 25rpx 30rpx;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-
-                .time-content {
-                    font-size: 30rpx;
-
-                    text {
-                        margin-right: 15rpx;
-                    }
-
-                }
-
-                .amount-content {
-                    font-size: 28rpx;
-                    font-weight: bold;
-                    display: flex;
-                    align-items: center;
-
-                    .label {
-                        margin: 0 5rpx 0 10rpx;
-                        color: #8e8e8e;
-                    }
-
-                    .value {
-                        font-weight: bold;
-                        max-width: 135rpx;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                    }
-
-                }
-
-            }
-
-            .list-item-wrapper {
-                margin: 0 30rpx;
-
-                .list-item {
-                    display: flex;
-                    align-items: center;
-                    padding: 25rpx;
-                    border-bottom: 1px solid #ececec;
-
-                    .icon {
-                        width: 70rpx;
-                        height: 70rpx;
-                        border-radius: 100%;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        flex-shrink: 0;
-
-                        &.expenses {
-                            background: $canbin-expenses-color;
-                        }
-
-                        &.income {
-                            background: $canbin-income-color;
-                        }
-
-                        image {
-                            width: 45rpx;
-                            height: 45rpx;
-                        }
-
-                    }
-
-                    .info {
-                        margin-left: 30rpx;
-                        flex-grow: 1;
-
-                        .tag {
-                            font-size: 30rpx;
-                        }
-
-                        .remark {
-                            width: 300rpx;
-                            font-size: 26rpx;
-                            color: #7e7e7e;
-                            margin-top: 5rpx;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            white-space: nowrap;
-                        }
-
-                    }
-
-                    .amount {
-                        font-weight: bold;
-                        font-size: 36rpx;
-                        flex-shrink: 0;
-
-                        .expenses {
-                            color: $canbin-expenses-color;
-                        }
-
-                        .income {
-                            color: $canbin-income-color;
-                        }
-
-                    }
-
-                }
-
-                .swipe-content {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: 300rpx;
-                    height: 100%;
-                    font-size: 30rpx;
-
-                    .swipe-item {
-                        height: 100%;
-                        color: #ffffff;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        width: 150rpx;
-                    }
-
-                    .swipe-edit {
-                        background-color: #4c4c4c;
-                    }
-
-                    .swipe-delete {
-                        background-color: #E75E58;
-                    }
-
-                }
-
-            }
-
-
-        }
-
-        .no-data {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-
-            image {
-                width: 200rpx;
-                height: 200rpx;
-            }
-
-            text {
-                font-size: 30rpx;
-                margin-top: 10rpx;
-            }
-
-        }
-
-        .loading-content {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 30rpx 0;
-        }
-
-    }
-
-    .record-button {
-        position: fixed;
-        z-index: 100;
-        right: 40rpx;
-        bottom: 40rpx;
-        box-shadow: rgba(0, 0, 0, 0.15) 0px 5rpx 15rpx;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20rpx 30rpx;
-        background: #ffffff;
-        border-radius: 100rpx;
-        cursor: pointer;
-
-        image {
-            width: 40rpx;
-            height: 40rpx;
-        }
-
-        text {
-            color: $canbin-expenses-color;
-            font-size: 28rpx;
-            margin-left: 10rpx;
-        }
-    }
-
-}
-</style>
+<style src="./page.scss" lang="scss"/>
+<style src="./style.scss" lang="scss" scoped/>
