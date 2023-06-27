@@ -30,7 +30,7 @@ const activeListType = ref(ListTypeEnum.AMOUNT);
 // 列表相关
 const pageNumber = ref(0);
 const pageSize = ref(defaultPageSize);
-const pageStatus = ref(PageStatusEnum.LOADING);
+const pageStatus = ref('');
 const list = ref([]);
 // 统计
 const totalAmount = ref(0);

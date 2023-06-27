@@ -40,7 +40,7 @@ const totalIncome = ref(0);
 // 列表相关
 const pageNumber = ref(0);
 const pageSize = ref(defaultPageSize);
-const pageStatus = ref(PageStatusEnum.LOADING);
+const pageStatus = ref('');
 const list = ref([]);
 // 头部滑动高度
 const headerScrollHeight = ref(rpx2px({ rpx: 80 }));
