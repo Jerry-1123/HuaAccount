@@ -1,4 +1,4 @@
-export const appVersion = '2.0.18';
+export const appVersion = '3.0.0';
 
 export const defaultPageSize = 20;
 
