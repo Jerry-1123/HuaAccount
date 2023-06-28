@@ -24,7 +24,7 @@ const onBackToTop = () => {
 <template>
     <view v-if="visible"
           class="button"
-          hover-class="default-hover-class"
+          hover-class="gray-hover-class"
           hover-stay-time="100"
           @tap.native.stop="onBackToTop">
 
