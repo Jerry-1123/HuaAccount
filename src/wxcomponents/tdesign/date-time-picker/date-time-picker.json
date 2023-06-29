@@ -1,7 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "t-picker": "../picker/picker",
-    "t-picker-item": "../picker-item/picker-item"
-  }
-}
