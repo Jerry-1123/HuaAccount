@@ -46,7 +46,7 @@ const formatAmount = computed(() => (amount) => currency(amount).divide(100));
 
 const formatBillTime = computed(() => (billTime) => isYear.value ? moment(billTime).format('YYYY年M月D日') : moment(billTime).format('M月D日'));
 
-const onTabItemClick = ({ listType }) => {
+const onTabItemClick = (listType) => {
 
     activeListType.value = listType;
 
@@ -207,7 +207,7 @@ onShareAppMessage();
                           'income': activeListType === ListTypeEnum.AMOUNT && billType === BillTypeEnum.INCOME
                       }"
                       hover-stay-time="100"
-                      @click="onTabItemClick({ listType: ListTypeEnum.AMOUNT })">按金额
+                      @click="onTabItemClick(ListTypeEnum.AMOUNT)">按金额
                 </view>
 
                 <view class="tab-item"
@@ -216,7 +216,7 @@ onShareAppMessage();
                           'income': activeListType === ListTypeEnum.TIME && billType === BillTypeEnum.INCOME
                       }"
                       hover-stay-time="100"
-                      @click="onTabItemClick({ listType: ListTypeEnum.TIME })">按时间
+                      @click="onTabItemClick(ListTypeEnum.TIME)">按时间
                 </view>
 
             </view>

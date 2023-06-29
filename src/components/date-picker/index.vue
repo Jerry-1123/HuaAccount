@@ -1,8 +1,7 @@
 <script setup name="date-picker">
 
-import { ref } from 'vue';
+import { useOptions } from '@/hooks/useOptions';
 import { DateModeEnum } from '@/enums';
-import { getDateOptions } from '@/utils';
 import moment from 'moment';
 
 const emit = defineEmits(['change', 'select', 'close']);
@@ -22,19 +21,21 @@ const props = defineProps({
     }
 });
 
-const options = ref(getDateOptions());
+const {
+    dateOptions
+} = useOptions();
 
-const onModeChange = ({ mode }) => {
+const onModeChange = (mode) => {
 
-    emit('change', { mode });
+    emit('change', mode);
 
 };
 
-const onDateItemClick = ({ date }) => {
+const onDateItemClick = (date) => {
 
     if (date !== props.activeDate) {
 
-        emit('select', { date });
+        emit('select', date);
 
     }
 
@@ -72,7 +73,7 @@ const onPopupClose = () => {
                       :class="{ 'active': activeMode === DateModeEnum.MONTH }"
                       hover-class="default-hover-class"
                       hover-stay-time="100"
-                      @click="onModeChange({ mode: DateModeEnum.MONTH })">
+                      @click="onModeChange(DateModeEnum.MONTH)">
 
                     月账单
 
@@ -82,7 +83,7 @@ const onPopupClose = () => {
                       :class="{ 'active': activeMode === DateModeEnum.YEAR }"
                       hover-class="default-hover-class"
                       hover-stay-time="100"
-                      @click="onModeChange({ mode: DateModeEnum.YEAR })">
+                      @click="onModeChange(DateModeEnum.YEAR)">
 
                     年账单
 
@@ -92,7 +93,7 @@ const onPopupClose = () => {
 
             <view v-show="activeMode === DateModeEnum.MONTH" class="container">
 
-                <view v-for="(item, key) in options"
+                <view v-for="(item, key) in dateOptions"
                       :key="key">
 
                     <view class="year">{{ key }}年</view>
@@ -105,7 +106,7 @@ const onPopupClose = () => {
                               :class="{ 'active': activeDate === month }"
                               :hover-class="activeDate === month ? 'default-hover-class' : 'gray-hover-class'"
                               hover-stay-time="100"
-                              @click="onDateItemClick({ date: month })">
+                              @click="onDateItemClick(month)">
 
                             {{ moment(month).format('M月') }}
 
@@ -121,13 +122,13 @@ const onPopupClose = () => {
 
                 <view class="grid">
 
-                    <view v-for="(item, year) in options"
+                    <view v-for="(item, year) in dateOptions"
                           :key="year"
                           class="grid-item"
                           :class="{ 'active': activeDate === year }"
                           :hover-class="activeDate === year ? 'default-hover-class' : 'gray-hover-class'"
                           hover-stay-time="100"
-                          @click="onDateItemClick({ date: year })">
+                          @click="onDateItemClick(year)">
 
                         {{ year }}年
 

@@ -1,7 +1,3 @@
-import { minDate } from '@/constant';
-import moment from 'moment';
-import _ from 'lodash';
-
 // 云函数调用
 export const callCloudFunction = ({
     name,
@@ -30,22 +26,6 @@ export const callCloudFunction = ({
         uni.showToast({ title: `云函数调用失败`, icon: 'none' });
 
     });
-
-};
-
-// 获取自从2022年6月1日起的时间选项
-export const getDateOptions = () => {
-
-    const startTime = moment(minDate);
-    const endTime = moment();
-
-    let allYearMonth = [];
-    while (endTime > startTime || startTime.format('M') === endTime.format('M')) {
-        allYearMonth.push(startTime.format('YYYY-MM'));
-        startTime.add(1, 'month');
-    }
-
-    return _.groupBy(allYearMonth, value => value.substring(0, 4));
 
 };
 

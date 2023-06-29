@@ -20,11 +20,11 @@ const {
     tagsGroup
 } = useState();
 
-const onTagItemClick = ({ tagId }) => {
+const onTagItemClick = (tagId) => {
 
     if (tagId !== props.activeTagId) {
 
-        emit('select', { tagId });
+        emit('select', tagId);
 
     }
 
@@ -68,7 +68,7 @@ const onPopupClose = () => {
                               :class="{ 'active': activeTagId === tag._id }"
                               :hover-class="activeTagId === tag._id ? 'default-hover-class' : 'gray-hover-class'"
                               hover-stay-time="100"
-                              @click="onTagItemClick({ tagId: tag._id })">
+                              @click="onTagItemClick(tag._id)">
 
                             {{ tag.tagName }}
 

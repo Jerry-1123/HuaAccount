@@ -74,7 +74,7 @@ const getTimeRange = () => {
 
 };
 
-const onDateModeChange = ({ mode }) => {
+const onDateModeChange = (mode) => {
 
     activeDateMode.value = mode;
 
@@ -94,7 +94,7 @@ const onDatePickerClose = () => {
 
 };
 
-const onDateSelect = ({ date }) => {
+const onDateSelect = (date) => {
 
     activeDate.value = date;
 
@@ -106,7 +106,7 @@ const onDateSelect = ({ date }) => {
 
 };
 
-const onTabItemClick = ({ type }) => {
+const onTabItemClick = (type) => {
 
     billType.value = type;
 
@@ -290,12 +290,12 @@ onShareAppMessage();
 
                 <view class="tab"
                       :class="{ 'expenses': billType === BillTypeEnum.EXPENSES }"
-                      @click="onTabItemClick({ type: BillTypeEnum.EXPENSES })">支出
+                      @click="onTabItemClick(BillTypeEnum.EXPENSES)">支出
                 </view>
 
                 <view class="tab"
                       :class="{ 'income': billType === BillTypeEnum.INCOME }"
-                      @click="onTabItemClick({ type: BillTypeEnum.INCOME })">收入
+                      @click="onTabItemClick(BillTypeEnum.INCOME)">收入
                 </view>
 
             </view>

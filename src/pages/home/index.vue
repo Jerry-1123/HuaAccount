@@ -80,7 +80,7 @@ const getTimeRange = () => {
 
 };
 
-const onDateModeChange = ({ mode }) => {
+const onDateModeChange = (mode) => {
 
     activeDateMode.value = mode;
 
@@ -100,7 +100,7 @@ const onDatePickerClose = () => {
 
 };
 
-const onDateSelect = ({ date }) => {
+const onDateSelect = (date) => {
 
     activeDate.value = date;
 
@@ -122,7 +122,7 @@ const onTagPickerClose = () => {
 
 };
 
-const onTagSelect = ({ tagId }) => {
+const onTagSelect = (tagId) => {
 
     activeTagId.value = tagId;
 
@@ -140,7 +140,7 @@ const onAvatarClick = () => {
 
 };
 
-const onBillItemClick = ({ billId }) => {
+const onBillItemClick = (billId) => {
 
     uni.navigateTo({
         url: `/pages/detail/index?billId=${billId}`
@@ -148,7 +148,7 @@ const onBillItemClick = ({ billId }) => {
 
 };
 
-const onEditButtonClick = ({ billId }) => {
+const onEditButtonClick = (billId) => {
 
     uni.navigateTo({
         url: `/pages/record/index?billId=${billId}`
@@ -156,7 +156,7 @@ const onEditButtonClick = ({ billId }) => {
 
 };
 
-const onDeleteButtonClick = ({ billId }) => {
+const onDeleteButtonClick = (billId) => {
 
     uni.showModal({
         title: '提示',
@@ -488,7 +488,7 @@ onShareAppMessage();
                         <view class="list-item"
                               hover-class="gray-hover-class"
                               hover-stay-time="100"
-                              @click="onBillItemClick({ billId: bill._id })">
+                              @click="onBillItemClick(bill._id)">
 
                             <view class="icon"
                                   :class="{
@@ -523,11 +523,11 @@ onShareAppMessage();
                         <view class="swipe-content" slot="right">
 
                             <view class="swipe-item swipe-edit"
-                                  @click="onEditButtonClick({ billId: bill._id })">编辑
+                                  @click="onEditButtonClick(bill._id)">编辑
                             </view>
 
                             <view class="swipe-item swipe-delete"
-                                  @click="onDeleteButtonClick({ billId: bill._id })">删除
+                                  @click="onDeleteButtonClick(bill._id)">删除
                             </view>
 
                         </view>

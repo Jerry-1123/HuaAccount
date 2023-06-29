@@ -44,14 +44,14 @@ const isSubmitting = ref(false);
 
 const formatDate = computed(() => moment(formData.billTime).format('M月D日'));
 
-const onTabItemClick = ({ billType }) => {
+const onTabItemClick = (billType) => {
 
     formData.billType = billType;
     formData.tagId = billType === BillTypeEnum.EXPENSES ? expenseTags.value[0]._id : incomeTags.value[0]._id;
 
 };
 
-const onTagItemClick = ({ tagId }) => {
+const onTagItemClick = (tagId) => {
 
     formData.tagId = tagId;
 
@@ -101,7 +101,7 @@ const onSaveRemarkButtonClick = () => {
 
 };
 
-const onNumberClick = ({ number }) => {
+const onNumberClick = (number) => {
 
     const dotIndex = formData.amount.indexOf('.');
 
@@ -330,14 +330,14 @@ onShareAppMessage();
                       :class="{ 'expenses': formData.billType === BillTypeEnum.EXPENSES }"
                       :hover-class="formData.billType === BillTypeEnum.EXPENSES ? '' : 'gray-hover-class'"
                       hover-stay-time="100"
-                      @click="onTabItemClick({ billType: BillTypeEnum.EXPENSES })">支出
+                      @click="onTabItemClick(BillTypeEnum.EXPENSES)">支出
                 </view>
 
                 <view class="tab-item"
                       :class="{ 'income': formData.billType === BillTypeEnum.INCOME }"
                       :hover-class="formData.billType === BillTypeEnum.INCOME ? '' : 'gray-hover-class'"
                       hover-stay-time="100"
-                      @click="onTabItemClick({ billType: BillTypeEnum.INCOME })">收入
+                      @click="onTabItemClick(BillTypeEnum.INCOME)">收入
                 </view>
 
             </view>
@@ -369,22 +369,22 @@ onShareAppMessage();
 
                 <view class="tag-wrapper">
 
-                    <view v-for="item in expenseTags"
-                          :key="item._id"
+                    <view v-for="tag in expenseTags"
+                          :key="tag._id"
                           class="tag"
-                          :class="{ 'expenses': formData.tagId === item._id }"
-                          @click="onTagItemClick({ tagId: item._id })">
+                          :class="{ 'expenses': formData.tagId === tag._id }"
+                          @click="onTagItemClick(tag._id)">
 
                         <view class="tag-icon">
 
-                            <image v-show="formData.tagId === item._id"
-                                   :src="item.selectTagIcon" />
-                            <image v-show="formData.tagId !== item._id"
-                                   :src="item.tagIcon" />
+                            <image v-show="formData.tagId === tag._id"
+                                   :src="tag.selectTagIcon" />
+                            <image v-show="formData.tagId !== tag._id"
+                                   :src="tag.tagIcon" />
 
                         </view>
 
-                        <view class="tag-name">{{ item.tagName }}</view>
+                        <view class="tag-name">{{ tag.tagName }}</view>
 
                     </view>
 
@@ -396,22 +396,22 @@ onShareAppMessage();
 
                 <view class="tag-wrapper">
 
-                    <view v-for="item in incomeTags"
-                          :key="item._id"
+                    <view v-for="tag in incomeTags"
+                          :key="tag._id"
                           class="tag"
-                          :class="{ 'income': formData.tagId === item._id }"
-                          @click="onTagItemClick({ tagId: item._id })">
+                          :class="{ 'income': formData.tagId === tag._id }"
+                          @click="onTagItemClick(tag._id)">
 
                         <view class="tag-icon">
 
-                            <image v-show="formData.tagId === item._id"
-                                   :src="item.selectTagIcon" />
-                            <image v-show="formData.tagId !== item._id"
-                                   :src="item.tagIcon" />
+                            <image v-show="formData.tagId === tag._id"
+                                   :src="tag.selectTagIcon" />
+                            <image v-show="formData.tagId !== tag._id"
+                                   :src="tag.tagIcon" />
 
                         </view>
 
-                        <view class="tag-name">{{ item.tagName }}</view>
+                        <view class="tag-name">{{ tag.tagName }}</view>
 
                     </view>
 
@@ -445,17 +445,17 @@ onShareAppMessage();
 
             <view class="keyboard-wrapper" style="width:75%">
 
-                <view v-for="(item, index) in numbers"
+                <view v-for="(number, index) in numbers"
                       :key="index"
                       class="keyboard"
-                      :class="{ 'keyboard-0': item === '0' }">
+                      :class="{ 'keyboard-0': number === '0' }">
 
                     <view class="keyboard-item"
                           hover-class="gray-hover-class"
                           hover-stay-time="100"
-                          @click="onNumberClick({ number: item })">
+                          @click="onNumberClick(number)">
 
-                        {{ item }}
+                        {{ number }}
 
                     </view>
 
