@@ -411,7 +411,6 @@ onShareAppMessage();
 
                 <image class="avatar"
                        :src="avatar || defaultAvatar"
-
                        @click="onAvatarClick" />
 
             </view>
@@ -448,7 +447,6 @@ onShareAppMessage();
 
             <image class="avatar"
                    :src="avatar || defaultAvatar"
-
                    @click="onAvatarClick" />
 
         </view>
