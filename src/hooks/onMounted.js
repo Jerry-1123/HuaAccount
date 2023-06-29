@@ -23,11 +23,15 @@ export const onMounted = (fucntion, needLoading = true) => {
         let PromiseForTags = () => Promise.resolve({ tags });
 
         if (!openId) {
+
             PromiseForOpenId = () => uni.login({ provider: 'weixin' }).then(({ code }) => getOpenIdByCode({ code }));
+
         }
 
         if (tags.length === 0) {
+
             PromiseForTags = () => getTags();
+            
         }
 
         return Promise.all([

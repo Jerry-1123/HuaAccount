@@ -62,8 +62,8 @@ export const createBill = ({
             remark,
             billTime,
             tagId,
-            createTime: new Date().getTime(),
-            updateTime: new Date().getTime()
+            createTime: moment().valueOf(),
+            updateTime: moment().valueOf()
         });
 
 };
@@ -89,7 +89,7 @@ export const updateBill = ({
             remark,
             billTime,
             tagId,
-            updateTime: new Date().getTime()
+            updateTime: moment().valueOf()
         });
 
 };

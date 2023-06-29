@@ -1,4 +1,4 @@
-export const appVersion = '3.0.0';
+export const appName = '花花记账本';
 
 export const defaultPageSize = 20;
 

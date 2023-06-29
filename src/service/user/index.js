@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 
 export const getUserByOpenId = ({
     openId
@@ -31,8 +32,8 @@ export const createUser = ({
         .add({
             openId,
             nickName,
-            createTime: new Date().getTime(),
-            updateTime: new Date().getTime()
+            createTime: moment().valueOf(),
+            updateTime: moment().valueOf()
         })
         .then(({ result: { id: userId } }) => {
 
@@ -58,7 +59,7 @@ export const updateUser = ({
         .update({
             nickName,
             avatarUrl,
-            updateTime: new Date().getTime()
+            updateTime: moment().valueOf()
         });
 
 };

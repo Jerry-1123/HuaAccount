@@ -1,16 +1,16 @@
 export const BillTypeEnum = {
-    EXPENSES: 'expenses',
-    INCOME: 'income'
+    EXPENSES: 'expenses',   // 支出
+    INCOME: 'income'        // 收入
 };
 
 export const DateModeEnum = {
-    MONTH: 'month',
-    YEAR: 'year'
+    MONTH: 'month',         // 月份统计
+    YEAR: 'year'            // 年度统计
 };
 
 export const ListTypeEnum = {
-    AMOUNT: 'amount',
-    TIME: 'time',
+    AMOUNT: 'amount',       // 按金额分类
+    TIME: 'time',           // 按时间分类
 };
 
 export const PageStatusEnum = {
