@@ -402,7 +402,7 @@ onShareAppMessage();
 
                 <view class="amount">
 
-                    <text class="label"> {{ isYearMode() ? '年支出' : '月支出' }}</text>
+                    <text class="label">{{ isYearMode() ? '年支出' : '月支出' }}</text>
                     <text class="value">{{ formatAmount(totalExpenses) }}</text>
                     <text class="label">{{ isYearMode() ? '年收入' : '月收入' }}</text>
                     <text class="value">{{ formatAmount(totalIncome) }}</text>
@@ -521,11 +521,13 @@ onShareAppMessage();
                         <view class="swipe-content" slot="right">
 
                             <view class="swipe-item swipe-edit"
-                                  @click="onEditButtonClick(bill._id)">编辑
+                                  @click="onEditButtonClick(bill._id)">
+                                编辑
                             </view>
 
                             <view class="swipe-item swipe-delete"
-                                  @click="onDeleteButtonClick(bill._id)">删除
+                                  @click="onDeleteButtonClick(bill._id)">
+                                删除
                             </view>
 
                         </view>
@@ -545,10 +547,17 @@ onShareAppMessage();
 
             <view v-if="list.length !== 0" class="loading-content">
 
-                <van-loading v-show="pageStatus === PageStatusEnum.LOADING" size="30rpx"
-                             type="spinner">正在加载...</van-loading>
-                <van-loading v-show="pageStatus === PageStatusEnum.NOMORE" size="30px"
-                             type="">没有更多数据了，快去记一笔吧^-^</van-loading>
+                <van-loading v-show="pageStatus === PageStatusEnum.LOADING"
+                             size="30rpx"
+                             type="spinner">
+                    正在加载...
+                </van-loading>
+
+                <van-loading v-show="pageStatus === PageStatusEnum.NOMORE"
+                             size="30px"
+                             type="">
+                    没有更多数据了，快去记一笔吧^-^
+                </van-loading>
 
             </view>
 
