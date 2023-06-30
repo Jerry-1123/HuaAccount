@@ -1,6 +1,6 @@
 <script setup name="list">
 
-import { ref, computed, nextTick } from 'vue';
+import { ref, computed } from 'vue';
 import { onPullDownRefresh, onReachBottom, onPageScroll } from "@dcloudio/uni-app";
 import { onMounted } from '@/hooks/onMounted';
 import { onShareAppMessage } from '@/hooks/onShareAppMessage';
@@ -19,8 +19,6 @@ const {
     userId
 } = useState();
 
-// 操作拦高度
-const actionHeight = ref(0);
 // 条件
 const startTime = ref('');
 const endTime = ref('');
@@ -58,7 +56,7 @@ const onQuery = () => {
 
     if (pageStatus.value === PageStatusEnum.NOMORE) {
 
-        return;
+        return Promise.resolve();
 
     }
 
@@ -147,15 +145,6 @@ onMounted((opts) => {
 
         loading.value = false;
 
-        nextTick(() => {
-
-            uni.createSelectorQuery()
-                .select('#action')
-                .boundingClientRect(rect => actionHeight.value = rect.height)
-                .exec();
-
-        });
-
         uni.hideLoading();
 
     });
@@ -197,7 +186,7 @@ onShareAppMessage();
 <template>
     <view v-show="!loading" class="content">
 
-        <view class="action-content" id="action">
+        <view class="action-content">
 
             <view class="tab">
 
@@ -229,10 +218,7 @@ onShareAppMessage();
 
         </view>
 
-        <view class="list"
-              :style="{
-                  'margin-top': `${actionHeight}px`
-              }">
+        <view class="list">
 
             <view v-for="(bill) in list"
                   :key="bill._id"
