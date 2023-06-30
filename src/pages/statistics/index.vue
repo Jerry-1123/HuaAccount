@@ -150,11 +150,10 @@ const onWholeButtonClick = () => {
 
 const initSetting = () => {
 
-    ringChartOpts.value = getRingChartOpts({ billType: billType.value });
+    ringChartOpts.value = getRingChartOpts(billType.value);
+    columnChartOpts.value = getColumnChartOpts(billType.value, isYearMode());
 
-    columnChartOpts.value = getColumnChartOpts({ billType: billType.value, isYearMode: isYearMode() });
-
-    changeColor({ billType: billType.value });
+    changeColor(billType.value);
 
 };
 

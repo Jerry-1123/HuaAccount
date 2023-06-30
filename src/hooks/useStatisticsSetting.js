@@ -75,7 +75,7 @@ const incomeColorList = [
 
 export const useStatisticsSetting = () => {
 
-    const getRingChartOpts = ({ billType }) => {
+    const getRingChartOpts = (billType) => {
 
         let config = {
             type: 'ring',
@@ -111,7 +111,7 @@ export const useStatisticsSetting = () => {
 
     };
 
-    const getColumnChartOpts = ({ billType, isYearMode }) => {
+    const getColumnChartOpts = (billType, isYearMode) => {
 
         let config = {
             type: "column",
@@ -169,7 +169,7 @@ export const useStatisticsSetting = () => {
 
     };
 
-    const changeColor = ({ billType }) => {
+    const changeColor = (billType) => {
 
         if (billType === BillTypeEnum.EXPENSES) {
 
