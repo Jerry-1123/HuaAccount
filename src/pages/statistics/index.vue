@@ -34,7 +34,7 @@ const {
 // 加载
 const loading = ref(true);
 const billType = ref(BillTypeEnum.EXPENSES);
-// 日期选择器相关n
+// 日期选择器相关
 const showDatePicker = ref(false);
 const activeDateMode = ref(DateModeEnum.MONTH);
 const activeDate = ref(moment().format('YYYY-MM'));
