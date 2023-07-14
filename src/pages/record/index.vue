@@ -103,6 +103,8 @@ const onSaveRemarkButtonClick = () => {
 
 const onNumberClick = (number) => {
 
+    uni.vibrate();
+
     const dotIndex = formData.amount.indexOf('.');
 
     if (number === '.') {
@@ -137,6 +139,8 @@ const onNumberClick = (number) => {
 
 const onBackSpaceClick = () => {
 
+    uni.vibrate();
+
     if (formData.amount === '') {
         return;
     }
@@ -146,6 +150,8 @@ const onBackSpaceClick = () => {
 };
 
 const onConfirmButtonClick = () => {
+
+    uni.vibrate();
 
     if (isSubmitting.value) {
         return;

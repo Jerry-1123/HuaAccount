@@ -27,6 +27,19 @@
 			}
 		},
 		{
+			"path": "pages/analysis/index",
+			"style": {
+				"navigationBarTextStyle": "white",
+				"navigationBarBackgroundColor": "#3eb575",
+				"backgroundColor": "#ffffff",
+				"backgroundColorTop": "#3eb575",
+				"backgroundTextStyle": "light",
+				"navigationBarTitleText": "分析",
+				"enablePullDownRefresh": true,
+				"onReachBottomDistance": 50
+			}
+		},
+		{
 			"path": "pages/user/index",
 			"style": {
 				"disableScroll": true,
@@ -104,6 +117,12 @@
 				"iconPath": "static/images/icon_statistics_default.png",
 				"selectedIconPath": "static/images/icon_statistics_selected.png",
 				"text": "统计"
+			},
+			{
+				"pagePath": "pages/analysis/index",
+				"iconPath": "static/images/icon_analysis_default.png",
+				"selectedIconPath": "static/images/icon_analysis_selected.png",
+				"text": "分析"
 			},
 			{
 				"pagePath": "pages/user/index",
