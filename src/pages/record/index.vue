@@ -103,7 +103,9 @@ const onSaveRemarkButtonClick = () => {
 
 const onNumberClick = (number) => {
 
-    uni.vibrate();
+    wx.vibrateShort({
+        type: 'light'
+    });
 
     const dotIndex = formData.amount.indexOf('.');
 
@@ -139,7 +141,9 @@ const onNumberClick = (number) => {
 
 const onBackSpaceClick = () => {
 
-    uni.vibrate();
+    wx.vibrateShort({
+        type: 'light'
+    });
 
     if (formData.amount === '') {
         return;
@@ -151,7 +155,9 @@ const onBackSpaceClick = () => {
 
 const onConfirmButtonClick = () => {
 
-    uni.vibrate();
+    wx.vibrateShort({
+        type: 'light'
+    });
 
     if (isSubmitting.value) {
         return;

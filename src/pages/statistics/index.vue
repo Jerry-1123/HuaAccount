@@ -1,7 +1,7 @@
 <script setup name="statistics">
 
 import { ref, computed } from 'vue';
-import { onPullDownRefresh } from "@dcloudio/uni-app";
+import { onPullDownRefresh, onPageScroll } from "@dcloudio/uni-app";
 import { onMounted } from '@/hooks/onMounted';
 import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
@@ -19,6 +19,7 @@ import _ from 'lodash';
 import currency from 'currency.js';
 
 import DatePicker from '@/components/date-picker';
+import BackToTop from '@/components/back-to-top';
 
 const {
     getRingChartOpts,
@@ -54,6 +55,8 @@ const columnChartOpts = ref({});
 const billList = ref([]);
 const pageNumber = ref(0);
 const pageSize = ref(20);
+// 显示返回顶部
+const showBackToTop = ref(false);
 
 const formatDate = computed(() => isYearMode() ? `${activeDate.value}年` : moment(activeDate.value).format('YYYY年M月'));
 
@@ -259,6 +262,12 @@ onMounted(() => {
 onPullDownRefresh(() => {
 
     onQuery();
+
+});
+
+onPageScroll(({ scrollTop }) => {
+
+    showBackToTop.value = scrollTop >= (uni.getSystemInfoSync().windowHeight / 4);
 
 });
 
@@ -496,7 +505,7 @@ onShareAppMessage();
 
                 </view>
 
-                <view v-if="billList.length > 10"
+                <view v-if="billList.length > 5"
                       class="whole"
                       hover-class="default-hover-class"
                       hover-stay-time="100"
@@ -527,6 +536,8 @@ onShareAppMessage();
                      @change="onDateModeChange"
                      @select="onDateSelect"
                      @close="onDatePickerClose" />
+
+        <back-to-top :visible="showBackToTop" />
 
         <!-- 用于解决ios的bug -->
         <view style="height: 1px" />
