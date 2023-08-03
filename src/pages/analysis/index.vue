@@ -14,6 +14,8 @@ const {
 
 const loading = ref(true);
 const activeTabIndex = ref(0);
+const activeMonth = ref(moment().format('YYYY-MM'));
+const activeYear = ref(moment().year());
 const dayList = ref([]);    // { label: '', value: ''; }
 const monthList = ref([]);
 const yearList = ref([]);
@@ -24,14 +26,31 @@ const onTabItemClick = (index) => {
 
         activeTabIndex.value = index;
 
+        if (index === 0) {
+
+            initDays();
+            onQueryForDays();
+
+        } else if (index === 1) {
+
+            initMonths();
+            onQueryForMonths();
+
+        } else if (index === 2) {
+
+            initYears();
+            onQueryForYears();
+
+        }
+
     }
 
 };
 
-const initDay = (monthStr) => {
+const initDays = () => {
 
-    let startDate = moment(monthStr).startOf('month');
-    let endDate = moment(monthStr).endOf('month');
+    let startDate = moment(activeMonth.value).startOf('month');
+    let endDate = moment(activeMonth.value).endOf('month');
 
     let _startDateWeekday = moment(startDate).weekday();
     let _endDateWeekday = moment(endDate).weekday();
@@ -52,25 +71,26 @@ const initDay = (monthStr) => {
 
     console.log(_.chunk(dayList, 7));
 
+    return _.chunk(dayList, 7);
+
 };
 
-const initMonth = () => { };
+const initMonths = () => { };
 
-const initYear = () => { };
+const initYears = () => { };
 
-const onQueryForDay = () => { };
+const onQueryForDays = () => { };
 
-const onQueryForMonth = () => { };
+const onQueryForMonths = () => { };
 
-const onQueryForYear = () => { };
+const onQueryForYears = () => { };
 
 onMounted(() => {
 
+    initDays();
+    onQueryForDays();
+
     uni.hideLoading();
-
-    // initDay();
-
-    // onQueryForDay();
 
 });
 
