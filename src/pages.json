@@ -80,12 +80,6 @@
 			"style": {
 				"navigationBarTitleText": "关于"
 			}
-		},
-		{
-			"path": "pages/test/index",
-			"style": {
-				"navigationBarTitleText": "测试"
-			}
 		}
 	],
 	"globalStyle": {
