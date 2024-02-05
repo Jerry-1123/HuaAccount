@@ -16,12 +16,23 @@ export const useOptions = () => {
     while (endTime > startTime || startTime.format('M') === endTime.format('M')) {
 
         allYearMonth.push(startTime.format('YYYY-MM'));
-        
+
         startTime.add(1, 'month');
 
     }
 
-    dateOptions.value = _.groupBy(allYearMonth, value => value.substring(0, 4));
+    let list = [];
+
+    _.each(_.groupBy(allYearMonth, value => value.substring(0, 4)), (months, year) => {
+
+        list.push({
+            year,
+            months
+        });
+
+    });
+
+    dateOptions.value = _.orderBy(list, 'year', 'desc');
 
     return {
         dateOptions

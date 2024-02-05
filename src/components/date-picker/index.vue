@@ -93,14 +93,14 @@ const onPopupClose = () => {
 
             <view v-show="activeMode === DateModeEnum.MONTH" class="container">
 
-                <view v-for="(item, key) in dateOptions"
-                      :key="key">
+                <view v-for="item in dateOptions"
+                      :key="item.year">
 
-                    <view class="year">{{ key }}年</view>
+                    <view class="year">{{ item.year }}年</view>
 
                     <view class="grid">
 
-                        <view v-for="(month) in item"
+                        <view v-for="(month) in item.months"
                               :key="month"
                               class="grid-item"
                               :class="{ 'active': activeDate === month }"
@@ -122,15 +122,15 @@ const onPopupClose = () => {
 
                 <view class="grid">
 
-                    <view v-for="(item, year) in dateOptions"
-                          :key="year"
+                    <view v-for="item in dateOptions"
+                          :key="item.year"
                           class="grid-item"
-                          :class="{ 'active': activeDate === year }"
-                          :hover-class="activeDate === year ? 'default-hover-class' : 'gray-hover-class'"
+                          :class="{ 'active': activeDate === item.year }"
+                          :hover-class="activeDate === item.year ? 'default-hover-class' : 'gray-hover-class'"
                           hover-stay-time="100"
-                          @click="onDateItemClick(year)">
+                          @click="onDateItemClick(item.year)">
 
-                        {{ year }}年
+                        {{ item.year }}年
 
                     </view>
 
