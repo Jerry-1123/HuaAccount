@@ -85,14 +85,7 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarBackgroundColor": "#ffffff",
-		"backgroundColor": "#ffffff",
-		"usingComponents": {
-			"van-popup": "/wxcomponents/vant/popup/index",
-			"van-swipe-cell": "/wxcomponents/vant/swipe-cell/index",
-			"van-calendar": "/wxcomponents/vant/calendar/index",
-			"van-progress": "/wxcomponents/vant/progress/index",
-			"van-loading": "/wxcomponents/vant/loading/index"
-		}
+		"backgroundColor": "#ffffff"
 	},
 	"tabBar": {
 		"color": "#7A7E83",
@@ -106,24 +99,24 @@
 				"selectedIconPath": "static/images/icon_home_selected.png",
 				"text": "明细"
 			},
-			{
-				"pagePath": "pages/statistics/index",
-				"iconPath": "static/images/icon_statistics_default.png",
-				"selectedIconPath": "static/images/icon_statistics_selected.png",
-				"text": "统计"
-			},
-			{
-				"pagePath": "pages/analysis/index",
-				"iconPath": "static/images/icon_analysis_default.png",
-				"selectedIconPath": "static/images/icon_analysis_selected.png",
-				"text": "分析"
-			},
-			{
-				"pagePath": "pages/user/index",
-				"iconPath": "static/images/icon_user_default.png",
-				"selectedIconPath": "static/images/icon_user_selected.png",
-				"text": "我的"
-			}
+			// {
+			// 	"pagePath": "pages/statistics/index",
+			// 	"iconPath": "static/images/icon_statistics_default.png",
+			// 	"selectedIconPath": "static/images/icon_statistics_selected.png",
+			// 	"text": "统计"
+			// },
+			// {
+			// 	"pagePath": "pages/analysis/index",
+			// 	"iconPath": "static/images/icon_analysis_default.png",
+			// 	"selectedIconPath": "static/images/icon_analysis_selected.png",
+			// 	"text": "分析"
+			// },
+			// {
+			// 	"pagePath": "pages/user/index",
+			// 	"iconPath": "static/images/icon_user_default.png",
+			// 	"selectedIconPath": "static/images/icon_user_selected.png",
+			// 	"text": "我的"
+			// }
 		]
 	}
 }

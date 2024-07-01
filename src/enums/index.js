@@ -14,7 +14,7 @@ export const ListTypeEnum = {
 };
 
 export const PageStatusEnum = {
-    MORE: 'more',
-    LOADING: 'loading',
-    NOMORE: 'noMore'
+    LOADING: 'loading',     // 加载中
+    MORE: 'more',           // 加载更多
+    NOMORE: 'noMore'        // 没有更多数据
 };

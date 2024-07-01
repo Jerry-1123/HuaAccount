@@ -3,6 +3,12 @@ view {
 	box-sizing: border-box;
 }
 
+view,
+text,
+scroll-view {
+	box-sizing: border-box;
+}
+
 image {
 	width: 100%;
 	display: block;

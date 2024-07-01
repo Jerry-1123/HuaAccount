@@ -5,9 +5,9 @@ import { ref } from 'vue';
 import { onMounted } from '@/hooks/onMounted';
 import { onShareAppMessage } from '@/hooks/onShareAppMessage';
 import { useState } from '@/hooks/useState';
+import { } from '@/service';
 import { } from '@/enums';
 import { } from '@/constant';
-import _ from 'lodash';
 
 const {
 } = useState();
